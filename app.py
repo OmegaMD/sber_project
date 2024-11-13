@@ -1,5 +1,5 @@
 # imports
-from flask import Flask
+from flask import Flask, render_template
 
 # application class
 class App:
@@ -16,7 +16,7 @@ class App:
         # home flask function
         @self.flask.route('/')
         def home():
-            return "<h1>Добро пожаловать на мой сайт!</h1>"
+            return render_template("index.html")
 
 # creating application instance
 app = App()
