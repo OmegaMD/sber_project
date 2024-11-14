@@ -9,6 +9,9 @@ class App:
 
     # class initialization function
     def __init__(self):
+        ### local class variables ###
+
+        # flask
         self.flask = Flask(__name__)
 
         ### flask callback functions ###
@@ -16,7 +19,14 @@ class App:
         # home flask function
         @self.flask.route('/')
         def home():
-            return render_template("index.html")
+            return render_template('index.html')
+
+        # going to login flask function
+        @self.flask.route('/login', methods=['GET'])
+        def login():
+            return render_template('login.html')
+
+
 
 # creating application instance
 app = App()
