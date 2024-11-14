@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Страничка</title>
+        <title>Сбер Карта</title>
         <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     </head>
-    <body class="grad">
-        <h1>Добро пожаловать на мой сайт!</h1>
+    <body class="sber_gradient">
+        <div class="login_window">
+            <table>
+                <tbody>
+                    <tr><td><p class="login_texthint">Логин</p></td></tr>
+                    <tr><td><input class="login_input"; id="password_input"></td></tr>
+                    <tr><td><p class="login_texthint">Пароль</p></td></tr>
+                    <tr><td><input class="login_input"; id="password_input"></td></tr>
+                    <tr><td><button id="login_button">ВОЙТИ</button></td></tr>
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>
