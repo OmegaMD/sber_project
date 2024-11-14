@@ -1,5 +1,5 @@
 # imports
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 
 # application class
 class App:
@@ -26,6 +26,11 @@ class App:
         def login():
             return render_template('login.html')
 
+        @self.flask.route('/submit_login', methods=['POST'])
+        def submit_login():
+            print(f"login:    { str(request.form.get('login_input')) }")
+            print(f"password: { str(request.form.get('password_input')) }")
+            return redirect(url_for('home'))
 
 
 # creating application instance

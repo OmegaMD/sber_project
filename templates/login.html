@@ -5,16 +5,16 @@
         <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     </head>
     <body class="sber_gradient">
-        <div class="login_window">
+        <form class="login_window" action="/submit_login" method="post">
             <table>
                 <tbody>
                     <tr><td><p class="login_texthint">Логин</p></td></tr>
-                    <tr><td><input class="login_input"; id="password_input"></td></tr>
+                    <tr><td><input class="login_input" name="login_input"></td></tr>
                     <tr><td><p class="login_texthint">Пароль</p></td></tr>
-                    <tr><td><input class="login_input"; id="password_input"></td></tr>
-                    <tr><td><button id="login_button">ВОЙТИ</button></td></tr>
+                    <tr><td><input class="login_input" name="password_input"></td></tr>
+                    <tr><td><button type="submit" id="login_button">ВОЙТИ</button></td></tr> 
                 </tbody>
             </table>
-        </div>
+        </form>
     </body>
 </html>
