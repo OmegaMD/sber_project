@@ -18,6 +18,7 @@
         <h1>Добро пожаловать на мой сайт!</h1>
         <a href="{{ url_for('login') }}">login</a>
         <div id="container"></div>
+        <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
         <script src="https://mapgl.2gis.com/api/js/v1"></script>
         <script type="text/javascript">
             function httpGet(theUrl)
@@ -27,19 +28,19 @@
                 xmlHttp.send( null );
                 return xmlHttp.responseText;
             }
-            var map;
             var API_KEY = "624558d5-d514-4f2b-bd8d-4639141e0572";
             answ = httpGet("https://catalog.api.2gis.com/3.0/items?q=лицей 30&fields=items.point&sort_point=30.3141,59.9386&key=" + API_KEY);
             console.log(answ);
             var res = JSON.parse(answ);
-
-            DG.then(function () {
-                map = DG.map('map', {
-                    center: [59.9386, 30.3141],
-                    zoom: 13
-                });
+            const map = new mapgl.Map('container', {
+                key: API_KEY,
+                center: [30.3141, 59.9386],
+                zoom: 13,
             });
-            DG.marker([54.98, 82.89]).addTo(map);
+            console.log(answ.result.items[0]);
+            const marker = new mapgl.Marker(map, {
+                coordinates: [55.31878, 25.23584],
+            });
         </script> 
     </body>
 </html>
