@@ -29,17 +29,17 @@
                 return xmlHttp.responseText;
             }
             var API_KEY = "624558d5-d514-4f2b-bd8d-4639141e0572";
-            answ = httpGet("https://catalog.api.2gis.com/3.0/items?q=лицей 30&fields=items.point&sort_point=30.3141,59.9386&key=" + API_KEY);
+            const answ = httpGet("https://catalog.api.2gis.com/3.0/items?q=лицей 30&fields=items.point&sort_point=30.3141,59.9386&key=" + API_KEY);
             console.log(answ);
-            var res = JSON.parse(answ);
+            const obj = JSON.parse(answ);
             const map = new mapgl.Map('container', {
                 key: API_KEY,
                 center: [30.3141, 59.9386],
                 zoom: 13,
             });
-            console.log(answ.result.items[0]);
+            
             const marker = new mapgl.Marker(map, {
-                coordinates: [55.31878, 25.23584],
+                coordinates: [obj.result.items[0].point.lon, obj.result.items[0].point.lat],
             });
         </script> 
     </body>
