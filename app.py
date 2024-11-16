@@ -30,7 +30,7 @@ class App:
         def submit_login():
             print(f"login:    { str(request.form.get('login_input')) }")
             print(f"password: { str(request.form.get('password_input')) }")
-            return redirect(url_for('home'))
+            return render_template('map.html')
 
 
 # creating application instance
