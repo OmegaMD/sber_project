@@ -39,6 +39,25 @@
                 const marker = new mapgl.Marker(map, {
                     coordinates: [obj.result.items[i].point.lon, obj.result.items[i].point.lat],
                 });
+
+                const popup = new mapgl.HtmlMarker(map, {
+                    coordinates: marker.getCoordinates(),
+                    html: `<div class="popup">
+                        <div class="popup-content">
+                            The click at the marker will open this popup again
+                        </div>
+                        <div class="popup-close">x</div>
+                        <div class="popup-tip"></div>
+                    </div>`,
+                });
+                const popupHtml = popup.getContent();
+                hidePopup();
+                marker.on('click', () => (popupHtml.style.display = 'block'));
+                popupHtml.querySelector('.popup-close').addEventListener('click', hidePopup);
+                map.on('click', hidePopup);
+                function hidePopup() {
+                    popupHtml.style.display = 'none';
+                }
             }
         </script> 
     </body>
