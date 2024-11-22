@@ -12,11 +12,42 @@
                 height: 100%;
                 overflow: hidden;
             }
-        </style>  
+        </style>
+        <style>
+            .popup {
+                position: absolute;
+                transform: translate(-50%, -150%);
+                display: flex;
+                flex-direction: column;
+                min-width: 200px;
+            }
+            .popup-content {
+                padding: 10px;
+                border-radius: 4px;
+                background: #fff;
+                box-shadow: 0 1px 2px 0 rgba(38, 38, 38, 0.2);
+            }
+            .popup-close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 0 5px;
+                font-size: 12px;
+                cursor: pointer;
+            }
+            .popup-tip {
+                width: 0;
+                height: 0;
+                align-self: center;
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-top: 10px solid #fff;
+            }
+        </style>
     </head>
     <body>
         <div id="container"></div>
-        <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+        </div>
         <script src="https://mapgl.2gis.com/api/js/v1"></script>
         <script type="text/javascript">
             function httpGet(theUrl)
@@ -28,29 +59,35 @@
             }
             var API_KEY = "624558d5-d514-4f2b-bd8d-4639141e0572";
             const answ = httpGet("https://catalog.api.2gis.com/3.0/items?q=мега&fields=items.point&sort_point=30.3141,59.9386&key=" + API_KEY);
-            console.log(answ);
             const obj = JSON.parse(answ);
             const map = new mapgl.Map('container', {
                 key: API_KEY,
                 center: [30.3141, 59.9386],
                 zoom: 13,
             });
-            for (let i = 0; i < Object.keys(answ).length; i++){
+            for (let i = 0; i < Object.keys(obj.result.items).length; i++){
                 const marker = new mapgl.Marker(map, {
                     coordinates: [obj.result.items[i].point.lon, obj.result.items[i].point.lat],
                 });
-
                 const popup = new mapgl.HtmlMarker(map, {
                     coordinates: marker.getCoordinates(),
-                    html: `<div class="popup">
-                        <div class="popup-content">
-                            The click at the marker will open this popup again
-                        </div>
+                    html: `
+                        <div class="popup">
+                        <div class="popup-content", id="popup-content"></div>
                         <div class="popup-close">x</div>
                         <div class="popup-tip"></div>
-                    </div>`,
+                        </div>
+                                `,
                 });
                 const popupHtml = popup.getContent();
+                function updatePopupContent(newText) {
+                    const popupContent = popupHtml.querySelector('#popup-content');
+                    if (popupContent) {
+                        popupContent.textContent = newText;
+                    }
+                }
+                const popup_content = `Адрес: ${obj.result.items[i].address_name}`;
+                updatePopupContent(popup_content);
                 hidePopup();
                 marker.on('click', () => (popupHtml.style.display = 'block'));
                 popupHtml.querySelector('.popup-close').addEventListener('click', hidePopup);
