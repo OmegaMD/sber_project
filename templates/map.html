@@ -70,8 +70,10 @@
             for (let i = 0; i < Object.keys(obj.result.items).length; i++){
                 const marker = new mapgl.Marker(map, {
                     coordinates: [obj.result.items[i].point.lon, obj.result.items[i].point.lat],
-                    icon: 'https://upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif'
+                    icon: 'https://upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif',
+                    size: [60, 20],
                 });
+
                 const popup = new mapgl.HtmlMarker(map, {
                     coordinates: marker.getCoordinates(),
                     html: `
