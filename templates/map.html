@@ -65,6 +65,30 @@
                 center: [30.3141, 59.9386],
                 zoom: 13,
             });
+
+
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;  // Широта
+                    const lon = position.coords.longitude; // Долгота
+
+                    // Центрируем карту на текущем местоположении
+                    map.setCenter([lon, lat]);
+                    map.setZoom(14); // Можно настроить уровень масштабирования
+
+                    // Добавляем маркер на карту
+                    const marker = new mapgl.Marker(map, {
+                        coordinates: [lon, lat],
+                    });
+                    console.log('Геопозиция:', lat, lon);
+                }, function(error) {
+                    console.error('Ошибка получения геопозиции:', error.message);
+                });
+            } else {
+                console.log('Геолокация не поддерживается этим браузером.');
+            }
+
+
             console.log(obj.result.items);
             console.log('https://mega.ru/local/templates/mega/img/fb_logo.jpg')
             for (let i = 0; i < Object.keys(obj.result.items).length; i++){
