@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for
 class App:
     # application starting function
     def run(self):
-        self.flask.run(debug=True)
+        self.flask.run(debug = True)
 
     # class initialization function
     def __init__(self):
@@ -28,14 +28,14 @@ class App:
 
         @self.flask.route('/submit_login', methods=['POST'])
         def submit_login():
-            print(f"login:    { str(request.form.get('login_input')) }")
-            print(f"password: { str(request.form.get('password_input')) }")
+            #print(f"login:    { str(request.form.get('login_input')) }")
+            #print(f"password: { str(request.form.get('password_input')) }")
             return render_template('map.html')
 
 
 # creating application instance
 app = App()
 
-# application entry point
+# application entry point for local debag
 if __name__ == '__main__':
     app.run()
