@@ -49,6 +49,7 @@
         <div id="container"></div>
         </div>
         <script src="https://mapgl.2gis.com/api/js/v1"></script>
+        <script src="https://unpkg.com/@2gis/mapgl-clusterer@^2/dist/clustering.js"></script>
         <script type="text/javascript">
             function httpGet(theUrl)
             {
@@ -66,6 +67,9 @@
                 zoom: 13,
             });
 
+            const clusterer = new mapgl.Clusterer(map, {
+                radius: 60,
+            });
 
             if ('geolocation' in navigator) {
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -88,26 +92,33 @@
                 console.log('Геолокация не поддерживается этим браузером.');
             }
 
+            let markers = [];
 
-            console.log(obj.result.items);
-            console.log('https://mega.ru/local/templates/mega/img/fb_logo.jpg')
             for (let i = 0; i < Object.keys(obj.result.items).length; i++){
-                const marker = new mapgl.Marker(map, {
+                markers.push({
                     coordinates: [obj.result.items[i].point.lon, obj.result.items[i].point.lat],
                     icon: 'https://upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif',
                     size: [60, 20],
+                    address: obj.result.items[i].address_name,
                 });
+            }
+
+            popupsHtml = []
+           
+            clusterer.on('click', (event) => {
+                console.log(`${event.target.type} is clicked`);
 
                 const popup = new mapgl.HtmlMarker(map, {
-                    coordinates: marker.getCoordinates(),
-                    html: `
-                        <div class="popup">
-                        <div class="popup-content", id="popup-content"></div>
-                        <div class="popup-close">x</div>
-                        <div class="popup-tip"></div>
-                        </div>
-                                `,
+                coordinates: event.target.data.coordinates,
+                html: `
+                    <div class="popup">
+                    <div class="popup-content", id="popup-content"></div>
+                    <div class="popup-close">x</div>
+                    <div class="popup-tip"></div>
+                    </div>
+                            `,
                 });
+                console.log(event.target.data.coordinates);
                 const popupHtml = popup.getContent();
                 function updatePopupContent(newText) {
                     const popupContent = popupHtml.querySelector('#popup-content');
@@ -115,16 +126,25 @@
                         popupContent.textContent = newText;
                     }
                 }
-                const popup_content = `Адрес: ${obj.result.items[i].address_name}`;
+                const popup_content = `Адрес: ${event.target.data.address}`;
                 updatePopupContent(popup_content);
-                hidePopup();
-                marker.on('click', () => (popupHtml.style.display = 'block'));
+                popupsHtml.push(popupHtml);
                 popupHtml.querySelector('.popup-close').addEventListener('click', hidePopup);
-                map.on('click', hidePopup);
                 function hidePopup() {
-                    popupHtml.style.display = 'none';
+                    popupHtml.style.display = "none"
                 }
+                // (popupHtml.style.display = 'none')
+                delete popup
+            });
+            map.on('click', hide_all_popups);
+            function hide_all_popups() {
+                for (let i = 0; i < popupsHtml.length; i++){
+                    popupsHtml[i].style.display = "none"
+                }
+                popupsHtml = [];
             }
+            
+            clusterer.load(markers);
         </script> 
     </body>
 </html>

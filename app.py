@@ -41,19 +41,19 @@ class App:
             return render_template('map.html')
 
         # API token and secret for Telegram login
-        self.API_TOKEN = '7547175237:AAG9HZjOSG9TFDD4MXGPJY7cAgvQpxh3H-w'
+        self.API_TOKEN = settings.API_TOKEN
+        
 
         # URL для проверки авторизации
         self.TELEGRAM_API_URL = 'https://api.telegram.org/bot' + self.API_TOKEN + '/getMe'
 
-        # gettin dat mf secret key
         self.SECRET_KEY = settings.SECRET_KEY
 
 
 
         # Route for Telegram login verification
         @self.flask.route('/login_check', methods=['GET'])
-        def login_check(self):
+        def login_check():
             # Получаем параметры из запроса
             print(12312321313)
             data = request.args
@@ -65,6 +65,7 @@ class App:
             username = data.get('username', '')
             signature = data.get('hash')
             # Проверяем подпись
+
             if self.check_signature(data, signature):
                 # Авторизация успешна
                 return jsonify({"status": "success", "user_info": {
