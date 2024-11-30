@@ -31,7 +31,7 @@ class App:
         # going to login flask function
         @self.flask.route('/login', methods=['GET'])
         def login():
-            print(832489231843291)
+            #print("Login page")
             return render_template('login.html')
 
         @self.flask.route('/submit_login', methods=['POST'])
@@ -41,59 +41,40 @@ class App:
             return render_template('map.html')
 
         # API token and secret for Telegram login
-        self.API_TOKEN = settings.API_TOKEN
-        
+        self.API_TOKEN = settings.API_TOKEN       
 
         # URL для проверки авторизации
         self.TELEGRAM_API_URL = 'https://api.telegram.org/bot' + self.API_TOKEN + '/getMe'
-
         self.SECRET_KEY = settings.SECRET_KEY
-
-
 
         # Route for Telegram login verification
         @self.flask.route('/login_check', methods=['GET'])
         def login_check():
             # Получаем параметры из запроса
-            print(12312321313)
             data = request.args
-            print("Received data:", data)
+            #print("Received data:", data)
 
             telegram_id = data.get('id')
             first_name = data.get('first_name')
             last_name = data.get('last_name')
             username = data.get('username', '')
             signature = data.get('hash')
-            # Проверяем подпись
-
-            if self.check_signature(data, signature):
-                # Авторизация успешна
-                return jsonify({"status": "success", "user_info": {
+            
+            return render_template('map.html')
+            '''return jsonify({"status": "success", "user_info": {
                     "id": telegram_id,
                     "first_name": first_name,
                     "last_name": last_name,
                     "username": username
-                }})
-            else:
-                return jsonify({"status": "error", "message": "Invalid signature"}), 400
+                }})'''
 
-        # Функция для проверки подписи Telegram
-        def check_signature(self, data, signature):
-            # Собираем строку из данных в правильном порядке для подписи
-            secret = bytes(self.SECRET_KEY, 'utf-8')
 
-            # Строка данных для подписи — это то, что Telegram передает.
-            # Мы создаем строку из параметров запроса в нужном порядке.
-            string_data = ''.join(f"{key}={data[key]}" for key in sorted(data.keys()))
 
-            # Генерируем подпись
-            generated_signature = hmac.new(secret, string_data.encode('utf-8'), hashlib.sha256).hexdigest()
-
-            return generated_signature == signature
+        
 
 # создание экземпляра приложения
 app = App()
-print(1, 2, 3, 4)
+
 # application entry point for local debug
 if __name__ == '__main__':
     app.run()
