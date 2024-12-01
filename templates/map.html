@@ -32,7 +32,7 @@
                 xmlHttp.send( null );
                 return xmlHttp.responseText;
             }
-            var API_KEY = "3803c874-16f5-4848-ad84-c41546ced301 ";
+            var API_KEY = "3803c874-16f5-4848-ad84-c41546ced301";
             const answ = httpGet("https://catalog.api.2gis.com/3.0/items?q=мега&fields=items.point&sort_point=30.3141,59.9386&key=" + API_KEY);
             const obj = JSON.parse(answ);
             console.log(obj);
