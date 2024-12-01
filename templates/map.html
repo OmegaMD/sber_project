@@ -4,6 +4,8 @@
         <title>Сбер Карта</title>
         <link rel="stylesheet" href="../static/style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../static/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     </head>
     <body>
         <header class="header">
@@ -15,111 +17,33 @@
                     </form>
                 </div>
                 <div class="filters">
-                    <p class="filter">Кафе и кондитерские</p>
-                    <p class="filter">Рестораны</p>
-                    <p class="filter">Супермаркеты</p>
+                    <div class="filter">
+                        <label class="switch">
+                            <input type="checkbox" class="switch_input" id="switch_input1">
+                            <span class="switch_slider"></span>
+                        </label>
+                        <p class="filter-text">Супермаркеты</p>
+                    </div>
+                    <div class="filter">
+                        <label class="switch">
+                            <input type="checkbox" class="switch_input" id="switch_input2">
+                            <span class="switch_slider"></span>
+                        </label>
+                        <p class="filter-text">Рестораны</p>
+                    </div>
+                    <div class="filter">
+                        <label class="switch">
+                            <input type="checkbox" class="switch_input" id="switch_input3">
+                            <span class="switch_slider"></span>
+                        </label>
+                        <p class="filter-text">Кафе и кондитерские</p>
+                    </div>
                 </div>
             </div>
             <div id="container"></div>
         </header>
         <script src="https://mapgl.2gis.com/api/js/v1"></script>
-        <script src="https://unpkg.com/@2gis/mapgl-clusterer@^2/dist/clustering.js"></script>
-        <script type="text/javascript">
-            function httpGet(theUrl)
-            {
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open( "GET", theUrl, false );
-                xmlHttp.send( null );
-                return xmlHttp.responseText;
-            }
-            var API_KEY = "3803c874-16f5-4848-ad84-c41546ced301";
-            const answ = httpGet("https://catalog.api.2gis.com/3.0/items?q=мега&fields=items.point&sort_point=30.3141,59.9386&key=" + API_KEY);
-            const obj = JSON.parse(answ);
-            console.log(obj);
-            const map = new mapgl.Map('container', {
-                key: API_KEY,
-                center: [30.3141, 59.9386],
-                zoom: 13,
-            });
-
-            const clusterer = new mapgl.Clusterer(map, {
-                radius: 60,
-            });
-
-            if ('geolocation' in navigator) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const lat = position.coords.latitude;  // Широта
-                    const lon = position.coords.longitude; // Долгота
-
-                    // Центрируем карту на текущем местоположении
-                    map.setCenter([lon, lat]);
-                    map.setZoom(14); // Можно настроить уровень масштабирования
-
-                    // Добавляем маркер на карту
-                    const marker = new mapgl.Marker(map, {
-                        coordinates: [lon, lat],
-                    });
-                    console.log(obj.result);
-                }, function(error) {
-                    console.error('Ошибка получения геопозиции:', error.message);
-                });
-            } else {
-                console.log('Геолокация не поддерживается этим браузером.');
-            }
-
-            let markers = [];
-
-            for (let i = 0; i < Object.keys(obj.result.items).length; i++){
-                markers.push({
-                    coordinates: [obj.result.items[i].point.lon, obj.result.items[i].point.lat],
-                    icon: 'https://upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif',
-                    size: [60, 20],
-                    address: obj.result.items[i].address_name,
-                });
-            }
-
-            popupsHtml = []
-           
-            clusterer.on('click', (event) => {
-                console.log(`${event.target.type} is clicked`);
-
-                const popup = new mapgl.HtmlMarker(map, {
-                coordinates: event.target.data.coordinates,
-                html: `
-                    <div class="popup">
-                    <div class="popup-content", id="popup-content"></div>
-                    <div class="popup-close">x</div>
-                    <div class="popup-tip"></div>
-                    </div>
-                            `,
-                });
-                console.log(event.target.data.coordinates);
-                const popupHtml = popup.getContent();
-                function updatePopupContent(newText) {
-                    const popupContent = popupHtml.querySelector('#popup-content');
-                    if (popupContent) {
-                        popupContent.textContent = newText;
-                    }
-                }
-                const popup_content = `Адрес: ${event.target.data.address}`;
-                updatePopupContent(popup_content);
-                popupsHtml.push(popupHtml);
-                popupHtml.querySelector('.popup-close').addEventListener('click', hidePopup);
-                function hidePopup() {
-                    popupHtml.style.display = "none"
-                }
-                // (popupHtml.style.display = 'none')
-                delete popup
-            });
-            map.on('click', hide_all_popups);
-            function hide_all_popups() {
-                for (let i = 0; i < popupsHtml.length; i++){
-                    popupsHtml[i].style.display = "none"
-                }
-                popupsHtml = [];
-            }
-            
-            clusterer.load(markers);
-        </script> 
+        <script src="https://unpkg.com/@2gis/mapgl-clusterer@^2/dist/clustering.js"></script> 
+        <script src="../scripts/script.js"></script> 
     </body>
 </html>

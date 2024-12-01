@@ -85,15 +85,77 @@ button:before {
   font-weight: bold;
 }
 
+.switch {
+    display: inline_block;
+    position: relative;
+    width: 60px;
+    height: 34px;
+
+    background-color: rgb(255, 255, 255);
+    padding-top: 51px;
+    padding-right: 50px;
+}
+
+.switch_input {
+    height: 0;
+    width: 0;
+    opacity: 0;
+}
+
+.switch_slider {
+    position: absolute;
+    cursor: pointer;
+    top: 16px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: 34px;
+
+    background-color: #21BA72;
+    transition: 0.4s;
+}
+
+.switch_slider::before {
+    content: "";
+    position: absolute;
+    cursor: pointer;
+    left: 28px;
+    bottom: 4px;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+
+    background-color: white;
+    transition: 0.4s;
+}
+
+.switch_input:focus + .switch_slider {
+    box-shadow: 0 0 1px #2196f3;
+}
+
+.switch_input:checked + .switch_slider{
+    background-color: rgb(165, 159, 159);
+}
+
+.switch_input:checked + .switch_slider::before{
+    transform: translateX(-24px);
+}
+
+
+.filter-text {
+    width: 100%;
+    padding-left: 10px;
+}
 
 .filter {
+    display: flex;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     padding-bottom: 20px;
 }
 
 .filters {
-    padding-top: 100px;
-    padding-left: 120px;
+    padding-top: 30px;
+    padding-left: 40px;
     font-size: 20px;
     font-weight: bold;
 }
@@ -133,6 +195,37 @@ button:before {
     color: gray;
     border-radius: 14px;
 }
+
+.popup {
+    position: absolute;
+    transform: translate(-50%, -150%);
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+.popup-content {
+    padding: 10px;
+    border-radius: 9px;
+    background: #fff;
+    box-shadow: 0 1px 2px 0 rgba(38, 38, 38, 0.2);
+}
+.popup-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.popup-tip {
+    width: 0;
+    height: 0;
+    align-self: center;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+}
+
 
 .popup {
     position: absolute;
