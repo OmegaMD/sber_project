@@ -33,7 +33,7 @@ class App:
         self.device_type = DeviceType.UNKNOWN
 
         # base directory for templates (htmls)
-        self.base_dir = ''
+        self.base_dir = 'computer/'
 
         ### flask callback functions ###
 
@@ -49,13 +49,18 @@ class App:
             else:
                 self.device_type = DeviceType.COMPUTER
                 self.base_dir = 'computer/'
-
+            
+            print(self.base_dir)
+            print(user_agent)
+            
+            
             return render_template(self.base_dir + 'index.html')
 
         # going to login flask function
         @self.flask.route('/login', methods=['GET'])
         def login():
             #print("Login page")
+            print(self.base_dir)
             print(self.base_dir + 'login.html')
             return render_template(self.base_dir + 'login.html')
 
