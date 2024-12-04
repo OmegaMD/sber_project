@@ -5,6 +5,8 @@ function httpGet(theUrl)
     xmlHttp.send( null );
     return xmlHttp.responseText;
 }
+console.log("Test");
+alert( "Привет" );
 var API_KEY = "3803c874-16f5-4848-ad84-c41546ced301"; //2gis api key
 // creating a map
 const map = new mapgl.Map('container', {
