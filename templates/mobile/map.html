@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Сбер Карта</title>
+        <link rel="stylesheet" href="./static/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        
+        <header class="header">
+            <div class="left-side">
+                <div class="green-box">
+                    <form class="search-button" id="search-button">
+                        <input type="text" placeholder="Искать здесь..." name="search-input" id = "search-input">
+                        <button type="submit"></button>
+                    </form>
+                </div>
+                <div class="filters">
+                    <div class="filter">
+                        <label class="switch">
+                            <input type="checkbox" class="switch_input" id="switch_input1">
+                            <span class="switch_slider"></span>
+                        </label>
+                        <p class="filter-text">Супермаркеты</p>
+                    </div>
+                    <div class="filter"> 
+                        <label class="switch">
+                            <input type="checkbox" class="switch_input" id="switch_input2">
+                            <span class="switch_slider"></span>
+                        </label>
+                        <p class="filter-text">Рестораны</p>
+                    </div>
+                    <div class="filter">
+                        <label class="switch">
+                            <input type="checkbox" class="switch_input" id="switch_input3">
+                            <span class="switch_slider"></span>
+                        </label>
+                        <p class="filter-text">Кафе и кондитерские</p>
+                    </div>
+                </div>
+            </div>
+            <div id="container"></div>
+        </header>
+        <script src="https://mapgl.2gis.com/api/js/v1"></script>
+        <script src="https://unpkg.com/@2gis/mapgl-clusterer@^2/dist/clustering.js"></script> 
+        <!-- <script src="../scripts/script.js"></script>  -->
+        <script>
+            var API_KEY = "70fb611d-4255-4e74-900c-40672a8044f9"; //2gis api key
+            const ans =
+            { 
+                'мега': JSON.parse(httpGet(`https://catalog.api.2gis.com/3.0/items?q=мега&fields=items.point&sort_point=30.3141,59.9386&key=${API_KEY}`)),
+                'burger king': JSON.parse(httpGet(`https://catalog.api.2gis.com/3.0/items?q=burger_king&fields=items.point&sort_point=30.3141,59.9386&key=${API_KEY}`)),
+                'буше': JSON.parse(httpGet(`https://catalog.api.2gis.com/3.0/items?q=буше&fields=items.point&sort_point=30.3141,59.9386&key=${API_KEY}`)),
+            };
+            function httpGet(theUrl)
+            {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "GET", theUrl, false );
+                xmlHttp.send( null );
+                return xmlHttp.responseText;
+            }
+            // creating a map
+            const map = new mapgl.Map('container', {
+                    key: API_KEY,
+                    center: [30.3141, 59.9386],
+                    zoom: 13,
+                });
+            // printing user geolocation
+            function print_geolocation() {
+                if ('geolocation' in navigator) {
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                            const lat = position.coords.latitude;  // Широта
+                            const lon = position.coords.longitude; // Долгота
+
+                            // Центрируем карту на текущем местоположении
+                            map.setCenter([lon, lat]);
+                            map.setZoom(14); // Можно настроить уровень масштабирования
+
+                            // Добавляем маркер на карту
+                            const marker = new mapgl.Marker(map, {
+                                coordinates: [lon, lat],
+                            });
+                        }, function(error) {
+                            console.error('Ошибка получения геопозиции:', error.message);
+                        });
+                    } else {
+                        console.log('Геолокация не поддерживается этим браузером.');
+                    }
+                }
+            // printing all of the markers with popups and clusterisation
+            function put_all_markers(name) {
+                const obj = ans[name];
+                console.log(obj);
+                
+                const clusterer = new mapgl.Clusterer(map, {
+                    radius: 60,
+                });
+
+                clusterers[partner_index[name]] = clusterer;
+                let markers = [];
+
+                // putting all of the markers of 1 partner in markers
+                for (let i = 0; i < Object.keys(obj.result.items).length; i++){
+                    markers.push({
+                        coordinates: [obj.result.items[i].point.lon, obj.result.items[i].point.lat],
+                        // icon: 'https://upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif',
+                        icon: partner_data[name].img,
+                        // size: [50, 15],
+                        size: partner_data[name].size,
+                        address: obj.result.items[i].address_name,
+                        label: {
+                            text: name,
+                            offset: [0, 20],
+                            fontSize: 10,
+                        }
+                    });
+                }
+
+                popupsHtml = []
+
+                // process pressing on the marker 
+                clusterer.on('click', (event) => {
+                    console.log(`${event.target.type} is clicked`);
+
+                    //creating a popup
+                    const popup = new mapgl.HtmlMarker(map, {
+                    coordinates: event.target.data.coordinates,
+                    html: `
+                        <div class="popup">
+                        <div class="popup-content", id="popup-content"></div>
+                        <div class="popup-close">x</div>
+                        <div class="popup-tip"></div>
+                        </div>
+                                `,
+                    });
+                    const popupHtml = popup.getContent();
+                    // putting the content in a popup
+                    function updatePopupContent(newText) {
+                        const popupContent = popupHtml.querySelector('#popup-content');
+                        if (popupContent) {
+                            popupContent.textContent = newText;
+                        }
+                    }
+                    // getting that popup content
+                    const popup_content = `Адрес: ${event.target.data.address}`;
+                    updatePopupContent(popup_content);
+                    // adding every popup in popupsHtml
+                    popupsHtml.push(popupHtml);
+                    popupHtml.querySelector('.popup-close').addEventListener('click', hidePopup);
+                    // hiding popup
+                    function hidePopup() {
+                        popupHtml.style.display = "none"
+                    }
+                    // (popupHtml.style.display = 'none')
+                    delete popup
+                });
+                // hiding all popups if we clicked on a map
+                map.on('click', hide_all_popups);
+                function hide_all_popups() {
+                    for (let i = 0; i < popupsHtml.length; i++){
+                        popupsHtml[i].style.display = "none"
+                    }
+                    popupsHtml = [];
+                }
+                // loading the markers
+                clusterer.load(markers);
+                }
+            const partner_data = {
+                "мега": {
+                    img: 'https://upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif',
+                    size: [50, 15],
+                    type: "supermarket",
+                },
+                "burger king": {
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/1879px-Burger_King_2020.svg.png',
+                    size: [20, 20],
+                    type: "restaraunt",
+                },
+                "буше": {
+                    img: 'data:image/jpeg;base64,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',
+                    size: [30, 30],
+                    type: "cafe",
+                },
+            }
+
+            let partner_is_clicked = {
+                "мега": {
+                    is_clicked: 1
+                },
+                "burger king": {
+                    is_clicked: 1
+                },
+                "буше": {
+                    is_clicked: 1
+                },
+            }
+
+            const partners = ["мега", "burger king", "буше"];
+            const partner_index = {
+                "мега": 0,
+                "burger king": 1,
+                "буше": 2,
+            }
+            const types = ["supermarket", "restaraunt", "cafe"]
+            let clusterers = [{} * partners.length];
+
+            // putting all markers
+            for (let i = 0; i < partners.length; i++){
+                put_all_markers(partners[i]);
+            }
+
+            document.getElementById('search-button').addEventListener('submit', function(event) {
+
+                event.preventDefault(); 
+
+                // Получаем значение из поля ввода
+                const searchInput = document.querySelector('input[name="search-input"]').value;
+
+                document.getElementById('search-input').value = '';
+
+                console.log(searchInput);
+                // Выводим запрос в консоль, или можно выполнить другие действия, например, выполнить поиск
+                for (let i = 0; i < partners.length; i++)
+                {
+                    if (searchInput === partners[i])
+                    {
+                        for (let j = 0; j < partners.length; j++)
+                        {
+                            console.log(j, partner_is_clicked);
+                            if (i == j && partner_is_clicked[partners[i]].is_clicked === 0)
+                            {
+                                put_all_markers(partners[i]);
+                                partner_is_clicked[partners[i]].is_clicked = 1;
+                            }
+                            if (i != j && partner_is_clicked[partners[j]].is_clicked === 1)
+                            {
+                                clusterers[j].destroy();
+                                partner_is_clicked[partners[j]].is_clicked = 0;
+                            }
+                        }
+                    }
+                }
+            });
+            for (let i = 0; i < partners.length; i++)
+            {
+                const checkbox = document.getElementById(`switch_input${i+1}`);
+                checkbox.addEventListener('change', function() {
+
+                    // partner_is_clicked[partners[i]].is_clicked = 1 - partner_is_clicked[partners[i]].is_clicked;
+                    // if (partner_is_clicked[partners[i]].is_clicked === 1)
+                    // {
+                    //     put_all_markers(partners[i])
+                    // }
+                    // else
+                    // {
+                    //     clusterers[i].destroy();
+                    // }
+                    if (!checkbox.checked) { // если переключатель включили
+                        if (partner_is_clicked[partners[i]].is_clicked === 0)
+                        {
+                            console.log("WE WANNA TURN IT ON")
+                            put_all_markers(partners[i]);
+                            partner_is_clicked[partners[i]].is_clicked = 1;
+                        }
+                    } else {
+                        if (partner_is_clicked[partners[i]].is_clicked === 1)
+                        {
+                            console.log("WE WANNA TURN IT OFF")
+                            clusterers[i].destroy();
+                            partner_is_clicked[partners[i]].is_clicked = 0;
+                        }
+                    }
+                });
+            }
+            print_geolocation();
+        </script>
+    </body>
+</html>

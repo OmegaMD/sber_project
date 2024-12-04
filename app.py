@@ -7,6 +7,14 @@ import json
 
 import settings
 
+# enumerators
+from enum import Enum
+
+# device type enum
+class DeviceType(Enum):
+    UNKNOWN = 0
+    MOBILE = 1
+    COMPUTER = 2
 
 # application class
 class App:
@@ -21,24 +29,41 @@ class App:
         # flask
         self.flask = Flask(__name__)
 
+        # device type
+        self.device_type = DeviceType.UNKNOWN
+
+        # base directory for templates (htmls)
+        self.base_dir = ''
+
         ### flask callback functions ###
 
         # home flask function
         @self.flask.route('/')
         def home():
-            return render_template('index.html')
+            # getting browser info
+            user_agent = request.headers.get('User-Agent')
+
+            if "Mobile" in user_agent:
+                self.device_type = DeviceType.MOBILE
+                self.base_dir = 'mobile/'
+            else:
+                self.device_type = DeviceType.COMPUTER
+                self.base_dir = 'computer/'
+
+            return render_template(self.base_dir + 'index.html')
 
         # going to login flask function
         @self.flask.route('/login', methods=['GET'])
         def login():
             #print("Login page")
-            return render_template('login.html')
+            print(self.base_dir + 'login.html')
+            return render_template(self.base_dir + 'login.html')
 
         @self.flask.route('/submit_login', methods=['POST'])
         def submit_login():
             #print(f"login:    { str(request.form.get('login_input')) }")
             #print(f"password: { str(request.form.get('password_input')) }")
-            return render_template('map.html')
+            return render_template(self.base_dir + 'map.html')
 
         # API token and secret for Telegram login
         self.API_TOKEN = settings.API_TOKEN       
@@ -60,7 +85,7 @@ class App:
             username = data.get('username', '')
             signature = data.get('hash')
             
-            return render_template('map.html')
+            return render_template(self.base_dir + 'map.html')
             '''return jsonify({"status": "success", "user_info": {
                     "id": telegram_id,
                     "first_name": first_name,
@@ -68,11 +93,7 @@ class App:
                     "username": username
                 }})'''
 
-
-
-        
-
-# создание экземпляра приложения
+# application instance
 app = App()
 
 # application entry point for local debug
