@@ -30,26 +30,29 @@ img {
     overflow: hidden;
 }
 
-.left-side {
+.menu {
     /* background-color: rgb(39, 190, 39); */
-    width: 50%; /* Ширина блока (можно менять по своему усмотрению) */
-    height: 100px; /* Высота блока */
+    width: 100vw; /* Ширина блока (можно менять по своему усмотрению) */
+    height: 90vh; /* Высота блока */
     margin: 0;  
     transition: 0.5s;
-    transform: translateX(-100%);
+    transform: translateY(110%);
+
+    background-color: #443a3a;
+    z-index: 2;
 }
 
-.left-side-active {
-    transform: translateX(0%);
+.menu-active {
+    transform: translateY(20%);
 }
 
-.left-side-btn {
+.menu-btn {
     width: 30px;
     height: 30px;
     background-color: #333;
     position: absolute;
-    right: -35px;
-    top: 10px;
+    right: 10px;
+    top: -35px;
 }
 
 

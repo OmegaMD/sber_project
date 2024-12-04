@@ -8,8 +8,8 @@
     <body>
         <header class="header">
             <div id="container"></div>
-            <div class="left-side">
-                <div class="left-side-btn"></div>
+            <div class="menu">
+                <div class="menu-btn"></div>
                 <div class="green-box">
                     <form class="search-button" id="search-button">
                         <input type="text" placeholder="Искать здесь..." name="search-input" id = "search-input">
@@ -48,8 +48,8 @@
         <!-- <script src="../scripts/script.js"></script>  -->
 
         <script type="text/javascript">
-            $('.left-side-btn').on('click', function() {
-                $('.left-side').toggleClass('left-side-active');
+            $('.menu-btn').on('click', function() {
+                $('.menu').toggleClass('menu-active');
             })
 
             var API_KEY = "70fb611d-4255-4e74-900c-40672a8044f9"; //2gis api key
@@ -279,14 +279,7 @@
                     }
                 });
             }
-            print_geolocation();
-
-            // const left_side_button = document.querySelector(`left-side-btn`);
-            // left_side_button.on('click', function() {
-            //     const left_side = document.querySelector(".expandedImg");
-                
-            // })       
-                
+            // print_geolocation();
         </script>
     </body>
 </html>
