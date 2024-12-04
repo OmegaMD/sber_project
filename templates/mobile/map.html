@@ -2,13 +2,14 @@
 <html>
     <head>
         <title>Сбер Карта</title>
-        <link rel="stylesheet" href="./static/style.css">
+        <link rel="stylesheet" href="../../static/mobile/mobile-style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     </head>
     <body>
-        
         <header class="header">
+            <div id="container"></div>
             <div class="left-side">
+                <div class="left-side-btn"></div>
                 <div class="green-box">
                     <form class="search-button" id="search-button">
                         <input type="text" placeholder="Искать здесь..." name="search-input" id = "search-input">
@@ -39,12 +40,18 @@
                     </div>
                 </div>
             </div>
-            <div id="container"></div>
         </header>
         <script src="https://mapgl.2gis.com/api/js/v1"></script>
         <script src="https://unpkg.com/@2gis/mapgl-clusterer@^2/dist/clustering.js"></script> 
+        <!-- <script src="../scripts/jquery.js"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <!-- <script src="../scripts/script.js"></script>  -->
-        <script>
+
+        <script type="text/javascript">
+            $('.left-side-btn').on('click', function() {
+                $('.left-side').toggleClass('left-side-active');
+            })
+
             var API_KEY = "70fb611d-4255-4e74-900c-40672a8044f9"; //2gis api key
             const ans =
             { 
@@ -167,7 +174,7 @@
                 }
             const partner_data = {
                 "мега": {
-                    img: 'https://upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif',
+                    img: 'https:upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif',
                     size: [50, 15],
                     type: "supermarket",
                 },
@@ -273,6 +280,13 @@
                 });
             }
             print_geolocation();
+
+            // const left_side_button = document.querySelector(`left-side-btn`);
+            // left_side_button.on('click', function() {
+            //     const left_side = document.querySelector(".expandedImg");
+                
+            // })       
+                
         </script>
     </body>
 </html>
