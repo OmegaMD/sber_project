@@ -1,5 +1,5 @@
 # imports
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 import requests
 import hashlib
 import hmac
@@ -22,6 +22,16 @@ class App:
     def run(self):
         self.flask.run(debug=True)
 
+    # session variable updating function
+    def set_var(self, name, value):
+        session[name] = value
+    
+    # getting session variable value function
+    def get_var(self, name):
+        if name in session:
+            return session[name]
+        return None
+
     # class initialization function
     def __init__(self):
         ### local class variables ###
@@ -30,10 +40,13 @@ class App:
         self.flask = Flask(__name__)
 
         # device type
-        self.device_type = DeviceType.UNKNOWN
+        # self.device_type = DeviceType.UNKNOWN
 
         # base directory for templates (htmls)
-        self.base_dir = 'computer/'
+        # self.base_dir = 'computer/'
+
+        ### flask variables setup ###
+        self.flask.secret_key = 'GiantAlienDildo'
 
         ### flask callback functions ###
 
@@ -44,31 +57,25 @@ class App:
             user_agent = request.headers.get('User-Agent')
 
             if "Mobile" in user_agent:
-                self.device_type = DeviceType.MOBILE
-                self.base_dir = 'mobile/'
+                self.set_var('base_dir', 'mobile/')
+                # self.device_type = DeviceType.MOBILE
             else:
-                self.device_type = DeviceType.COMPUTER
-                self.base_dir = 'computer/'
-            
-            print(self.base_dir)
-            print(user_agent)
-            
-            
-            return render_template(self.base_dir + 'index.html')
+                self.set_var('base_dir', 'computer/')
+                # self.device_type = DeviceType.COMPUTER
+
+            return render_template(self.get_var('base_dir') + 'index.html')
 
         # going to login flask function
         @self.flask.route('/login', methods=['GET'])
         def login():
             #print("Login page")
-            print(self.base_dir)
-            print(self.base_dir + 'login.html')
-            return render_template(self.base_dir + 'login.html')
+            return render_template(self.get_var('base_dir') + 'login.html')
 
         @self.flask.route('/submit_login', methods=['POST'])
         def submit_login():
             #print(f"login:    { str(request.form.get('login_input')) }")
             #print(f"password: { str(request.form.get('password_input')) }")
-            return render_template(self.base_dir + 'map.html')
+            return render_template(self.get_var('base_dir') + 'map.html')
 
         # API token and secret for Telegram login
         self.API_TOKEN = settings.API_TOKEN       
@@ -90,7 +97,7 @@ class App:
             username = data.get('username', '')
             signature = data.get('hash')
             
-            return render_template(self.base_dir + 'map.html')
+            return render_template(self.get_var('base_dir') + 'map.html')
             '''return jsonify({"status": "success", "user_info": {
                     "id": telegram_id,
                     "first_name": first_name,
