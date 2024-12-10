@@ -63,7 +63,7 @@ class App:
                 self.set_var('base_dir', 'computer/')
                 # self.device_type = DeviceType.COMPUTER
 
-            return render_template(self.get_var('base_dir') + 'index.html')
+            return render_template(self.get_var('base_dir') + 'login.html')
 
         # going to login flask function
         @self.flask.route('/login', methods=['GET'])

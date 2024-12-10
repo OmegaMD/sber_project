@@ -49,15 +49,19 @@ img {
 .search-button {
     text-align: center;
     padding-top: 40px;
+    position: relative;
+    width: 400px;
+    height: 100px;
+    margin: 0 auto;
 }
 
 * {box-sizing: border-box;}
-form {
+/* form {
   position: relative;
   width: 400px;
   height: 100px;
   margin: 0 auto;
-}
+} */
 input, button {
   border: none;
   outline: none;
@@ -69,7 +73,7 @@ input {
   background: #F9F0DA;
   padding-left: 15px;
 }
-button {
+.input-btn {
   height: 40px;
   width: 40px;
   position: absolute;
