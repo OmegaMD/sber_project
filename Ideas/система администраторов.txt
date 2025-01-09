@@ -1,0 +1,34 @@
+--DEPENDENCIES TREE--
+
+Main admin
+|
+|-Company admin
+  |
+  |-User
+
+--EXPECTATIONS FROM ADMIN SYSTEM--
+
+user can give roles with priority less or equal to his, for example 
+main admin can give user main admin role or company admin.
+
+when user login, he will be welcomed by his role functionality, so admin 
+can't enter as a basic user.
+
+--USER INFO--
+
+- role
+- special code (for identity check, probably sber id)
+
+--MAIN ADMIN FUNCTIONALITY--
+
+- giving user main admin role
+- giving user company admin role
+- giving user technical support role
+- removing special role from user
+- registrating new company 
+
+--COMPANY ADMIN FUNCTIONALITY--
+
+- giving user company admin role
+- removing company admin role
+- ? updating company locations
