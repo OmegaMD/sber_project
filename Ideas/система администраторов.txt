@@ -17,7 +17,7 @@ can't enter as a basic user.
 --USER INFO--
 
 - role
-- special code (for identity check, probably sber id)
+- special code (for identity seperation, probably telegram nickname)
 
 --MAIN ADMIN FUNCTIONALITY--
 
@@ -31,4 +31,3 @@ can't enter as a basic user.
 
 - giving user company admin role
 - removing company admin role
-- ? updating company locations
