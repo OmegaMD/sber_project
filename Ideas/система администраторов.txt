@@ -31,3 +31,11 @@ can't enter as a basic user.
 
 - giving user company admin role
 - removing company admin role
+
+--WHAT CAN I DO WITH A USER, BEING AN ADMIN--
+
+- promotion:
+  - promote to admin
+  - promote to company admin
+  - ban user
+  - 
