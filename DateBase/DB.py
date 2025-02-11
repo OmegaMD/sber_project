@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
+from sqlalchemy import *
 from sqlalchemy.engine import reflection
 # Initialize the Flask application
 app = Flask(__name__)
@@ -15,56 +16,57 @@ class Users(db.Model):
     user_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
     user_name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    rights = db.Column(db.String(50), nullable=False, default="user")  # Убираем unique=True
+
     def __repr__(self):
         return f'<User {self.user_name}>'
 
 class Partners(db.Model):
-    partner_name = db.Column(db.String(100), unique=True, nullable=False, primary_key=True)
+    partner_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
+    partner_name = db.Column(db.String(100), nullable=False)
     img_sizex = db.Column(db.Integer, nullable=False)
     img_sizey = db.Column(db.Integer, nullable=False)
     partner_img = db.Column(db.String(1000), nullable=False)
     partner_type = db.Column(db.String(120), nullable=False)
-    partner_contacts = db.Column(db.String(100))
+    partner_website = db.Column(db.String(100))
+    partner_phone = db.Column(db.String(100))
     partner_description = db.Column(db.String(1000))
 
     def __repr__(self):
         return f'<Partner {self.partner_name}>'
 
-def add_partners():
-    # Пример добавления данных
-    partner1 = Partners(partner_name = "мега", 
-                    img_sizex = 50,
-                    img_sizey = 15,
-                    partner_img = 'https:upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif',
-                    partner_type = "supermarket")
-
-    # Добавление пользователей в сессию
-    db.session.add(partner1)
-
 class Places(db.Model):
     place_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
-    partner = db.Column(db.String, ForeignKey(Partners.partner_name), nullable=False)
-    adress = db.Column(db.String(150), nullable=False)
+    place_partner = db.Column(db.String, ForeignKey(Partners.partner_id), nullable=False)
+    place_adress = db.Column(db.String(150), nullable=False)
+    place_latitude = db.Column(db.String(150), nullable=False)
+    place_longitude = db.Column(db.String(150), nullable=False)
 
 class Reviews(db.Model):
     review_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user = db.Column(db.Integer, ForeignKey(Users.user_id), nullable=False)
-    place = db.Column(db.Integer, ForeignKey(Places.place_id), nullable=False)
-    Contents = db.Column(db.String(2000), nullable=False)
+    rewiew_user = db.Column(db.Integer, ForeignKey(Users.user_id), nullable=False)
+    rewiew_place = db.Column(db.Integer, ForeignKey(Places.place_id), nullable=False)
+    rewiew_contents = db.Column(db.String(2000), nullable=False)
 
 class Sales(db.Model):
     sale_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    partner = db.Column(db.String, ForeignKey(Partners.partner_name), nullable=False)
-    amount = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(1000), nullable=False)
+    sale_partner = db.Column(db.String, ForeignKey(Partners.partner_id), nullable=False)
+    sale_amount = db.Column(db.String(100), nullable=False)
+    sale_description = db.Column(db.String(1000), nullable=False)
+
+class Rights(db.Model):
+    right_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    type = db.Column(db.String(30), nullable=False)
+    rights_userid = db.Column(db.Integer, ForeignKey(Users.user_id))
+    rights_partner = db.Column(db.Integer, ForeignKey(Partners.partner_id))
+    rights_place = db.Column(db.Integer, ForeignKey(Places.place_id))
+
+    
 
 # Initialize the database (this will create the 'example.db' file)
 with app.app_context():
     db.create_all()
     inspector = reflection.Inspector.from_engine(db.engine)
     if not inspector.has_table("partners"):
-        add_partners()
         # Сохранение изменений в базе данных
         db.session.commit()
 
@@ -92,6 +94,34 @@ def add_user():
             return str(e)
     
     return render_template('add_user.html')
+
+def add_partner(name, imgx, imgy, img, type, website, phone , description):
+    insert(Partners).values(partner_name = name, img_sizex = imgx, img_sizey = imgy, partner_img = img, partner_type = type, partner_website = website, partner_phone = phone, partner_description = description)
+
+# пример добавления данных
+# add_partner("мега", 50, 15, 'https:upload.wikimedia.org/wikipedia/ru/7/7a/Logo_mega.gif', "supermarket", "website", "phone", "description") 
+
+def set_rights(userid, newtype, newpartner, newplace):
+    update(Rights).where(Rights.rights_userid == userid).values(type = newtype, rights_partner = newpartner, rights_place = newplace)
+
+def add_place(partner, adress, latitude, longitude):
+    insert(Places).values(place_parter = partner, place_adress = adress, place_latitude = latitude, place_longitude = longitude)
+
+def add_sale(partner, amount, description):
+    insert(Sales).values(sale_partner =  partner, sale_amount = amount, sale_description = description)
+
+def remove_user(userid):
+    delete(Users).where(user_id = userid)
+
+def remove_partner(partnerid):
+    delete(Partners).where(partner_id = partnerid)
+
+def remove_place(placeid):
+    delete(Places).where(place_id = placeid)
+
+def remove_sale(saleid):
+    delete(Sales).where(sale_id = saleid)
+
 
 # Run the app
 if __name__ == '__main__':
