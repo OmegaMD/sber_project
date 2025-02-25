@@ -63,13 +63,7 @@ class App:
                 self.set_var('base_dir', 'computer/')
                 # self.device_type = DeviceType.COMPUTER
 
-            return render_template(self.get_var('base_dir') + 'login.html')
-
-        # going to login flask function
-        @self.flask.route('/login', methods=['GET'])
-        def login():
-            #print("Login page")
-            return render_template(self.get_var('base_dir') + 'login.html')
+            return render_template('login.html')
 
         @self.flask.route('/submit_login', methods=['POST'])
         def submit_login():
