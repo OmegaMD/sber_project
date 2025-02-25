@@ -25,3 +25,43 @@ html {
 .TextMini {
     font-size: 0.75rem;
 }
+
+.ColorBackground {
+    color: #FFFFFF;
+}
+
+.ColorBackgroundBlured {
+    color: #FFFFFF99;
+}
+
+.ColorFrame1 {
+    color: #EBEBEB;
+}
+
+.ColorFrame2 {
+    color: #E4EBF1
+}
+
+.ColorFrame3 {
+    color: #ECFDED
+}
+
+.ColorSpecial {
+    color: #114857
+}
+
+.ColorContour1 {
+    color: #262626
+}
+
+.ColorContour2 {
+    color: #8A8A8A
+}
+
+.ColorHighlight {
+    color: #08A652
+}
+
+.ColorClickable {
+    color: #24B23E
+}
