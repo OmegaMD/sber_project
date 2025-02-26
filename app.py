@@ -1,8 +1,8 @@
 # imports
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 import requests
-import hashlib
-import hmac
+#import hashlib
+#import hmac
 import json
 
 import settings

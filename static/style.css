@@ -2,6 +2,36 @@ html {
     font-size: 3vmin;
 }
 
+[class^="Header"], [class^="Text"] {
+    font-family: "Manrope";
+}
+
+[class^="Header"]{
+    font-weight: 700;
+}
+
+.HorizontalFlex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.VerticalFlex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button {
+    border-width: 0;
+}
+
+.RoundedBorders {
+    border-radius: 1rem;
+}
+
 .HeaderLarge {
     font-size: 2.5rem;
 }
@@ -26,12 +56,13 @@ html {
     font-size: 0.75rem;
 }
 
-.ColorBackground {
+.ColorBase {
     color: #FFFFFF;
 }
 
-.ColorBackgroundBlured {
+.ColorBlure {
     color: #FFFFFF99;
+    filter: blur(20px);
 }
 
 .ColorFrame1 {
@@ -64,4 +95,45 @@ html {
 
 .ColorClickable {
     color: #24B23E
+}
+
+.BackgroundColorBase {
+    background-color: #FFFFFF;
+}
+
+.BackgroundColorBlure {
+    background-color: #FFFFFF99;
+    filter: blur(20px);
+}
+
+.BackgroundColorFrame1 {
+    background-color: #EBEBEB;
+}
+
+.BackgroundColorFrame2 {
+    background-color: #E4EBF1
+}
+
+.BackgroundColorFrame3 {
+    background-color: #ECFDED
+}
+
+.BackgroundColorSpecial {
+    background-color: #114857
+}
+
+.BackgroundColorContour1 {
+    background-color: #262626
+}
+
+.BackgroundColorContour2 {
+    background-color: #8A8A8A
+}
+
+.BackgroundColorHighlight {
+    background-color: #08A652
+}
+
+.BackgroundColorClickable {
+    background-color: #24B23E
 }
