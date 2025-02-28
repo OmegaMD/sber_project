@@ -28,6 +28,10 @@ button {
     border-width: 0;
 }
 
+img {
+    margin: 1vmin;
+}
+
 .RoundedBorders {
     border-radius: 1rem;
 }
