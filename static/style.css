@@ -1,10 +1,10 @@
 html {
     font-size: 3vmin;
-    height: 100%;
+    text-align: center;
 }
 
 body {
-    height: 100%;
+    margin: 0px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,6 +27,7 @@ body {
 }
 
 .VerticalFlex {
+    max-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
