@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../../static/style.css">
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Manrope'>
+    </head>
+    <body>
+        <div class="VerticalFlex">
+            <p class="HeaderMini">Last used partners:</p>
+            <div class="HorizontalFlex">
+                {% for partner in user.last_used_partners %}
+                    <p class="TextMain">{{ partner.name }} : {{ partner.type }}</p>
+                {% endfor %}
+            </div>
+
+            <p class="HeaderMini">Best discount partners:</p>
+            <div class="HorizontalFlex">
+                {% for partner in top_discount_partners %}
+                    <div class="VerticalFlex">
+                        <p class="TextMain">{{ partner.name }}</p>
+                        <p class="TextMini">{{ partner.type }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
