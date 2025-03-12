@@ -24,10 +24,10 @@ class Database:
     def access_user(self, id):
         return User(id, [Partner("кондитерская", "Буше", "site link", "image link")])
 
-    # top 10 partners with the best discounts accessing function
-    def access_top_discount_partners(self):
-        return [Partner("кондитерская", "Буше", "site link", "image link") for _ in range(10)]
-
     # partner by name accessing function
     def access_partner(self, name):
         return Partner("аптека", name, "site link", "image link")
+
+    # top 10 partners with the best discounts accessing function
+    def access_top_discount_partners(self):
+        return [Partner("кондитерская", "Буше", "site link", "image link") for _ in range(10)]
