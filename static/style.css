@@ -1,17 +1,12 @@
 html {
     margin: 0px;
-    height: 95%;
+    height: 100%;
     font-size: 3vmin;
     text-align: center;
 }
 
 body {
     margin: 0px;
-    height: 95%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 [class^="Header"], [class^="Text"] {
@@ -22,14 +17,17 @@ body {
     font-weight: 700;
 }
 
-.HorizontalFlex {
+.Row {
+    width: 100%;
+    max-height: 100vh;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
 }
 
-.VerticalFlex {
+.Column {
+    height: 100%;
     max-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -37,16 +35,35 @@ body {
     align-items: center;
 }
 
+.ScrollRow {
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: stretch;
+    overflow-x: auto;
+}
+
+.ScrollColumn { 
+    overflow-y: auto;
+}
+
 button {
     border-width: 0;
 }
 
 img {
-    margin: 1vmin;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
 }
 
 .RoundedBorders {
     border-radius: 1rem;
+}
+
+.Block {
+    margin: 1%;
 }
 
 .HeaderLarge {
@@ -77,7 +94,7 @@ img {
     color: #FFFFFF;
 }
 
-.ColorBlure {
+.ColorBlur {
     color: #FFFFFF99;
     filter: blur(20px);
 }
@@ -118,9 +135,10 @@ img {
     background-color: #FFFFFF;
 }
 
-.BackgroundColorBlure {
+.BackgroundColorBlur {
     background-color: #FFFFFF99;
     filter: blur(20px);
+    padding: 0 0;
 }
 
 .BackgroundColorFrame1 {
