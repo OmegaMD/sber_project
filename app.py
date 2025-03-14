@@ -79,7 +79,7 @@ class App:
         @self.flask.route('/main_page', methods=['POST'])
         def main():
             print(pickle.loads(self.get_var("user")))
-            return render_template('main.html',
+            return render_template('home.html',
                                    user=pickle.loads(self.get_var("user")),
                                    top_discount_partners=self.database.access_top_discount_partners())
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Scroll Boxes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .row {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: #4CAF50;
+            color: white;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Horizontal Scroll Boxes</h1>
+
+    <div class="row">
+        {% for i in range(10) %}
+        <div class="box">Row 1 - Box {{ i + 1 }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="row">
+        {% for i in range(10) %}
+        <div class="box">Row 2 - Box {{ i + 1 }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="row">
+        {% for i in range(10) %}
+        <div class="box">Row 3 - Box {{ i + 1 }}</div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

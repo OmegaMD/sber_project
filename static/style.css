@@ -1,6 +1,6 @@
 html {
-    margin: 0px;
-    height: 100%;
+    margin: 1%;
+    height: 95%;
     font-size: 3vmin;
     text-align: center;
 }
@@ -9,38 +9,29 @@ body {
     margin: 0px;
 }
 
-[class^="Header"], [class^="Text"] {
+[class*="Header"], [class*="Text"] {
     font-family: "Manrope";
 }
 
-[class^="Header"]{
+[class*="Header"] {
     font-weight: 700;
 }
 
-.Row {
-    width: 100%;
-    max-height: 100vh;
+.Row, .ScrollRow {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
-.Column {
-    height: 100%;
-    max-height: 100vh;
+.Column, .ScrollColumn {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    align-items: space-even;
 }
 
 .ScrollRow {
-    width: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: stretch;
     overflow-x: auto;
 }
 
@@ -63,7 +54,10 @@ img {
 }
 
 .Block {
-    margin: 1%;
+    margin: 1vmin;
+    flex-grow: 0;
+    flex-shrink: 0; 
+    align-items: center;
 }
 
 .HeaderLarge {
