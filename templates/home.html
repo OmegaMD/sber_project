@@ -1,73 +1,37 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="../../static/style.css">
+        <link rel="stylesheet" href="../../static/test.css">
         <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Manrope'>
     </head>
-    <header class="Column", style="height: 12vmin;">
-        <div class="Row", style="height: 5vmin;">
-            <img src='../static/images/logo-sber.png'></img>
-            <img src='../static/images/bell.svg'></img>
-        </div>
-        <p class="BackgroundColorFrame1 TextMain RoundedBorders", style="height: 7vmin; width: 80vw;">Поиск</p>    
-    </header>
-    <body>
-        <div class="Column">
-            <div class="ScrollRow" style="height: 50vmin">
-                {% for partner in user.last_used_partners %}
-                    <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                        <img src='../static/images/bell.svg', style="height: 30vmin;"></img>
-                        <p class="TextMain">{{ partner.name }}</p>
-                        <p class="TextMini">{{ partner.type }}</p>
+    <body style="height: 100%;">
+        <div class="column" style="width: 100%">
+            <div class="column" style="background-color: aquamarine; justify-content: space-between;; height: 33%; width: 100%">
+                <div class="column" style="background-color: yellowgreen; height: 15%; width: 100%">
+
+                </div>
+                <div class="scroll-row" style="background-color: yellow; height: 85%; width: 100%">
+                    <div class="column rounded-borders" style="background-color: red; height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 3%">
+                        <div class="block rounded-borders" style="background-color: blue; height: 60%; width: 100%"></div>
+                        <div class="block" style="background-color: green; height: 20%; width: 100%"></div>
+                        <div class="block" style="background-color: pink; height: 20%; width: 100%"></div>
                     </div>
-                {% endfor %}
-            </div>
-            <div class="ScrollRow" style="height: 50vmin">
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
-                </div>
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
-                </div>
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
-                </div>
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
-                </div>
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
+                    <div class="column rounded-borders" style="background-color: red; height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 3%">
+                        <div class="block rounded-borders" style="background-color: blue; height: 60%; width: 100%"></div>
+                        <div class="block" style="background-color: green; height: 20%; width: 100%"></div>
+                        <div class="block" style="background-color: pink; height: 20%; width: 100%"></div>
+                    </div>
+                    <div class="column rounded-borders" style="background-color: red; height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 3%">
+                        <div class="block rounded-borders" style="background-color: blue; height: 60%; width: 100%"></div>
+                        <div class="block" style="background-color: green; height: 20%; width: 100%"></div>
+                        <div class="block" style="background-color: pink; height: 20%; width: 100%"></div>
+                    </div>
                 </div>
             </div>
-            <div class="ScrollRow" style="height: 50vmin">
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
-                </div>
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
-                </div>
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
-                </div>
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
-                </div>
-                <div class="Block RoundedBorders BackgroundColorFrame1" style="flex-basis: 40vmin;">
-                    <img src='../static/images/bell.svg', style="height: 35vmin;"></img>
-                    <p>Название</p>
-                </div>
+            <div class="column" style="background-color: rebeccapurple; height: 33%; width: 100%">
+            </div>
+            <div class="column" style="background-color: red; height: 33%; width: 100%">
             </div>
         </div>
     </body>
-    <footer class="Row BackgroundColorBlur", style="height: 8px;">
-    </footer>
 </html>
