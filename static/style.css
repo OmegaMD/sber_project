@@ -1,12 +1,23 @@
 html {
     height: 97%;
     width: 100%;
-    font-size: 3vmin;
+    font-size: 3vh;
 }
 
 header, body, footer {
     height: 100%;
     width: 100%;
+
+    margin: 0;
+}
+
+.scroll-row, .scroll-column {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scroll-row::-webkit-scrollbar, .scroll-column::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
 }
 
 .column, .row, .scroll-row, .scroll-column {
