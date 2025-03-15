@@ -5,15 +5,19 @@
         <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Manrope'>
     </head>
     <body>
-        <div class="Column">
-            <img src='../static/images/logo-sber.png', style="height: 20vmin;"></img>
-            <p class="HeaderLarge ColorHighlight">Добро пожаловать!</p>
-            <img src="../static/images/sberkot.png", style="height: 40vmin;"></img>
+        <div class="column", style="height: 100%; width: 100%;">
+            <img src='../static/images/logo-sber.png', style="height: 20%;"></img>
+            <p class="header-large color-highlight centered", style="height: 20%;">Добро пожаловать!</p>
+            <img src="../static/images/sberkot.png", style="height: 40%;"></img>
             <form action="/main_page" method="post">
-                <button style="background: transparent; border: none;">
-                    <div class="Row Block BackgroundColorClickable RoundedBorders" style="flex-basis: 15vmin;">
-                        <img src="../static/images/logo-telegram.png" style="height: 10vmin;"></img>
-                        <p class="HeaderMini ColorContour">Войти через телеграм</p>
+                <button>
+                    <div class="row bg-color-clickable rounded" style="height: 20%;">
+                        <div style="height: 100%; width: auto; aspect-ratio: 1;">
+                            <img src="../static/images/logo-telegram.png" style="height: 10vmin;"></img>
+                        </div>
+                        <div style="width: auto;"></div>
+                            <p class="header-mini color-base", style="width: auto;">Войти через телеграм</p>
+                        </div>
                     </div>
                 </button>
             </form>

@@ -1,168 +1,186 @@
 html {
-    margin: 1%;
-    height: 95%;
+    height: 97%;
+    width: 100%;
     font-size: 3vmin;
-    text-align: center;
 }
 
-body {
-    margin: 0px;
+header, body, footer {
+    height: 100%;
+    width: 100%;
 }
 
-[class*="Header"], [class*="Text"] {
-    font-family: "Manrope";
-}
-
-[class*="Header"] {
-    font-weight: 700;
-}
-
-.Row, .ScrollRow {
+.column, .row, .scroll-row, .scroll-column {
+    height: 100%;
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
 }
 
-.Column, .ScrollColumn {
-    display: flex;
+.column, .scroll-column {
     flex-direction: column;
-    justify-content: space-between;
-    align-items: space-even;
 }
 
-.ScrollRow {
+.row, .scroll-row {
+    flex-direction: row;
+}
+
+.scroll-column, .scroll-row {
+    justify-content: start;
+}
+
+.scroll-row {
     overflow-x: auto;
+    overflow-y: hidden;
 }
 
-.ScrollColumn { 
+.scroll-column {
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
-button {
-    border-width: 0;
+.rounded {
+    border-radius: 1rem;
 }
 
 img {
     max-height: 100%;
     max-width: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 
-.RoundedBorders {
-    border-radius: 1rem;
+.expand-img {
+    height: 100%;
+    width: 100%;
 }
 
-.Block {
-    margin: 1vmin;
-    flex-grow: 0;
-    flex-shrink: 0; 
-    align-items: center;
+button {
+    background: transparent;
+    border: none;
 }
 
-.HeaderLarge {
+p {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.centered {
+    margin: auto;
+}
+
+[class*="header"], [class*="text"] {
+    font-family: "Manrope";
+}
+
+[class*="header"] {
+    font-weight: 700;
+}
+
+.header-large {
     font-size: 2.5rem;
 }
 
-.HeaderMid {
+.header-mid {
     font-size: 2.125rem;
 }
 
-.HeaderSmall {
+.header-small {
     font-size: 1.75rem;
 }
 
-.HeaderMini {
+.header-mini {
     font-size: 1.375rem;
 }
 
-.TextMain {
+.text-main {
     font-size: 1rem;
 }
 
-.TextMini {
+.text-mini {
     font-size: 0.75rem;
 }
 
-.ColorBase {
+.color-base {
     color: #FFFFFF;
 }
 
-.ColorBlur {
+.color-blur {
     color: #FFFFFF99;
     filter: blur(20px);
 }
 
-.ColorFrame1 {
+.color-frame1 {
     color: #EBEBEB;
 }
 
-.ColorFrame2 {
+.color-frame2 {
     color: #E4EBF1
 }
 
-.ColorFrame3 {
+.color-frame3 {
     color: #ECFDED
 }
 
-.ColorSpecial {
+.color-special {
     color: #114857
 }
 
-.ColorContour1 {
+.color-contour1 {
     color: #262626
 }
 
-.ColorContour2 {
+.color-contour2 {
     color: #8A8A8A
 }
 
-.ColorHighlight {
+.color-highlight {
     color: #08A652
 }
 
-.ColorClickable {
+.color-clickable {
     color: #24B23E
 }
 
-.BackgroundColorBase {
+.bg-color-base {
     background-color: #FFFFFF;
 }
 
-.BackgroundColorBlur {
+.bg-color-blur {
     background-color: #FFFFFF99;
     filter: blur(20px);
     padding: 0 0;
 }
 
-.BackgroundColorFrame1 {
+.bg-color-frame1 {
     background-color: #EBEBEB;
 }
 
-.BackgroundColorFrame2 {
+.bg-color-frame2 {
     background-color: #E4EBF1
 }
 
-.BackgroundColorFrame3 {
+.bg-color-frame3 {
     background-color: #ECFDED
 }
 
-.BackgroundColorSpecial {
+.bg-color-special {
     background-color: #114857
 }
 
-.BackgroundColorContour1 {
+.bg-color-contour1 {
     background-color: #262626
 }
 
-.BackgroundColorContour2 {
+.bg-color-contour2 {
     background-color: #8A8A8A
 }
 
-.BackgroundColorHighlight {
+.bg-color-highlight {
     background-color: #08A652
 }
 
-.BackgroundColorClickable {
+.bg-color-clickable {
     background-color: #24B23E
 }

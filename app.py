@@ -74,7 +74,7 @@ class App:
             # getting browser info
             user_agent = request.headers.get('User-Agent')
 
-            return render_template('home.html')
+            return render_template('login.html')
 
         @self.flask.route('/main_page', methods=['POST'])
         def main():
