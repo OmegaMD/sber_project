@@ -15,6 +15,7 @@
                 </div>
                 <div class="scroll-row" style="height: 85%">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     <div class="column shadow rounded" style="height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 1vh">
                         <div class="block" style="height: 60%; width: 100%">
                             <img class="expand-img rounded" src="https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height"></img>
@@ -36,6 +37,21 @@
                         <div class="block" style="background-color: green; height: 20%; width: 100%"></div>
                         <div class="block" style="background-color: pink; height: 20%; width: 100%"></div>
                     </div>
+=======
+                    {% for partner in top_discount_partners %}
+                        <div class="column shadow rounded bg-color-base" style="height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 1vh">
+                            <div style="height: 60%; width: 100%">
+                                <img class="expand-img rounded" src="{{ partner.image_url }}"></img>
+                            </div>
+                            <div style="height: 20%; width: 100%">
+                                <p class="text-main">{{ partner.name }}</p>
+                            </div>
+                            <div style="height: 20%; width: 100%">
+                                <p class="text-mini">{{ partner.type }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+>>>>>>> Stashed changes
 =======
                     {% for partner in top_discount_partners %}
                         <div class="column shadow rounded bg-color-base" style="height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 1vh">
