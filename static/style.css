@@ -2,13 +2,20 @@ html {
     height: 100%;
     width: 100%;
     font-size: 3vh;
+    overflow-x: visible;
+    overflow-y: visible;
 }
 
 header, body, footer {
     height: 100%;
     width: 100%;
-
     margin: 0;
+}
+
+footer {
+    position: sticky;
+    bottom: -1px;
+    border-radius: 1rem 1rem 0rem 0rem;
 }
 
 .scroll-row, .scroll-column {
@@ -62,6 +69,10 @@ img {
     object-fit: cover;
 }
 
+svg path {
+    fill: currentColor;
+}
+
 .expand-img {
     height: 100%;
     width: 100%;
@@ -85,6 +96,19 @@ p {
 
 .centered {
     margin: auto;
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: 100;
+    font-style: normal;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
 }
 
 [class*="header"], [class*="text"] {
@@ -127,7 +151,7 @@ p {
 
 .color-blur {
     color: #FFFFFF99;
-    filter: blur(20px);
+    backdrop-filter: blur(20px);
 }
 
 .color-frame1 {
@@ -168,7 +192,7 @@ p {
 
 .bg-color-blur {
     background-color: #FFFFFF99;
-    filter: blur(20px);
+    backdrop-filter: blur(20px);
     padding: 0 0;
 }
 
