@@ -62,6 +62,9 @@ class App:
         
         self.database = Database('database.db')
 
+        ### 2gis api key ###
+        self.TWOGIS_API_KEY = 'ab7b70c9-9132-468f-8b4c-87177a2418cf'
+
         ### flask callback functions ###
 
         # home flask function
@@ -73,8 +76,41 @@ class App:
 
             # getting browser info
             user_agent = request.headers.get('User-Agent')
+            print("nigga0")
+            return render_template('map.html')
 
-            return render_template('login.html')
+
+        @self.flask.route('/cafes/<float:lat>/<float:lon>')
+        def get_cafes(lat, lon):
+            print('nigga2')
+            url = f"https://catalog.api.2gis.com/3.0/items"
+            params = {
+                'key': self.TWOGIS_API_KEY,
+                'point': f"{lon},{lat}",
+                'radius': 1000,  # радиус поиска в метрах
+                'q': 'кафе',
+                'limit': 10,
+                'fields': 'items.point'
+            }
+            response = requests.get(url, params=params)
+
+            if response.status_code != 200:
+                return jsonify({"error": "Failed to fetch data from 2GIS"}), 500
+
+            data = response.json()
+
+            cafes = []
+            if 'result' in data:
+                for item in data['result']['items']:
+                    cafes.append({
+                        'name': item['name'],
+                        'address': item['address_name'],
+                        'point': item['point']
+                    })
+
+            print(cafes)
+            
+            return jsonify(cafes)
 
         @self.flask.route('/main_page', methods=['POST'])
         def main():

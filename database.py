@@ -22,12 +22,12 @@ class Database:
 
     # user info accessing function
     def access_user(self, id):
-        return User(id, [Partner("кондитерская", "Буше", "site link", "image link")])
+        return User(id, [Partner("кондитерская", "Буше", "site link", "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height")])
 
     # partner by name accessing function
     def access_partner(self, name):
-        return Partner("аптека", name, "site link", "image link")
+        return Partner("аптека", name, "site link", "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height")
 
     # top 10 partners with the best discounts accessing function
     def access_top_discount_partners(self):
-        return [Partner("кондитерская", "Буше", "site link", "image link") for _ in range(10)]
+        return [Partner("кондитерская", "Буше", "site link", "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height") for _ in range(10)]
