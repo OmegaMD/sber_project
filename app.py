@@ -142,10 +142,12 @@ class App:
             locations = []
             if 'result' in data:
                 for item in data['result']['items']:
+                    partner = self.database.access_partner(item['name'].split(',')[0])
                     locations.append({
-                        'name': item['name'].split(',')[0],
+                        'name': partner.name,
                         'address': item['address_name'],
-                        'point': item['point']
+                        'point': item['point'],
+                        'img': partner.image_url
                     })
             print(len(locations))
             return locations
