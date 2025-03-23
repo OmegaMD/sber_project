@@ -147,7 +147,8 @@ class App:
                         'name': partner.name,
                         'address': item['address_name'],
                         'point': item['point'],
-                        'img': partner.image_url
+                        'img': partner.image_url,
+                        'logo': partner.logo_url
                     })
             print(len(locations))
             return locations
