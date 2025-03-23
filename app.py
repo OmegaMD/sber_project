@@ -78,7 +78,7 @@ class App:
             # getting browser info
             user_agent = request.headers.get('User-Agent')
             print("nigga0")
-            return render_template('map.html')
+            return render_template('map.html', locations=[])
 
         # main page callback function
         @self.flask.route('/main_page', methods=['POST'])
