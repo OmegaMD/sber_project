@@ -98,6 +98,20 @@ p {
     margin: auto;
 }
 
+input[type=text] {
+    width: 90%;
+    height: 90%;
+    outline: none;
+    border: 0;
+    font-family: "Manrope", sans-serif;
+    font-size: 50%;
+    font-weight: 500;
+}
+
+input[type=text]:focus {
+    outline: none;
+}
+
 .material-symbols-outlined {
     font-family: 'Material Symbols Outlined';
     font-weight: 100;
