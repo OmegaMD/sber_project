@@ -100,9 +100,6 @@ class App:
         def save_user_location(lat, lon):
             session["lat"] = lat
             session["lon"] = lon
-
-            print(lat)
-            print(lon)
             return "200"
 
         # flask location search bar callback function
