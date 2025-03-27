@@ -25,12 +25,15 @@
         <div class="column" style="max-width: 500px; height: auto; position: absolute; z-index: 1000; justify-content: start;">
             <div class="row" style="height: 70px">
                 <div class="row bg-color-base" style="width: 90%; height: 70%; border-radius: 20px;">
-                    <form method="post" novalidate action="location_search">
-                        <div class="block" style="width: 80%">
+                    <div class="block" style="width: 10%;">
+                        <button type="submit" style="width: 100%; height: 100%; justify-content: right;"><p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0" onclick="show_filters()">menu</p></button>
+                    </div>
+                    <form method="post" style="width: 90%" novalidate action="location_search">
+                        <div class="block" style="width: 89%">
                             <input type="text" name="location_search_bar" placeholder="Поиск" required>
                         </div>
-                        <div class="block" style="width: 10%;">
-                            <button type="submit" style="width: 100%; height: 100%; justify-content: center;"><p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0">search</p></button>
+                        <div class="block" style="width: 11%;">
+                            <button type="submit" style="width: 100%; height: 100%; justify-content: left;"><p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0">search</p></button>
                         </div>
                     </form>
                 </div>
@@ -40,6 +43,7 @@
         </div>
 
         <div id="map" class="block" style="background-color: aqua;"></div>
+        <!--
         <script>
             const map = new mapgl.Map('map', {
                 center: [37.6173, 55.7558],
@@ -74,5 +78,6 @@
                 }); /* <img class="expand-img" style="border-radius: 50%;" src="' + location.logo + '" onmouseover="push_location_info(\'' + location.img + '\')" onmouseout="pop_location_info()" ></img>\ */
             });
         </script>
+    -->
     </body>
 </html>
