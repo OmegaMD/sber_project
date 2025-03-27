@@ -77,7 +77,6 @@ class App:
 
             # getting browser info
             user_agent = request.headers.get('User-Agent')
-            print("nigga0")
             return render_template('map.html', locations=[])
 
         # main page callback function
@@ -118,36 +117,40 @@ class App:
         # closest locations based on query searching function
         def search_closest_locations(lat, lon, query):
             url = f"https://catalog.api.2gis.com/3.0/items"
-            params = {
-                'key': self.TWOGIS_API_KEY,
-                'point': f"{lon},{lat}",
-                # 'page_size': 30,
-                'radius': 1000,  # радиус поиска в метрах
-                'q': query,
-                'fields': 'items.point',
-                'sort': 'distance',
-                # 'ype': 'adm_div.city'
-            }
-            response = requests.get(url, params=params)
-
-            if response.status_code != 200:
-                print('2gis error')
-                return jsonify({"error": "Failed to fetch data from 2GIS"}), 500
-
-            data = response.json()
-
             locations = []
-            if 'result' in data:
-                for item in data['result']['items']:
-                    partner = self.database.access_partner(item['name'].split(',')[0])
-                    locations.append({
-                        'name': partner.name,
-                        'address': item['address_name'],
-                        'point': item['point'],
-                        'img': partner.image_url,
-                        'logo': partner.logo_url
-                    })
-            print(len(locations))
+
+            ids = self.database.access_partners_ids()
+            for id in ids:
+                params = {
+                    'key': self.TWOGIS_API_KEY,
+                    'point': f"{lon},{lat}",
+                    # 'page_size': 30,
+                    'radius': 2000,  # радиус поиска в метрах
+                    # 'type': 'adm_div.city',
+                    'org_id': id,
+                    'q': query,
+                    'fields': 'items.point,items.org',
+                    'sort': 'distance',
+                }
+                response = requests.get(url, params=params)
+
+                if response.status_code != 200:
+                    print('2gis error')
+                    return jsonify({"error": "Failed to fetch data from 2GIS"}), 500
+
+                data = response.json()
+
+                if 'result' in data:
+                    for item in data['result']['items']:
+                        partner = self.database.access_partner(item['name'].split(',')[0])
+                        locations.append({
+                            'name': partner.name,
+                            # 'address': item['address_name'],
+                            'point': item['point'],
+                            'img': partner.image_url,
+                            'logo': partner.logo_url
+                        })
+
             return locations
 
 # application instance

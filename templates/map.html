@@ -48,8 +48,8 @@
             });
     
             navigator.geolocation.getCurrentPosition(function(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
+                const lat = 59.949; // position.coords.latitude;
+                const lon = 30.312; // position.coords.longitude;
 
                 fetch('/save_user_location/' + lat + '/' + lon);
     
