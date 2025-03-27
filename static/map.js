@@ -42,28 +42,35 @@ function pop_location_info() {
 
 function show_filters() {
     const box = document.getElementById('location_info_box');
-    box.style.padding = "10px";
-    const new_element = document.createElement('div');
-    new_element.className = 'block appearing';
-    new_element.style.overflow = 'hidden';
-    // new_element.innerHTML = '<img class="" style="width: 100%" src="' + img_url + '"></img>';
 
-    const img = document.createElement('img');
-    img.src = 'https://wallpapers.com/images/featured/cool-skull-pictures-oi8h4846tbciuosj.webp';
-    img.style.width = "100%";
-    img.style.maxWidth = "none";
-    img.style.maxHeight = "none";
-    img.style.borderRadius = "20px";
+    if (!box.hasChildNodes()) {
+        box.style.padding = "10px";
+        const new_element = document.createElement('div');
+        new_element.className = 'block appearing';
+        new_element.style.overflow = 'hidden';
+        // new_element.innerHTML = '<img class="" style="width: 100%" src="' + img_url + '"></img>';
 
-    new_element.appendChild(img);
+        const img = document.createElement('img');
+        img.src = 'https://wallpapers.com/images/featured/cool-skull-pictures-oi8h4846tbciuosj.webp';
+        img.style.width = "100%";
+        img.style.maxWidth = "none";
+        img.style.maxHeight = "none";
+        img.style.borderRadius = "20px";
 
-    box.appendChild(new_element);
+        new_element.appendChild(img);
 
-    img.onload = function() {
-        new_element.style.height = new_element.scrollHeight * 2 + 'px';
+        box.appendChild(new_element);
 
-        setTimeout(() => {
-            new_element.classList.add('show');
-        }, 10);
-    };
+        img.onload = function() {
+            new_element.style.height = new_element.scrollHeight * 2 + 'px';
+
+            setTimeout(() => {
+                new_element.classList.add('show');
+            }, 10);
+        };
+    }
+    else {
+        box.style.padding = "0";
+        box.innerHTML = '';
+    }
 }
