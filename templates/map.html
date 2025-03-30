@@ -13,7 +13,7 @@
             .appearing {
                 top: 0;
                 height: 0;
-                transition: height 1s ease;
+                transition: height 0.5s ease;
             }
             
             .appearing.show {
@@ -28,7 +28,7 @@
                     <div class="block" style="width: 10%;">
                         <button type="submit" style="width: 100%; height: 100%; justify-content: right;"><p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0" onclick="show_filters()">menu</p></button>
                     </div>
-                    <form method="post" style="width: 90%" novalidate action="location_search">
+                    <form method="post" class="row" style="width: 90%" novalidate action="location_search">
                         <div class="block" style="width: 89%">
                             <input type="text" name="location_search_bar" placeholder="Поиск" required>
                         </div>
@@ -38,7 +38,7 @@
                     </form>
                 </div>
             </div>
-            <div class="scroll-column bg-color-base" id="location_info_box" style="height: auto; width: calc(90% - 2 * 10px); border-radius: 20px;">
+            <div class="scroll-column bg-color-base" id="location_info_box" style="height: auto; width: 90%; border-radius: 20px;">
             </div>
         </div>
 

@@ -28,12 +28,17 @@ class Database:
 
     # partner by name accessing function
     def access_partner(self, name):
-        return Partner("аптека", name, "site link", "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height", "https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg", 5348561428447988)
+        if name == 'буше':
+            return Partner("кафе", "Буше", "site link", "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height", "https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg", 5348561428447988)
+        return Partner("кафе", "Бургер-Кинг", "site link", "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height", "https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg", 5348561428715954)
 
     # top 10 partners with the best discounts accessing function
     def access_top_discount_partners(self):
         return [Partner("кафе", "Буше", "site link", "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height", "https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg", 5348561428447988) for _ in range(10)]
 
-    # all allowed organisations id's receiving function
-    def access_partners_ids(self):
-        return ['5348561428447988', '5348561428715954'] # Буше и Бургер кинг
+    # partners ids accessing function based on name
+    def access_type_partners(self, type):
+        return [
+            Partner("кафе", "Буше", "site link", "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height", "https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg", 5348561428447988),
+            Partner("кафе", "Бургер-Кинг", "site link", "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height", "https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg", 5348561428715954)
+        ]

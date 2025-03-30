@@ -8,7 +8,12 @@ import pickle
 
 import settings
 
+# database
 from database import Database
+
+# map and parser
+from parser import Parser
+import map_info
 
 # enumerators
 from enum import Enum
@@ -62,7 +67,12 @@ class App:
         
         self.database = Database('database.db')
 
+        ### parser for searching ###
+
+        self.parser = Parser(map_info.types | map_info.names)
+
         ### 2gis api key ###
+
         self.TWOGIS_API_KEY = 'ab7b70c9-9132-468f-8b4c-87177a2418cf'
 
         ### flask pages callback functions ###
@@ -112,6 +122,14 @@ class App:
                 return render_template('map.html', locations=locations)
             return redirect(url_for('map'))
 
+        # flask location search bar callback function
+        @self.flask.route('/filtered_location_search', methods=['POST'])
+        def filtered_location_search():
+            type = request.form.get('filter_button')
+            session["last_location_search"] = type
+            locations = search_closest_locations(session['lat'], session['lon'], type)
+            return render_template('map.html', locations=locations)
+
         ### help functions ###
 
         # closest locations based on query searching function
@@ -119,16 +137,24 @@ class App:
             url = f"https://catalog.api.2gis.com/3.0/items"
             locations = []
 
-            ids = self.database.access_partners_ids()
-            for id in ids:
+            text = self.parser.parse(query)
+            partners = []
+
+            if text in map_info.types:
+                partners = self.database.access_type_partners(text)
+            elif text in map_info.names:
+                partners = [self.database.access_partner(text)]
+
+            print(text)
+            for partner in partners:
                 params = {
                     'key': self.TWOGIS_API_KEY,
                     'point': f"{lon},{lat}",
                     # 'page_size': 30,
                     'radius': 2000,  # радиус поиска в метрах
                     # 'type': 'adm_div.city',
-                    'org_id': id,
-                    'q': query,
+                    'org_id': partner.org_id,
+                    # 'q': query,
                     'fields': 'items.point,items.org',
                     'sort': 'distance',
                 }
@@ -142,7 +168,6 @@ class App:
 
                 if 'result' in data:
                     for item in data['result']['items']:
-                        partner = self.database.access_partner(item['name'].split(',')[0])
                         locations.append({
                             'name': partner.name,
                             # 'address': item['address_name'],
