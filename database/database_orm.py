@@ -23,7 +23,7 @@ class User:
         self.name = result['name']
         self.surname = result['surname']
         self.email = result['email']
-        self.telegram_id = result['telegram']
+        self.telegram_id = result['telegram_id']
 
 class Users(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, unique=True, autoincrement=True)
@@ -44,9 +44,9 @@ def get_user(user_id):
     return User(db.session.execute(db.select(User).filter_by(user_id = user_id)).scalar_one())
 
 
-'''
 class Partners(db.Model):
-    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, nullable=False, primary_key=True, unique=True, autoincrement=True)
+    org_id = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(100), nullable=False)
     type = db.Column(db.String(100), nullable=False)
     img_url = db.Column(db.String(1000), nullable=False)
@@ -57,32 +57,32 @@ class Partners(db.Model):
 
 
 class Places(db.Model):
-    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, nullable=False, primary_key=True, unique=True, autoincrement=True)
     partner = db.Column(db.String, ForeignKey(Partners.partner_id), nullable=False)
     adress = db.Column(db.String(100), nullable=False)
 
 
 class Reviews(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, nullable=False, primary_key=True, unique=True, autoincrement=True)
     user_id = db.Column(db.Integer, ForeignKey(Users.user_id), nullable=False)
     place_id = db.Column(db.Integer, ForeignKey(Places.place_id), nullable=False)
     content = db.Column(db.String(2000), nullable=False)
 
 
 class Sales(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    partner = db.Column(db.String, ForeignKey(Partners.partner_id), nullable=False)
-    amount = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(1000), nullable=False)
+    id = db.Column(db.Integer, nullable=False, primary_key=True, unique=True, autoincrement=True)
+    partner_id = db.Column(db.String, ForeignKey(Partners.partner_id), nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String(1000))
 
 
 class Rights(db.Model):
-    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
-    type = db.Column(db.String(30), nullable=False)
-    user_id = db.Column(db.Integer, ForeignKey(Users.user_id))
-    partner = db.Column(db.Integer, ForeignKey(Partners.partner_id))
+    id = db.Column(db.Integer, nullable=False, primary_key=True, unique=True, autoincrement=True)
+    type = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey(Users.user_id), nullable=False)
+    partner_id = db.Column(db.Integer, ForeignKey(Partners.partner_id), nullable=False)
 
-    
+'''    
 # Initialize the database (this will create the 'example.db' file)
 with app.app_context():
     db.create_all()
