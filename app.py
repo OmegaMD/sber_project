@@ -9,7 +9,8 @@ import pickle
 import settings
 
 # database
-from database import Database
+from database_old import Database
+# from database.py import *
 
 # map and parser
 from parser import Parser
