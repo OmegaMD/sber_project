@@ -1,6 +1,7 @@
 # Database library, to import use "from database.py import *"
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 
 
 # Main Database controling class
@@ -31,8 +32,12 @@ class DataBase:
         DataBase.db.session.commit()
 
     # User getting function
-    def get(self, type, id):
-        return globals()[type].query.filter_by(id=id).one()
+    def get(self, type, filter_field, filter_data):
+        return globals()[type].query.filter_by(**{filter_field: filter_data}).all()
+    
+    # Get top sorted rows
+    def get_sort(self, type, filter_field, num):
+        return globals()[type].query.order_by(desc(DataBase.db.text(type + "." + filter_field))).limit(num).all()
 
     # User updating function
     def update_user(self, entity):
