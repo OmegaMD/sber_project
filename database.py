@@ -63,7 +63,7 @@ class Partner(DataBase.db.Model):
     logo_url = DataBase.db.Column(DataBase.db.String)
     org_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
 
-
+"""
 # Initialize the Flask application
 app = Flask(__name__)
 
@@ -89,3 +89,4 @@ def get_users():
 # Run the application
 if __name__ == '__main__':
     app.run(debug=True)
+"""

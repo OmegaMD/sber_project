@@ -15,7 +15,7 @@ header, body, footer {
 footer {
     position: sticky;
     bottom: -1px;
-    border-radius: 1rem 1rem 0rem 0rem;
+    border-radius: 10px 10px 0px 0px;
 }
 
 .scroll-row, .scroll-column {
@@ -100,7 +100,7 @@ p {
 
 .material-symbols-outlined {
     font-family: 'Material Symbols Outlined';
-    font-weight: 100;
+    font-weight: 350;
     font-style: normal;
     display: inline-block;
     line-height: 1;
@@ -197,7 +197,7 @@ p {
 
 .bg-color-blur {
     background-color: #FFFFFF99;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(7px);
     padding: 0 0;
 }
 

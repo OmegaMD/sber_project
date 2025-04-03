@@ -9,7 +9,7 @@ import pickle
 import settings
 
 # database
-from database_old import Database
+from database import DataBase, User, Partner
 # from database.py import *
 
 # map and parser
@@ -66,7 +66,7 @@ class App:
 
         ### database ###
         
-        self.database = Database('database.db')
+        self.database = DataBase(self.flask, 'database.db')
 
         ### parser for searching ###
 
@@ -83,24 +83,45 @@ class App:
         def home():
             # user info setup
             # self.set_var("user", self.database.access_user("guest"))
-            session["user"] = pickle.dumps(self.database.access_user("guest"))
+            # session["user"] = pickle.dumps(self.database.access_user("guest"))
             session["last_location_search"] = ""
 
             # getting browser info
             user_agent = request.headers.get('User-Agent')
-            return render_template('map.html', locations=[])
+            return render_template('login.html')
+
+        # Route to get all users
+        @self.flask.route('/users', methods=['GET'])
+        def get_users():
+            self.database.start()
+            if User.query.count() == 0:
+                partner1 = Partner(type='кафе', name='буше', image_url="https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height", logo_url="https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg", org_id=5348561428447988)
+                partner2 = Partner(type='кафе', name='бургер-кинг', image_url="https://avatars.mds.yandex.net/get-altay/12813249/2a00000190efe540d510a58448956515d257/L_height", logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/1879px-Burger_King_2020.svg.png", org_id=5348561428715954)
+                self.database.add(partner1)
+                self.database.add(partner2)
+                # user_a = User(name='Alice', email='alice@example.com', telegram='@Alice')
+                # user_b = User(name='Bob', email='bob@example.com', telegram='@Bob')
+                # user_c = User(name='Charlie', email='charlie@example.com', telegram='@Charlie')
+                # self.database.add(user_a)
+                # self.database.add(user_b)
+                # self.database.add(user_c)
+                # Partner_a = Partner(type='Кондиитер ёбаный', name='У Михалыча', image_url='run_the_gauntlet.png', logo_url='FUCK', org_id=1337)
+                # self.database.add(Partner_a)
+
+            partners = Partner.query.all()
+            return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_url, 'logo_url': partner.logo_url, 'org_id': partner.org_id} for partner in partners])
 
         # main page callback function
         @self.flask.route('/main_page', methods=['POST'])
         def main():
-            print(pickle.loads(self.get_var("user")))
+            # print(pickle.loads(self.get_var("user")))
             return render_template('home.html',
-                                   user=pickle.loads(self.get_var("user")),
-                                   top_discount_partners=self.database.access_top_discount_partners())
+                                   # user=pickle.loads(self.get_var("user")),
+                                   top_discount_partners=self.database.get_sort('Partner', 'name', 10))
 
         # map page flask callback function
-        @self.flask.route('/map')
-        def map():
+        @self.flask.route('/map_empty', methods=['POST'])
+        def map_empty():
             return render_template('map.html', locations=[])
 
         ### flask inner callback functions ###
@@ -113,15 +134,15 @@ class App:
             return "200"
 
         # flask location search bar callback function
-        @self.flask.route('/location_search', methods=['POST'])
-        def location_search():
+        @self.flask.route('/map', methods=['POST'])
+        def map():
             user_input = request.form['location_search_bar']
             session["last_location_search"] = user_input
 
             if user_input != '':
                 locations = search_closest_locations(session['lat'], session['lon'], user_input)
                 return render_template('map.html', locations=locations)
-            return redirect(url_for('map'))
+            return redirect(url_for('map_empty'))
 
         # flask location search bar callback function
         @self.flask.route('/filtered_location_search', methods=['POST'])
@@ -142,11 +163,11 @@ class App:
             partners = []
 
             if text in map_info.types:
-                partners = self.database.access_type_partners(text)
+                partners = self.database.get('Partner', 'type', text)
             elif text in map_info.names:
-                partners = [self.database.access_partner(text)]
+                partners = self.database.get('Partner', 'name', text)
 
-            print(text)
+            print(partners)
             for partner in partners:
                 params = {
                     'key': self.TWOGIS_API_KEY,
