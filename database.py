@@ -1,7 +1,6 @@
 # Database library, to import use "from database.py import *"
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from copy import deepcopy
 
 
 # Main Database controling class
@@ -22,156 +21,43 @@ class DataBase:
         DataBase.db.create_all()
 
     # User adding function
-    def add_user(self, user):
-        DataBase.db.session.add(_UsersTable(user))
+    def add(self, entity):
+        DataBase.db.session.add(entity)
         DataBase.db.session.commit()
 
     # User deleting function
-    def delete_user(self, user_id):
-        DataBase.db.session.delete(_UsersTable.query.filter_by(id=user_id).one())
+    def delete(self, type, id):
+        DataBase.db.session.delete(globals()[type].query.filter_by(id=id).one())
         DataBase.db.session.commit()
 
     # User getting function
-    def get_user(self, user_id):
-        return User(_UsersTable.query.filter_by(id=user_id).one())
+    def get(self, type, id):
+        return globals()[type].query.filter_by(id=id).one()
 
     # User updating function
-    def update_user(self, user_id, new_user):
-        query_user = _UsersTable.query.filter_by(name=user_id).one()
-        query_user = _UsersTable(new_user) # BUGGED
+    def update_user(self, entity):
+        old_entity = entity.query.filter_by(id=entity.id).one()
+        for var in vars(old_entity).keys():
+            setattr(old_entity, var, getattr(entity, var))
         DataBase.db.session.commit()
 
 
-# User data class
-class User:
-    def __init__(self, name, email, telegram):
-        self.name = name
-        self.email = email
-        self.telegram = telegram
-
-    def build_from_dict(self, result):
-        self.id = result['id']
-        self.teleram_username = result['teleram_username']
-        self.name = result['name']
-        self.email = result['email']
-
-
 # Users table model
-class _UsersTable(DataBase.db.Model):
+class User(DataBase.db.Model):
     id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
-    name = DataBase.db.Column(DataBase.db.String(100), nullable=False)
-    email = DataBase.db.Column(DataBase.db.String(100), unique=True, nullable=False)
-    telegram = DataBase.db.Column(DataBase.db.String(100), unique=True, nullable=False)
-
-    # Users table row from user data
-    def __init__(self, user):
-        self.name = user.name
-        self.email = user.email
-        self.telegram = user.telegram
+    name = DataBase.db.Column(DataBase.db.String, nullable=False)
+    email = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
+    telegram = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
 
 
-'''
-# Partner data class
-class Partner:
-    def __init__(self, id, name, type, img_url, logo_url, website_url, phone, description):
-        self.id = id
-        self.name = name
-        self.type = type
-        self.img_url = img_url
-        self.logo_url = logo_url
-        self.website_url = website_url
-        self.phone = phone
-        self.description = description
+class Partner(DataBase.db.Model):
+    id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
+    type = DataBase.db.Column(DataBase.db.String, nullable=False)
+    name = DataBase.db.Column(DataBase.db.String, nullable=False)
+    image_url = DataBase.db.Column(DataBase.db.String, nullable=False)
+    logo_url = DataBase.db.Column(DataBase.db.String)
+    org_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
 
-    # Overloaded __init__ from dictionary
-    def __init__(self, result):
-        self.id = result['id']
-        self.name = result['name']
-        self.type = result['type']
-        self.img_url = result['img_url']
-        self.logo_url = result['logo_url']
-        self.website_url = result['website_url']
-        self.phone = result['phone']
-        self.description = result['description']
-
-
-#  Partners table private model
-class _PartnersTable(DataBase.db.Model):
-    id = DataBase.db.Column(DataBase.db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
-    name = DataBase.db.Column(DataBase.db.String(100), nullable=False)
-    type = DataBase.db.Column(DataBase.db.String(100), nullable=False)
-    img_url = DataBase.db.Column(DataBase.db.String(1000), nullable=False)
-    logo_url = DataBase.db.Column(DataBase.db.String(1000), nullable=False)
-    website_url = DataBase.db.Column(DataBase.db.String(1000))
-    phone = DataBase.db.Column(DataBase.db.String(20))
-    description = DataBase.db.Column(DataBase.db.String(1000))
-
-
-class Sale:
-    def __init__(self, id, partner, amount, description):
-        self.id = id
-        self.partner = partner
-        self.amount = amount
-        self.description = description
-
-    # Overloaded __init__ from dictionary
-    def __init__(self, result):
-        self.id = result['id']
-        self.partner = result['partner']
-        self.amount = result['amount']
-        self.description = result['description']
-
-        
-class _SalesTable(SQLA.db.Model):
-    id = SQLA.db.Column(SQLA.db.Integer, primary_key=True, autoincrement=True)
-    partner = SQLA.db.Column(SQLA.db.String, ForeignKey(PartnersTable.id), nullable=False)
-    amount = SQLA.db.Column(SQLA.db.String(100), nullable=False)
-    description = SQLA.db.Column(SQLA.db.String(1000), nullable=False)
-        
-
-class Review:
-    def __init__(self, id, user_id, partner_id, content):
-        self.id = id
-        self.user_id = user_id
-        self.partner_id = partner_id
-        self.content = content
-
-    # Overloaded __init__ from dictionary
-    def __init__(self, result):
-        self.id = result['id']
-        self.user_id = result['user_id']
-        self.partner_id = result['partner_id']
-        self.content = result['content']
-
-        
-class _ReviewsTable(SQLA.db.Model):
-    id = SQLA.db.Column(SQLA.db.Integer, primary_key=True, autoincrement=True)
-    user_id = SQLA.db.Column(SQLA.db.Integer, ForeignKey(UsersTable.id), nullable=False)
-    partner_id = SQLA.db.Column(SQLA.db.Integer, ForeignKey(PartnersTable.id), nullable=False)
-    content = SQLA.db.Column(SQLA.db.String(2000), nullable=False)
-
-
-class Right:
-    def __init__(self, id, type, user_id, partner):
-        self.id = id
-        self.type = type
-        self.user_id = user_id
-        self.partner = partner
-
-    # Overloaded __init__ from dictionary
-    def __init__(self, result):
-        self.id = result['id']
-        self.type = result['type']
-        self.user_id = result['user_id']
-        self.partner_id = result['partner_id']
-
-
-class _RightsTable(SQLA.db.Model):
-    id = SQLA.db.Column(SQLA.db.Integer, nullable=False, primary_key=True, autoincrement=True)
-    type = SQLA.db.Column(SQLA.db.String(30), nullable=False)
-    user_id = SQLA.db.Column(SQLA.db.Integer, ForeignKey(UsersTable.id))
-    partner_id = SQLA.db.Column(SQLA.db.Integer, ForeignKey(PartnersTable.id))
-'''
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -182,17 +68,17 @@ database = DataBase(app, 'data.db')
 @app.route('/users', methods=['GET'])
 def get_users():
     database.start()
-    # Create a few users if the table is empty
-    if _UsersTable.query.count() == 0:
+    if User.query.count() == 0:
         user_a = User(name='Alice', email='alice@example.com', telegram='@Alice')
         user_b = User(name='Bob', email='bob@example.com', telegram='@Bob')
         user_c = User(name='Charlie', email='charlie@example.com', telegram='@Charlie')
-        user_d = User(name='Dalek', email='dalek@example.com', telegram='@Dalek')
-        database.add_user(user_a)
-        database.add_user(user_b)
-        database.add_user(user_c)
+        database.add(user_a)
+        database.add(user_b)
+        database.add(user_c)
+        Partner_a = Partner(type='Кондиитер ёбаный', name='У Михалыча', image_url='run_the_gauntlet.png', logo_url='FUCK', org_id=1337)
+        database.add(Partner_a)
 
-    users = _UsersTable.query.all()
+    users = User.query.all()
     return jsonify([{'id': user.id, 'name': user.name, 'email': user.email, 'telegram': user.telegram} for user in users])
 
 # Run the application
