@@ -95,10 +95,44 @@ class App:
         def get_users():
             self.database.start()
             if User.query.count() == 0:
-                partner1 = Partner(type='кафе', name='буше', image_url="https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height", logo_url="https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg", org_id=5348561428447988)
-                partner2 = Partner(type='кафе', name='бургер-кинг', image_url="https://avatars.mds.yandex.net/get-altay/12813249/2a00000190efe540d510a58448956515d257/L_height", logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/1879px-Burger_King_2020.svg.png", org_id=5348561428715954)
+                partner1 = Partner(type='кафе', name='буше', org_id=5348561428447988,
+                                   image_url="https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height",
+                                   logo_url="https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg")
+                partner2 = Partner(type='кафе', name='бургер-кинг', org_id=5348561428715954, 
+                                   image_url="https://avatars.mds.yandex.net/get-altay/12813249/2a00000190efe540d510a58448956515d257/L_height",
+                                   logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/1879px-Burger_King_2020.svg.png")
+                partner3 = Partner(type='магазин', name='буквоед', org_id=5348561428522889, 
+                                   image_url='https://tk-pik.ru/upload/iblock/443/jwv04az84jls77l83kntpr2t4ro6zivi.jpg',
+                                   logo_url='https://habrastorage.org/getpro/moikrug/uploads/company/100/006/555/7/logo/medium_d5e9f242395f4a3c48abd90527fa74ce.png')
+                partner4 = Partner(type='аптека', name='невис', org_id=5348561428415840, 
+                                   image_url='https://s.zagranitsa.com/images/guides/20578/original/248baffaea928f45c0bb102e02dc1336.jpg?1441900197',
+                                   logo_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFV7M59LEzxJmcjxxImrEbJPrNCrs-zSqvlg&s')
+                partner5 = Partner(type='заправка', name='лукойл', org_id=5348561428486914, 
+                                   image_url='https://iy.kommersant.ru/Issues.photo/Partners_Docs/2024/11/22/KMO_111307_61034_1_t222_145337.jpg',
+                                   logo_url='https://cdn.forbes.ru/forbes-static/new/2021/11/Company-619d3288c340a-619d3288e8cde.png')
+                partner6 = Partner(type='заправка', name='роснефть', org_id=5348561428520571, 
+                                   image_url='https://hdlt.ru/assets/template/upload/indoor/azs_rosneft/IMG_4538.jpg',
+                                   logo_url='https://foni.papik.pro/uploads/posts/2024-10/foni-papik-pro-8xho-p-kartinki-rosneft-na-prozrachnom-fone-17.png')
+                partner7 = Partner(type='аптека', name='лека-фарм', org_id=5348561428417650, 
+                                   image_url='https://avatars.mds.yandex.net/get-altay/5751673/2a0000017cc56582485d205b1bcc888295b3/L_height',
+                                   logo_url='https://lekafarm.ru/template/images/logo.png')
+                partner8 = Partner(type='магазин', name='перекрёсток', org_id=5348561428466924, 
+                                   image_url='https://static.tildacdn.com/tild6131-6632-4564-a262-633433623838/1a8a32_ca8931ce69e94.jpg',
+                                   logo_url='https://www.perekrestok.ru/logo.png')
+                # буквоед - 5348561428522889
+                # аптека невис - 5348561428415840
+                # лукойл - 5348561428486914
+                # роснефть - 5348561428520571
+                # лека-фарм - 5348561428417650
+                # перекрёсток - 5348561428466924
                 self.database.add(partner1)
                 self.database.add(partner2)
+                self.database.add(partner3)
+                self.database.add(partner4)
+                self.database.add(partner5)
+                self.database.add(partner6)
+                self.database.add(partner7)
+                self.database.add(partner8)
                 # user_a = User(name='Alice', email='alice@example.com', telegram='@Alice')
                 # user_b = User(name='Bob', email='bob@example.com', telegram='@Bob')
                 # user_c = User(name='Charlie', email='charlie@example.com', telegram='@Charlie')
@@ -172,7 +206,29 @@ class App:
             elif text in map_info.names:
                 partners = self.database.get('Partner', 'name', text)
 
-            print(partners)
+            # params1 = {
+            #     'key': self.TWOGIS_API_KEY,
+            #     'point': f"{lon},{lat}",
+            #     # 'page_size': 30,
+            #     'radius': 2000,  # радиус поиска в метрах
+            #     # 'type': 'adm_div.city',
+            #     # 'org_id': partner.org_id,
+            #     'q': 'перекрестко',
+            #     'fields': 'items.point,items.org',
+            #     'sort': 'distance',
+            # }
+
+            # response1 = requests.get(url, params=params1)
+
+            # if response1.status_code != 200:
+            #     print('2gis error')
+            #     return jsonify({"error": "Failed to fetch data from 2GIS"}), 500
+
+            # data1 = response1.json()
+
+            # print(data1)
+
+            # print(partners)
             for partner in partners:
                 params = {
                     'key': self.TWOGIS_API_KEY,
