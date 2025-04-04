@@ -151,6 +151,11 @@ class App:
             session["last_location_search"] = type
             locations = search_closest_locations(session['lat'], session['lon'], type)
             return render_template('map.html', locations=locations)
+        
+        # flask user profile callback function
+        @self.flask.route('/profile', methods=['POST'])
+        def profile():
+            return render_template('profile.html')
 
         ### help functions ###
 
