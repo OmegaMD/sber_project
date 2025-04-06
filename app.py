@@ -14,7 +14,7 @@ from database import DataBase, User, Partner
 
 # map and parser
 from parser import Parser
-import map_info
+import dictionary
 
 # enumerators
 from enum import Enum
@@ -70,7 +70,7 @@ class App:
 
         ### parser for searching ###
 
-        self.parser = Parser(map_info.types | map_info.names)
+        self.parser = Parser(dictionary.types | dictionary.names)
 
         ### 2gis api key ###
 
@@ -201,9 +201,9 @@ class App:
             text = self.parser.parse(query)
             partners = []
 
-            if text in map_info.types:
+            if text in dictionary.types:
                 partners = self.database.get('Partner', 'type', text)
-            elif text in map_info.names:
+            elif text in dictionary.names:
                 partners = self.database.get('Partner', 'name', text)
 
             # params1 = {

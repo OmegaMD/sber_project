@@ -36,11 +36,11 @@ class DataBase:
         return globals()[type].query.filter_by(**{filter_field: filter_data}).all()
     
     # Get top sorted rows
-    def get_sort(self, type, filter_field, num):
-        return globals()[type].query.order_by(desc(DataBase.db.text(type + "." + filter_field))).limit(num).all()
+    def get_sort(self, type, sort_field, num):
+        return globals()[type].query.order_by(desc(DataBase.db.text(type + "." + sort_field))).limit(num).all()
 
     # User updating function
-    def update_user(self, entity):
+    def update(self, entity):
         old_entity = entity.query.filter_by(id=entity.id).one()
         for var in vars(old_entity).keys():
             setattr(old_entity, var, getattr(entity, var))
@@ -54,7 +54,7 @@ class User(DataBase.db.Model):
     email = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     telegram = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
 
-
+# Partner table model
 class Partner(DataBase.db.Model):
     id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
     type = DataBase.db.Column(DataBase.db.String, nullable=False)
@@ -62,31 +62,3 @@ class Partner(DataBase.db.Model):
     image_url = DataBase.db.Column(DataBase.db.String, nullable=False)
     logo_url = DataBase.db.Column(DataBase.db.String)
     org_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
-
-"""
-# Initialize the Flask application
-app = Flask(__name__)
-
-database = DataBase(app, 'data.db')
-
-# Route to get all users
-@app.route('/users', methods=['GET'])
-def get_users():
-    database.start()
-    if User.query.count() == 0:
-        user_a = User(name='Alice', email='alice@example.com', telegram='@Alice')
-        user_b = User(name='Bob', email='bob@example.com', telegram='@Bob')
-        user_c = User(name='Charlie', email='charlie@example.com', telegram='@Charlie')
-        database.add(user_a)
-        database.add(user_b)
-        database.add(user_c)
-        Partner_a = Partner(type='Кондиитер ёбаный', name='У Михалыча', image_url='run_the_gauntlet.png', logo_url='FUCK', org_id=1337)
-        database.add(Partner_a)
-
-    users = User.query.all()
-    return jsonify([{'id': user.id, 'name': user.name, 'email': user.email, 'telegram': user.telegram} for user in users])
-
-# Run the application
-if __name__ == '__main__':
-    app.run(debug=True)
-"""
