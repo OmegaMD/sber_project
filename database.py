@@ -53,7 +53,8 @@ class User(DataBase.db.Model):
     name = DataBase.db.Column(DataBase.db.String, nullable=False)
     email = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     telegram = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
-
+    birthday = DataBase.db.Column(DataBase.db.Date, nullable=False) 
+    
 
 # Partner table model
 class Partner(DataBase.db.Model):

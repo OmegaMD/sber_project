@@ -1,10 +1,9 @@
 # imports
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 import requests
-#import hashlib
-#import hmac
 import json
 import pickle
+import datetime
 
 import settings
 
@@ -82,12 +81,10 @@ class App:
         @self.flask.route('/')
         def home():
             # user info setup
-            # self.set_var("user", self.database.access_user("guest"))
-            # session["user"] = pickle.dumps(self.database.access_user("guest"))
+            session["user"] = ""
             session["last_location_search"] = ""
+            session["user"] = pickle.dumps(self.database.get('User', 'name', 'Test')[0])
 
-            # getting browser info
-            user_agent = request.headers.get('User-Agent')
             return render_template('login.html')
 
         # Route to get all users
@@ -119,12 +116,6 @@ class App:
                 partner8 = Partner(type='магазин', name='перекрёсток', org_id=5348561428466924, 
                                    image_url='https://static.tildacdn.com/tild6131-6632-4564-a262-633433623838/1a8a32_ca8931ce69e94.jpg',
                                    logo_url='https://www.perekrestok.ru/logo.png')
-                # буквоед - 5348561428522889
-                # аптека невис - 5348561428415840
-                # лукойл - 5348561428486914
-                # роснефть - 5348561428520571
-                # лека-фарм - 5348561428417650
-                # перекрёсток - 5348561428466924
                 self.database.add(partner1)
                 self.database.add(partner2)
                 self.database.add(partner3)
@@ -133,14 +124,9 @@ class App:
                 self.database.add(partner6)
                 self.database.add(partner7)
                 self.database.add(partner8)
-                # user_a = User(name='Alice', email='alice@example.com', telegram='@Alice')
-                # user_b = User(name='Bob', email='bob@example.com', telegram='@Bob')
-                # user_c = User(name='Charlie', email='charlie@example.com', telegram='@Charlie')
-                # self.database.add(user_a)
-                # self.database.add(user_b)
-                # self.database.add(user_c)
-                # Partner_a = Partner(type='Кондиитер ёбаный', name='У Михалыча', image_url='run_the_gauntlet.png', logo_url='FUCK', org_id=1337)
-                # self.database.add(Partner_a)
+
+                user1 = User(name='Test', email='test@gmail.com', telegram='@test', birthday=datetime.date(2008, 1, 25))
+                self.database.add(user1)
 
             partners = Partner.query.all()
             return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_url, 'logo_url': partner.logo_url, 'org_id': partner.org_id} for partner in partners])
@@ -148,9 +134,8 @@ class App:
         # main page callback function
         @self.flask.route('/main_page', methods=['POST'])
         def main():
-            # print(pickle.loads(self.get_var("user")))
             return render_template('home.html',
-                                   # user=pickle.loads(self.get_var("user")),
+                                   user=pickle.loads(self.get_var("user")),
                                    top_discount_partners=self.database.get_sort('Partner', 'name', 10))
 
         # map page flask callback function
@@ -189,7 +174,7 @@ class App:
         # flask user profile callback function
         @self.flask.route('/profile', methods=['POST'])
         def profile():
-            return render_template('profile.html')
+            return render_template('profile.html', user=pickle.loads(self.get_var("user")))
 
         ### help functions ###
 

@@ -45,7 +45,7 @@
                                         <p class="text-main">Telegram</p>
                                     </div>
                                     <div class="block" style="justify-content: start;">
-                                        <p class="text-mini color-contour2">@username</p>
+                                        <p class="text-mini color-contour2">{{ user.telegram }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                                         <p class="text-main">Дата рождения</p>
                                     </div>
                                     <div class="block" style="justify-content: start;">
-                                        <p class="text-mini color-contour2">01.01.1970</p>
+                                        <p class="text-mini color-contour2">{{ user.birthday.strftime('%d.%m.%Y') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                                         <p class="text-main">Почта</p>
                                     </div>
                                     <div class="block" style="justify-content: start;">
-                                        <p class="text-mini color-contour2">mail@mail.ru</p>
+                                        <p class="text-mini color-contour2">{{ user.email }}</p>
                                     </div>
                                 </div>
                             </div>
