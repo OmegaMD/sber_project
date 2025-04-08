@@ -54,6 +54,7 @@ class User(DataBase.db.Model):
     email = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     telegram = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
 
+
 # Partner table model
 class Partner(DataBase.db.Model):
     id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
@@ -62,3 +63,29 @@ class Partner(DataBase.db.Model):
     image_url = DataBase.db.Column(DataBase.db.String, nullable=False)
     logo_url = DataBase.db.Column(DataBase.db.String)
     org_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+
+
+# Sale table models
+class Sale(DataBase.db.Model):
+    id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
+    partner_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+    amount = DataBase.db.Column(DataBase.db.String, nullable=False)
+    desc = DataBase.db.Column(DataBase.db.String, nullable=False)
+
+
+# Review table models
+class Review(DataBase.db.Model):
+    id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
+    user_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+    partner_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+    reply_review_id = DataBase.db.Column(DataBase.db.Integer)
+    rate = DataBase.db.Column(DataBase.db.String, nullable=False)
+    desc = DataBase.db.Column(DataBase.db.String)
+
+
+# Right table models
+class Right(DataBase.db.Model):
+    id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
+    type = DataBase.db.Column(DataBase.db.String, nullable=False)
+    user_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+    partner_id = DataBase.db.Column(DataBase.db.Integer)
