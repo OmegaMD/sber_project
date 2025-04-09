@@ -125,7 +125,7 @@ class App:
                 self.database.add(partner7)
                 self.database.add(partner8)
 
-                user1 = User(name='Test', email='test@gmail.com', telegram='@test', birthday=datetime.date(2008, 1, 25))
+                user1 = User(name='Test', email='test@gmail.com', telegram='@test', birthday=datetime.date(2008, 1, 25), support_chat=pickle.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]))
                 self.database.add(user1)
 
             partners = Partner.query.all()
@@ -170,11 +170,24 @@ class App:
             session["last_location_search"] = type
             locations = search_closest_locations(session['lat'], session['lon'], type)
             return render_template('map.html', locations=locations)
+
+        # flask support callback function
+        @self.flask.route('/support', methods=['POST'])
+        def support():
+            user_info = pickle.loads(self.get_var("user"))
+            return render_template('support.html', user=user_info, messages=pickle.loads(user_info.support_chat))
+
+        # flask support message sending function
+        @self.flask.route('/support_message', methods=['POST'])
+        def send_message_to_support():
+            user_info = pickle.loads(self.get_var("user"))
+            return render_template('support.html', user=user_info, messages=pickle.loads(user_info.support_chat))
         
         # flask user profile callback function
         @self.flask.route('/profile', methods=['POST'])
         def profile():
             return render_template('profile.html', user=pickle.loads(self.get_var("user")))
+
 
         ### help functions ###
 
@@ -191,29 +204,6 @@ class App:
             elif text in dictionary.names:
                 partners = self.database.get('Partner', 'name', text)
 
-            # params1 = {
-            #     'key': self.TWOGIS_API_KEY,
-            #     'point': f"{lon},{lat}",
-            #     # 'page_size': 30,
-            #     'radius': 2000,  # радиус поиска в метрах
-            #     # 'type': 'adm_div.city',
-            #     # 'org_id': partner.org_id,
-            #     'q': 'перекрестко',
-            #     'fields': 'items.point,items.org',
-            #     'sort': 'distance',
-            # }
-
-            # response1 = requests.get(url, params=params1)
-
-            # if response1.status_code != 200:
-            #     print('2gis error')
-            #     return jsonify({"error": "Failed to fetch data from 2GIS"}), 500
-
-            # data1 = response1.json()
-
-            # print(data1)
-
-            # print(partners)
             for partner in partners:
                 params = {
                     'key': self.TWOGIS_API_KEY,

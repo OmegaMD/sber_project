@@ -54,6 +54,7 @@ class User(DataBase.db.Model):
     email = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     telegram = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     birthday = DataBase.db.Column(DataBase.db.Date, nullable=False) 
+    support_chat = DataBase.db.Column(DataBase.db.String)
     
 
 # Partner table model
