@@ -55,6 +55,8 @@
 
         <script>
             const socket = io();
+
+            const user_id = {{ user_id | tojson }}
     
             const messagesDiv = document.getElementById('messages');
             const messageInput = document.getElementById('message-input');
@@ -63,26 +65,27 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
     
             socket.on('message', function(msg) {
-                const messageHolder = document.createElement('div');
-                messageHolder.className = 'block';
-                messageHolder.style = 'height: auto; justify-content: end;';
+                if (JSON.parse(msg)['sender'] == user_id) {
+                    const messageHolder = document.createElement('div');
+                    messageHolder.className = 'block';
+                    messageHolder.style = 'height: auto; justify-content: end;';
 
-                const messageBubble = document.createElement('div');
-                messageBubble.className = 'block bg-color-clickable';
-                messageBubble.style = 'width: auto; max-width: 300px; height: auto; margin: 5px; padding: 5px; border-radius: 10px 10px 0 10px;';
+                    const messageBubble = document.createElement('div');
+                    messageBubble.className = 'block bg-color-clickable';
+                    messageBubble.style = 'width: auto; max-width: 300px; height: auto; margin: 5px; padding: 5px; border-radius: 10px 10px 0 10px;';
 
-                const messageText = document.createElement('p');
-                messageText.className = 'text-mini';
-                messageText.innerText = JSON.parse(msg)['text'];
+                    const messageText = document.createElement('p');
+                    messageText.className = 'text-mini';
+                    messageText.innerText = JSON.parse(msg)['text'];
 
-                messageBubble.appendChild(messageText);
-                messageHolder.appendChild(messageBubble);
-                messagesDiv.appendChild(messageHolder);
-                messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to the bottom
+                    messageBubble.appendChild(messageText);
+                    messageHolder.appendChild(messageBubble);
+                    messagesDiv.appendChild(messageHolder);
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to the bottom
+                }
             });
     
             sendButton.onclick = function() {
-                const user_id = {{ user_id | tojson }}
                 const msg = JSON.stringify({'text': messageInput.value, 'sender': user_id});
                 if (msg) {
                     socket.emit('message', msg);
