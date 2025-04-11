@@ -54,7 +54,6 @@ class User(DataBase.db.Model):
     email = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     telegram = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     birthday = DataBase.db.Column(DataBase.db.Date, nullable=False) 
-    support_chat = DataBase.db.Column(DataBase.db.String)
     
 
 # Partner table model
@@ -91,3 +90,11 @@ class Right(DataBase.db.Model):
     type = DataBase.db.Column(DataBase.db.String, nullable=False)
     user_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
     partner_id = DataBase.db.Column(DataBase.db.Integer)
+
+
+# Support chats table model
+class SupportChat(DataBase.db.Model):
+    id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
+    messages = DataBase.db.Column(DataBase.db.String)
+    user = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+    support = DataBase.db.Column(DataBase.db.Integer, nullable=False)

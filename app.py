@@ -1,14 +1,15 @@
 # imports
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
+from flask_socketio import SocketIO, emit
 import requests
-import json
 import pickle
+import json
 import datetime
 
 import settings
 
 # database
-from database import DataBase, User, Partner
+from database import DataBase, User, Partner, SupportChat
 # from database.py import *
 
 # map and parser
@@ -28,7 +29,8 @@ class DeviceType(Enum):
 class App:
     # application starting function
     def run(self):
-        self.flask.run(debug=True)
+        # self.flask.run(debug=True)
+        self.socketio.run(self.flask)
 
     # session variable updating function
     def set_var(self, name, value):
@@ -46,15 +48,14 @@ class App:
 
         # flask
         self.flask = Flask(__name__)
+        self.flask.secret_key = 'GiantAlienDildo'
+        self.socketio = SocketIO(self.flask)
 
         # device type
         # self.device_type = DeviceType.UNKNOWN
 
         # base directory for templates (htmls)
         # self.base_dir = 'computer/'
-
-        ### flask variables setup ###
-        self.flask.secret_key = 'GiantAlienDildo'
 
         # API token and secret for Telegram login
         self.API_TOKEN = settings.API_TOKEN       
@@ -125,8 +126,11 @@ class App:
                 self.database.add(partner7)
                 self.database.add(partner8)
 
-                user1 = User(name='Test', email='test@gmail.com', telegram='@test', birthday=datetime.date(2008, 1, 25), support_chat=pickle.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]))
+                user1 = User(name='Test', email='test@gmail.com', telegram='@test', birthday=datetime.date(2008, 1, 25))
                 self.database.add(user1)
+
+                chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]), user=user1.id, support=0)
+                self.database.add(chat1)
 
             partners = Partner.query.all()
             return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_url, 'logo_url': partner.logo_url, 'org_id': partner.org_id} for partner in partners])
@@ -175,14 +179,28 @@ class App:
         @self.flask.route('/support', methods=['POST'])
         def support():
             user_info = pickle.loads(self.get_var("user"))
-            return render_template('support.html', user=user_info, messages=pickle.loads(user_info.support_chat))
-
-        # flask support message sending function
-        @self.flask.route('/support_message', methods=['POST'])
-        def send_message_to_support():
-            user_info = pickle.loads(self.get_var("user"))
-            return render_template('support.html', user=user_info, messages=pickle.loads(user_info.support_chat))
+            
+            chat = self.database.get('SupportChat', 'user', user_info.id)
+            if len(chat) == 0:
+                chat = SupportChat(messages='[]', user=user_info.id, support=0)
+                self.database.add(chat)
+                return render_template('support.html', user=user_info, user_id=user_info.id, messages='[]')
+    
+            chat = chat[0]
+            return render_template('support.html', user=user_info, user_id=user_info.id, messages=json.loads(chat.messages))
         
+        # flask socket io handling function
+        @self.socketio.on('message')
+        def handle_message(msg):
+            print('Message received: ' + json.loads(msg)['text'])
+            print('Sender:           ' + str(json.loads(msg)['sender']))
+            chat = self.database.get('SupportChat', 'user', json.loads(msg)['sender'])[0]
+            new_messages = json.loads(chat.messages)
+            new_messages.append({'sender': 'user', 'message': json.loads(msg)['text']})
+            chat.messages = json.dumps(new_messages)
+            self.database.update(chat)
+            emit('message', msg, broadcast=True)
+
         # flask user profile callback function
         @self.flask.route('/profile', methods=['POST'])
         def profile():

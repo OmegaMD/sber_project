@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
         <link rel="stylesheet" href="../../static/style.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
     </head>
     <header style="height: 50px;">
         <div class="row" style="justify-content: start; height: 50px; width: 100%">
@@ -16,7 +18,7 @@
     </header>
     <body>
         <div class="column" style="height: calc(100% - 50px - 60px)">
-            <div id="message-box" class="scroll-column" style="max-width: 500px; height: calc(100% - 70px);">
+            <div id="messages" class="scroll-column" style="max-width: 500px; height: calc(100% - 70px);">
                 {% for message in messages %}
                 <div class="block"
                     {% if message.sender == 'user' %}
@@ -39,22 +41,61 @@
             </div>
             <div class="row" style="height: 70px; max-width: 500px;">
                 <div class="row bg-color-frame1" style="width: 100%; height: 70%; border-radius: 20px;">
-                    <form method="post" class="row" style="width: 100%" novalidate action="send_message_to_support">
+                    <div class="row">
                         <div class="block" style="width: 89%">
-                            <input class="bg-color-frame1" type="text" name="message-input" placeholder="Message" required>
+                            <input id="message-input" class="bg-color-frame1" type="text" name="message-input" placeholder="Message" required>
                         </div>
                         <div class="block" style="width: 11%;">
-                            <button type="submit" style="width: 100%; height: 100%; justify-content: left;"><p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0">send</p></button>
+                            <button id="send-button" type="submit" style="width: 100%; height: 100%; justify-content: left;"><p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0">send</p></button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
 
         <script>
-            var someElement = document.querySelector('message-box');
-            someElement.scrollTop = someElement.scrollHeight;
-        </script>
+            const socket = io();
+    
+            const messagesDiv = document.getElementById('messages');
+            const messageInput = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-button');
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    
+            socket.on('message', function(msg) {
+                const messageHolder = document.createElement('div');
+                messageHolder.className = 'block';
+                messageHolder.style = 'height: auto; justify-content: end;';
+
+                const messageBubble = document.createElement('div');
+                messageBubble.className = 'block bg-color-clickable';
+                messageBubble.style = 'width: auto; max-width: 300px; height: auto; margin: 5px; padding: 5px; border-radius: 10px 10px 0 10px;';
+
+                const messageText = document.createElement('p');
+                messageText.className = 'text-mini';
+                messageText.innerText = JSON.parse(msg)['text'];
+
+                messageBubble.appendChild(messageText);
+                messageHolder.appendChild(messageBubble);
+                messagesDiv.appendChild(messageHolder);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to the bottom
+            });
+    
+            sendButton.onclick = function() {
+                const user_id = {{ user_id | tojson }}
+                const msg = JSON.stringify({'text': messageInput.value, 'sender': user_id});
+                if (msg) {
+                    socket.emit('message', msg);
+                    messageInput.value = '';
+                }
+            };
+    
+            messageInput.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    sendButton.click();
+                }
+            });
+        </script>        
     </body>
     <footer class="bg-color-blur" style="height: 60px;">
         <div class="row">
