@@ -9,7 +9,7 @@ import datetime
 import settings
 
 # database
-from database import DataBase, User, Partner, SupportChat
+from database import DataBase, User, Partner, SupportChat, Support
 # from database.py import *
 
 # map and parser
@@ -82,11 +82,15 @@ class App:
         @self.flask.route('/')
         def home():
             # user info setup
-            session["user"] = ""
             session["last_location_search"] = ""
             session["user"] = pickle.dumps(self.database.get('User', 'name', 'Test')[0])
 
             return render_template('login.html')
+
+        # User page selector flask callback function
+        @self.flask.route('/selector', methods=['GET'])
+        def selector():
+            return render_template('selector.html')
 
         # Route to get all users
         @self.flask.route('/users', methods=['GET'])
@@ -126,8 +130,11 @@ class App:
                 self.database.add(partner7)
                 self.database.add(partner8)
 
-                user1 = User(name='Test', email='test@gmail.com', telegram='@test', birthday=datetime.date(2008, 1, 25))
+                user1 = User(type='Support', name='Test', email='test@gmail.com', telegram='@test', birthday=datetime.date(2008, 1, 25))
                 self.database.add(user1)
+
+                support1 = Support(user_id=user1.id)
+                self.database.add(support1)
 
                 chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]), user=user1.id, support=0)
                 self.database.add(chat1)
@@ -136,25 +143,25 @@ class App:
             return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_url, 'logo_url': partner.logo_url, 'org_id': partner.org_id} for partner in partners])
 
         # main page callback function
-        @self.flask.route('/main_page', methods=['POST'])
+        @self.flask.route('/home', methods=['GET'])
         def main():
-            return render_template('home.html',
+            return render_template('user/home.html',
                                    user=pickle.loads(self.get_var("user")),
                                    top_discount_partners=self.database.get_sort('Partner', 'name', 10))
 
         # map page flask callback function
-        @self.flask.route('/map_empty', methods=['POST'])
+        @self.flask.route('/map_empty', methods=['GET'])
         def map_empty():
-            return render_template('map.html', locations=[])
+            return render_template('user/map.html', locations=[])
 
         ### flask inner callback functions ###
 
         # user location saving function
-        @self.flask.route('/save_user_location/<float:lat>/<float:lon>')
+        @self.flask.route('/save_user_location/<float:lat>/<float:lon>', methods=['POST'])
         def save_user_location(lat, lon):
             session["lat"] = lat
             session["lon"] = lon
-            return "200"
+            return '', 204
 
         # flask location search bar callback function
         @self.flask.route('/map', methods=['POST'])
@@ -164,19 +171,19 @@ class App:
 
             if user_input != '':
                 locations = search_closest_locations(session['lat'], session['lon'], user_input)
-                return render_template('map.html', locations=locations)
+                return render_template('user/map.html', locations=locations)
             return redirect(url_for('map_empty'))
 
         # flask location search bar callback function
-        @self.flask.route('/filtered_location_search', methods=['POST'])
+        @self.flask.route('/filtered_location_search', methods=['GET'])
         def filtered_location_search():
             type = request.form.get('filter_button')
             session["last_location_search"] = type
             locations = search_closest_locations(session['lat'], session['lon'], type)
-            return render_template('map.html', locations=locations)
+            return render_template('user/map.html', locations=locations)
 
         # flask support callback function
-        @self.flask.route('/support', methods=['POST'])
+        @self.flask.route('/support', methods=['GET'])
         def support():
             user_info = pickle.loads(self.get_var("user"))
             
@@ -184,10 +191,10 @@ class App:
             if len(chat) == 0:
                 chat = SupportChat(messages='[]', user=user_info.id, support=0)
                 self.database.add(chat)
-                return render_template('support.html', user=user_info, user_id=user_info.id, messages='[]')
+                return render_template('user/support.html', user=user_info, user_id=user_info.id, messages='[]')
     
             chat = chat[0]
-            return render_template('support.html', user=user_info, user_id=user_info.id, messages=json.loads(chat.messages))
+            return render_template('user/support.html', user=user_info, user_id=user_info.id, messages=json.loads(chat.messages))
         
         # flask socket io handling function
         @self.socketio.on('message')
@@ -202,9 +209,9 @@ class App:
             emit('message', msg, broadcast=True)
 
         # flask user profile callback function
-        @self.flask.route('/profile', methods=['POST'])
+        @self.flask.route('/profile', methods=['GET'])
         def profile():
-            return render_template('profile.html', user=pickle.loads(self.get_var("user")))
+            return render_template('user/profile.html', user=pickle.loads(self.get_var("user")))
 
 
         ### help functions ###

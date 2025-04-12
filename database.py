@@ -50,6 +50,7 @@ class DataBase:
 # Users table model
 class User(DataBase.db.Model):
     id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
+    type = DataBase.db.Column(DataBase.db.String, nullable=False)
     name = DataBase.db.Column(DataBase.db.String, nullable=False)
     email = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     telegram = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
@@ -84,12 +85,10 @@ class Review(DataBase.db.Model):
     desc = DataBase.db.Column(DataBase.db.String)
 
 
-# Right table models
-class Right(DataBase.db.Model):
+# Supports list table model
+class Support(DataBase.db.Model):
     id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
-    type = DataBase.db.Column(DataBase.db.String, nullable=False)
     user_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
-    partner_id = DataBase.db.Column(DataBase.db.Integer)
 
 
 # Support chats table model
