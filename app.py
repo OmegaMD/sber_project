@@ -92,6 +92,26 @@ class App:
         def selector():
             return render_template('selector.html')
 
+        # roles flask callback function
+        @self.flask.route('/admin/roles', methods=['GET'])
+        def admin_roles():
+            return render_template('admin/roles.html')
+        
+        # roles flask callback function
+        @self.flask.route('/admin/partner', methods=['GET'])
+        def admin_partner():
+            return render_template('admin/partner.html')
+        
+        # reviews flask callback function
+        @self.flask.route('/admin/reviews', methods=['GET'])
+        def admin_reviews():
+            return render_template('admin/reviews.html')
+        
+        # support flask callback function
+        @self.flask.route('/admin/support', methods=['GET'])
+        def admin_support():
+            return render_template('admin/support.html')
+
         # Route to get all users
         @self.flask.route('/users', methods=['GET'])
         def get_users():

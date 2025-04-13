@@ -3,7 +3,7 @@
     <body>
         <script>
             if (confirm("Зайти в систему поддержки?")) {
-                    fetch('/home', {method: 'GET'}).then(
+                    fetch('/admin/roles', {method: 'GET'}).then(
                         response => {
                             window.location = response.url;
                         }
