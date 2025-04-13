@@ -191,6 +191,10 @@ p {
     color: #24B23E
 }
 
+.color-warning {
+    color: #B2243E
+}
+
 .bg-color-base {
     background-color: #FFFFFF;
 }
@@ -231,6 +235,10 @@ p {
 
 .bg-color-clickable {
     background-color: #24B23E
+}
+
+.bg-color-warning {
+    background-color: #B2243E
 }
 
 input[type=text] {
