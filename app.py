@@ -82,34 +82,15 @@ class App:
         def login():
             # user info setup
             session["last_location_search"] = ""
-            session["user"] = pickle.dumps(self.database.get('User', 'name', 'Test')[0])
+            session["user"] = pickle.dumps(self.database.get('User', 'telegram', '@support')[0]) #telegram id should be obtained via TelegramAPI
 
             return render_template('login.html')
 
         # User page selector flask callback function
         @self.flask.route('/selector', methods=['GET'])
         def selector():
-            return render_template('selector.html')
-
-        # roles flask callback function
-        @self.flask.route('/admin/roles', methods=['GET'])
-        def admin_roles():
-            return render_template('admin/roles.html', users=self.database.get_sort('User', "name", 100))
-        
-        # roles flask callback function
-        @self.flask.route('/admin/partner', methods=['GET'])
-        def admin_partner():
-            return render_template('admin/partner.html')
-        
-        # reviews flask callback function
-        @self.flask.route('/admin/reviews', methods=['GET'])
-        def admin_reviews():
-            return render_template('admin/reviews.html')
-        
-        # support flask callback function
-        @self.flask.route('/admin/support', methods=['GET'])
-        def admin_support():
-            return render_template('admin/support.html')
+            return render_template('selector.html',
+                                   user=pickle.loads(self.get_var("user")))
 
         # Route to get all users
         @self.flask.route('/users', methods=['GET'])
@@ -149,13 +130,23 @@ class App:
                 self.database.add(partner7)
                 self.database.add(partner8)
 
-                user1 = User(type='Support', name='Test', email='test@gmail.com', telegram='@test', birthday=datetime.date(2008, 1, 25))
-                self.database.add(user1)
+                user_superadmin = User(type='Superadminovich', name='Superadmin', email='superadmin@gmail.com', telegram='@superadmin', birthday=datetime.date(2008, 1, 25))
+                user_admin = User(type='Admin', name='Adminovich', email='admin@gmail.com', telegram='@admin', birthday=datetime.date(2008, 4, 16))
+                user_support = User(type='Support', name='Supportovich', email='support@gmail.com', telegram='@support', birthday=datetime.date(2008, 3, 29))
+                user_director = User(type='Director', name='Directorovich', email='director@gmail.com', telegram='@director', birthday=datetime.date(2008, 2, 1))
+                user_manager = User(type='Manager', name='Managerorovich', email='manager@gmail.com', telegram='@manager', birthday=datetime.date(1945, 5, 9))
+                user_user = User(type='User', name='Userovich', email='user@gmail.com', telegram='@user', birthday=datetime.date(2001, 9, 11))
+                self.database.add(user_superadmin)
+                self.database.add(user_admin)
+                self.database.add(user_support)
+                self.database.add(user_director)
+                self.database.add(user_manager)
+                self.database.add(user_user)
 
-                support1 = Support(user_id=user1.id)
+                support1 = Support(user_id=user_support.id)
                 self.database.add(support1)
 
-                chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]), user=user1.id, support=0)
+                chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]), user=user_support.id, support=0)
                 self.database.add(chat1)
 
             partners = Partner.query.all()
@@ -242,6 +233,27 @@ class App:
         def profile():
             return render_template('user/profile.html', user=pickle.loads(self.get_var("user")))
 
+        # roles flask callback function
+        @self.flask.route('/admin/roles', methods=['GET'])
+        def admin_roles():
+            return render_template('admin/roles.html', 
+                                   user=pickle.loads(self.get_var("user")),
+                                   users=self.database.get_sort('User', "name", 100))
+        
+        # parter editing page flask callback function
+        @self.flask.route('/admin/partner', methods=['GET'])
+        def admin_partner():
+            return render_template('admin/partner.html')
+        
+        # reviews flask callback function
+        @self.flask.route('/admin/reviews', methods=['GET'])
+        def admin_reviews():
+            return render_template('admin/reviews.html')
+        
+        # support flask callback function
+        @self.flask.route('/admin/support', methods=['GET'])
+        def admin_support():
+            return render_template('admin/support.html')
 
         ### help functions ###
 

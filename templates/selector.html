@@ -2,20 +2,22 @@
 <html>
     <body>
         <script>
-            if (confirm("Зайти в систему поддержки?")) {
-                    fetch('/admin/roles', {method: 'GET'}).then(
-                        response => {
-                            window.location = response.url;
+            window.onload = function() {
+                var user_type = {{ user.type|tojson }};
+                if (user_type == "User") {
+                    window.location.href = "/home";
+                } else {
+                    if (confirm("Зайти в систему поддержки?")) {
+                        if (user_type == "Support") {
+                            window.location.href = "/admin/support";
+                        } else {
+                            window.location.href = "/admin/roles";
                         }
-                    );
+                    } else {
+                        window.location.href = "/home";
+                    }
                 }
-                else {
-                    fetch('/home', {method: 'GET'}).then(
-                        response => {
-                            window.location = response.url;
-                        }
-                    );
-                }
+            }
         </script>
     </body>
 </html>
