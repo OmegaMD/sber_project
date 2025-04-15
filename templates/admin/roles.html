@@ -16,82 +16,33 @@
     </header>
     <body>
         <div class="column", style="width: 100%">
-            <div class="column", style="height: 100%; width: 90%; justify-content: start">
-                <div class="row" style="height: 70px; width: 90%; margin: 1vh;">
-                    <div class="row bg-color-frame1" style="width: 80%; height: 70%; border-radius: 20px;">
-                        <div class="block" style="width: 10%;">
-                            <button type="submit" style="width: 100%; height: 100%; justify-content: right;"><p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0" onclick="show_filters()">menu</p></button>
-                        </div>
-                        <form method="post" class="row" style="width: 90%" novalidate action="bruh">
-                            <div class="block color-frame1" style="width: 89%">
-                                <input class="color-frame1" type="text" name="location_search_bar" placeholder="Поиск" required>
+            <div class="column", style="height: 100%; width: 90%; justify-content: start"> 
+                {% for user in users %}
+                    <div class="row bg-color-frame2 rounded" style="height: 10%; width: 90%; justify-content: start; margin: 1vh;">
+                        <div class="column", style="height: 100%; width: 80%; justify-content: center; align-items: center">
+                            <div class="block color-contour1", style="height: 35%; width: 95%;">
+                                <p class="text-main" style="margin-right: auto;">{{ user.name }}, {{ user.type }}</p>
                             </div>
-                            <div class="block" style="width: 11%;">
-                                <button type="submit" style="width: 100%; height: 100%; justify-content: left;">
-                                    <p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0">search</p>
+                            <div class="block color-contour2", style="height: 35%; width: 95%;">
+                                <p class="text-mini" style="margin-right: auto;">{{ user.telegram }}</p>
+                            </div>
+                        </div>
+                        <div class="block", style="height: 100%; width: 10%;">
+                            <form action="bruh" method="post">
+                                <button>
+                                    <p class="material-symbols-outlined color-contour2" style="font-size: 60px;">person_remove</p>
                                 </button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="block", style="height: 100%; width: 10%;">
-                        <form action="bruh" method="post">
-                            <button>
-                                <p class="material-symbols-outlined color-clickable" style="font-size: 60px;">check_box</p>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="block" style="height: 70%; width: 10%;">
-                        <img class="rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/940px-Burger_King_2020.svg.png"></img>
-                    </div>
-                </div>
-                <div class="row bg-color-frame2 rounded" style="height: 12%; width: 90%; justify-content: start; margin: 1vh;">
-                    <div class="column", style="height: 100%; width: 80%; justify-content: space-around; align-items: center;">
-                        <div class="block color-contour1", style="height: 50%; width: 95%;">
-                            <p class="text-main" style="margin-right: auto;">Деринский Максим</p>
+                            </form>
                         </div>
-                        <div class="block color-contour2", style="height: 50%; width: 95%;">
-                            <p class="text-mini" style="margin-right: auto;">@OmegaMD</p>
+                        <div class="block", style="height: 100%; width: 10%;">
+                            <form action="ban_user" method="post">
+                                <button>
+                                    <p class="material-symbols-outlined color-warning" style="font-size: 60px;">dangerous</p>
+                                </button>
+                            </form>
                         </div>
                     </div>
-                    <div class="block", style="height: 100%; width: 10%;">
-                        <form action="bruh" method="post">
-                            <button>
-                                <p class="material-symbols-outlined color-clickable" style="font-size: 60px;">person_add</p>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="block", style="height: 100%; width: 10%;">
-                        <form action="bruh" method="post">
-                            <button>
-                                <p class="material-symbols-outlined color-warning" style="font-size: 60px;">dangerous</p>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <div class="row bg-color-frame2 rounded" style="height: 12%; width: 90%; justify-content: start; margin: 1vh;">
-                    <div class="column", style="height: 100%; width: 80%; justify-content: space-around; align-items: center;">
-                        <div class="block color-contour1", style="height: 50%; width: 95%;">
-                            <p class="text-main" style="margin-right: auto;">Посудин Савва </p>
-                        </div>
-                        <div class="block color-contour2", style="height: 50%; width: 95%;">
-                            <p class="text-mini" style="margin-right: auto;">@STEmug</p>
-                        </div>
-                    </div>
-                    <div class="block", style="height: 100%; width: 10%;">
-                        <form action="bruh" method="post">
-                            <button>
-                                <p class="material-symbols-outlined color-contour2" style="font-size: 60px;">person_remove</p>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="block", style="height: 100%; width: 10%;">
-                        <form action="bruh" method="post">
-                            <button>
-                                <p class="material-symbols-outlined color-warning" style="font-size: 60px;">dangerous</p>
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </body>

@@ -95,7 +95,7 @@ class App:
         # roles flask callback function
         @self.flask.route('/admin/roles', methods=['GET'])
         def admin_roles():
-            return render_template('admin/roles.html')
+            return render_template('admin/roles.html', users=self.database.get_sort('User', "name", 100))
         
         # roles flask callback function
         @self.flask.route('/admin/partner', methods=['GET'])
