@@ -162,16 +162,11 @@ class App:
             return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_url, 'logo_url': partner.logo_url, 'org_id': partner.org_id} for partner in partners])
 
         # main page callback function
-        @self.flask.route('/main', methods=['GET'])
+        @self.flask.route('/home', methods=['GET'])
         def main():
-            return render_template('user/main.html',
+            return render_template('user/home.html',
                                    user=pickle.loads(self.get_var("user")),
                                    top_discount_partners=self.database.get_sort('Partner', 'name', 10))
-
-        # map page flask callback function
-        @self.flask.route('/map_empty', methods=['GET'])
-        def map_empty():
-            return render_template('user/map.html', locations=[])
 
         # partners searching flask callback function
         @self.flask.route('/partners_list', methods=['POST'])
@@ -197,15 +192,16 @@ class App:
             return '', 204
 
         # flask location search bar callback function
-        @self.flask.route('/map', methods=['POST'])
+        @self.flask.route('/map', methods=['POST', 'GET'])
         def map():
-            user_input = request.form['location_search_bar']
-            session["last_location_search"] = user_input
+            if request.method == 'POST':
+                user_input = request.form['location_search_bar']
+                session["last_location_search"] = user_input
 
-            if user_input != '':
-                locations = search_closest_locations(session['lat'], session['lon'], user_input)
-                return render_template('user/map.html', locations=locations)
-            return redirect(url_for('map_empty'))
+                if user_input != '':
+                    locations = search_closest_locations(session['lat'], session['lon'], user_input)
+                    return render_template('user/map.html', locations=locations)
+            return render_template('user/map.html', locations=[])
 
         # flask location search bar callback function
         @self.flask.route('/filtered_location_search', methods=['GET'])
