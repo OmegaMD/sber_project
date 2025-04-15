@@ -5,7 +5,6 @@ import requests
 import pickle
 import json
 import datetime
-
 import settings
 
 # database
@@ -65,7 +64,7 @@ class App:
         self.SECRET_KEY = settings.SECRET_KEY
 
         ### database ###
-        
+
         self.database = DataBase(self.flask, 'database.db')
 
         ### parser for searching ###
@@ -163,9 +162,9 @@ class App:
             return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_url, 'logo_url': partner.logo_url, 'org_id': partner.org_id} for partner in partners])
 
         # main page callback function
-        @self.flask.route('/home', methods=['GET'])
+        @self.flask.route('/main', methods=['GET'])
         def main():
-            return render_template('user/home.html',
+            return render_template('user/main.html',
                                    user=pickle.loads(self.get_var("user")),
                                    top_discount_partners=self.database.get_sort('Partner', 'name', 10))
 
