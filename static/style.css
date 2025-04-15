@@ -55,6 +55,7 @@ footer {
 }
 
 .scroll-column {
+    display: block;
     overflow-y: auto;
     overflow-x: hidden;
 }

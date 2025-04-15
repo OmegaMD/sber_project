@@ -6,6 +6,12 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
         <link rel="stylesheet" href="../../static/style.css">
+
+        <style>
+            ::placeholder {
+                text-align: center;
+            }
+        </style>
     </head>
     <header style="height: 120px;">
         <div class="row" style="justify-content: start; height: 50px; width: 100%">
@@ -14,12 +20,15 @@
             </div>
         </div>
 
-        <div class="column" style="width: 100%; height: auto; position: absolute; justify-content: start;">
-            <div class="row" style="height: 70px; justify-content: space-around;">
-                <div class="row" style="width: 85%; height: 70%; border-radius: 10px; background-color: #ECECEC; justify-content: center;">
+        <div class="row" style="height: 70px; justify-content: space-around;">
+            <div class="row" style="width: 85%; height: 70%; border-radius: 10px; background-color: #ECECEC; justify-content: start;">
+                <div class="block" style="width: 10%; height: auto; aspect-ratio: 1;">
                     <p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0">search</p>
-                    <p class="color-contour2" style="font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 500;">Поиск</p>
                 </div>
+                <form action="partners_list" method="post" style="width: 80%">
+                    <input class="bg-color-frame1" type="text" name="search_bar" placeholder="Поиск" required>
+                </form>
+                <!-- <p class="color-contour2" style="font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 500;">Поиск</p> -->
             </div>
         </div>
     </header>

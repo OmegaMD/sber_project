@@ -173,6 +173,20 @@ class App:
         def map_empty():
             return render_template('user/map.html', locations=[])
 
+        # partners searching flask callback function
+        @self.flask.route('/partners_list', methods=['POST'])
+        def partners_list():
+            user_input = request.form['search_bar']
+            text = self.parser.parse(user_input)
+            partners = []
+
+            if text in dictionary.types:
+                partners = self.database.get('Partner', 'type', text)
+            elif text in dictionary.names:
+                partners = self.database.get('Partner', 'name', text)
+                
+            return render_template('user/partners_list.html', partners=partners)
+
         ### flask inner callback functions ###
 
         # user location saving function
