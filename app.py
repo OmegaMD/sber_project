@@ -79,7 +79,7 @@ class App:
 
         # home flask function
         @self.flask.route('/')
-        def home():
+        def login():
             # user info setup
             session["last_location_search"] = ""
             session["user"] = pickle.dumps(self.database.get('User', 'name', 'Test')[0])
