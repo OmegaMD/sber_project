@@ -30,7 +30,7 @@ class App:
     # application starting function
     def run(self):
         # self.flask.run(debug=True)
-        self.socketio.run(self.flask)
+        self.socketio.run(self.flask, debug=True)
 
     # session variable updating function
     def set_var(self, name, value):
