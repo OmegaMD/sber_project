@@ -233,27 +233,43 @@ class App:
         def profile():
             return render_template('user/profile.html', user=pickle.loads(self.get_var("user")))
 
-        # roles flask callback function
+        # roles management flask callback function
         @self.flask.route('/admin/roles', methods=['GET'])
         def admin_roles():
-            return render_template('admin/roles.html', 
-                                   user=pickle.loads(self.get_var("user")),
-                                   users=self.database.get_sort('User', "name", 100))
+            if pickle.loads(self.get_var("user")).type in ['Superadmin', 'Admin', 'Director', 'Manager']:       
+                return render_template('admin/roles.html',
+                                        user=pickle.loads(self.get_var("user")),
+                                        users=self.database.get_sort('User', "name", 100))
+            else:
+                return render_template('error.html')
+                
         
         # parter editing page flask callback function
         @self.flask.route('/admin/partner', methods=['GET'])
         def admin_partner():
-            return render_template('admin/partner.html')
+            if pickle.loads(self.get_var("user")).type in ['Director', 'Manager']:       
+                return render_template('admin/partner.html',
+                                        user=pickle.loads(self.get_var("user")))
+            else:
+                return render_template('error.html')
         
         # reviews flask callback function
         @self.flask.route('/admin/reviews', methods=['GET'])
         def admin_reviews():
-            return render_template('admin/reviews.html')
+            if pickle.loads(self.get_var("user")).type in ['Director', 'Manager']:       
+                return render_template('admin/reviews.html',
+                                        user=pickle.loads(self.get_var("user")))
+            else:
+                return render_template('error.html')
         
         # support flask callback function
         @self.flask.route('/admin/support', methods=['GET'])
         def admin_support():
-            return render_template('admin/support.html')
+            if pickle.loads(self.get_var("user")).type in ['Support']:       
+                return render_template('admin/support.html',
+                                        user=pickle.loads(self.get_var("user")))
+            else:
+                return render_template('error.html')
 
         ### help functions ###
 
