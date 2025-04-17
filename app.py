@@ -85,6 +85,9 @@ class App:
             session["user"] = pickle.dumps(self.database.get('User', 'telegram', '@support')[0]) #telegram id should be obtained via TelegramAPI
 
             return render_template('login.html')
+            # partner = self.database.get('Partner', 'name', 'буше')[0]
+            # print(partner.image_url)
+            # return render_template('user/partner.html', partner=partner)
 
         # User page selector flask callback function
         @self.flask.route('/selector', methods=['GET'])

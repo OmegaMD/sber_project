@@ -3,7 +3,7 @@
     <body>
         <script>
             window.onload = function() {
-                var user_type = {{ user.type|tojson }};
+                var user_type = {{ user.type | tojson }};
                 if (user_type == "User") {
                     window.location.href = "/home";
                 } else {
