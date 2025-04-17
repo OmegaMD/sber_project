@@ -183,7 +183,7 @@ class App:
                 self.database.add(partner7)
                 self.database.add(partner8)
 
-                user_superadmin = User(type='Superadminovich', name='Superadmin', email='superadmin@gmail.com', telegram='@superadmin', birthday=datetime.date(2008, 1, 25))
+                user_superadmin = User(type='Superadmin', name='Superadminovich', email='superadmin@gmail.com', telegram='@superadmin', birthday=datetime.date(2008, 1, 25))
                 user_admin = User(type='Admin', name='Adminovich', email='admin@gmail.com', telegram='@admin', birthday=datetime.date(2008, 4, 16))
                 user_support = User(type='Support', name='Supportovich', email='support@gmail.com', telegram='@support', birthday=datetime.date(2008, 3, 29))
                 user_director = User(type='Director', name='Directorovich', email='director@gmail.com', telegram='@director', birthday=datetime.date(2008, 2, 1))
@@ -198,7 +198,7 @@ class App:
 
                 director1 = Director(user_id=user_director.id, partner_id=partner1.id)
                 self.database.add(director1)
-                manager1 = Manager(user_id=user_director.id, partner_id=partner2.id)
+                manager1 = Manager(user_id=user_manager.id, partner_id=partner2.id)
                 self.database.add(manager1)
                 support1 = Support(user_id=user_support.id)
                 self.database.add(support1)
@@ -307,7 +307,7 @@ class App:
             user = pickle.loads(self.get_var("user"))
             if user.type in ['Director', 'Manager']:
                 partner_admin = self.database.get_one(user.type, "user_id", user.id)
-                print()
+                print(partner_admin)
                 return render_template('admin/partner.html',
                                         user=user,
                                         partner=self.database.get_one("Partner", "id", partner_admin.partner_id))

@@ -15,30 +15,32 @@
         </div>
     </header>
     <body>
-        <div class="column", style="height: 100%; width: 100%; justify-content: start; align-items: center;">
-            <form method="post" class="column" style="width: 90%" novalidate action="edit_partner">
-                <div class="row">
-                    <div class="block"><p class="header-mini">Название</div>
-                    <div class="block"><input class="bg-color-frame1=" type="text" name="name" placeholder="{{ partner.name }}" required></div>
+        <form method="post" class="row" tyle="height: 100%; width: 100%;" novalidate action="edit_partner">
+            <div class="scroll-column" style="width: auto">
+                <div class="block" style="height: 12%; width: auto"><p class="text-main">Название</div>
+                <div class="block" style="height: 12%; width: auto"><p class="text-main">Категория</div>
+                <div class="block" style="height: 12%; width: auto"><p class="text-main">2ГИС-ID</div>
+                <div class="block" style="height: 12%; width: auto"><p class="text-main">Логотип</div>
+                <div class="block" style="height: 12%; width: auto"><p class="text-main">Обложка</div>
+            </div>
+            <div class="scroll-column">
+                <div class="block" style="height: 12%;">
+                    <input class="bg-color-frame1 text-mini" type="text" name="name" placeholder="{{ partner.name }}" required>
                 </div>
-                <div class="row">
-                    <div class="block"><p class="header-mini">Категория</div>
-                    <div class="block"><input class="bg-color-frame1=" type="text" name="type" placeholder="{{ partner.type }}" required></div>
+                <div class="block" style="height: 12%;">
+                    <input class="bg-color-frame1 text-mini" type="text" name="type" placeholder="{{ partner.type }}" required>
                 </div>
-                <div class="row">
-                    <div class="block"><p class="header-mini">2ГИС-ID</div>
-                    <div class="block"><input class="bg-color-frame1=" type="text" name="org_id" placeholder="{{ partner.org_id }}" required></div>
+                <div class="block" style="height: 12%;">
+                    <input class="bg-color-frame1 text-mini" type="text" name="org_id" placeholder="{{ partner.org_id }}" required>
                 </div>
-                <div class="row">
-                    <div class="block"><p class="header-mini">Логотип (URL)</div>
-                    <div class="block"><input class="bg-color-frame1=" type="text" name="logo_url" placeholder="{{ partner.logo_url }}" required></div>
+                <div class="block" style="height: 12%;">
+                    <input class="bg-color-frame1 text-mini" type="text" name="logo_url" placeholder="{{ partner.logo_url }}" required>
                 </div>
-                <div class="row">
-                    <div class="block"><p class="header-mini">Обложка (URL)</div>
-                    <div class="block"><input class="bg-color-frame1=" type="text" name="image_url" placeholder="{{ partner.image_url }}" required></div>
+                <div class="block" style="height: 12%;">
+                    <input class="bg-color-frame1 text-mini" type="text" name="image_url" placeholder="{{ partner.image_url }}" required>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </body>
     <footer class="bg-color-blur" style="height: 60px;">
         <div class="row">
