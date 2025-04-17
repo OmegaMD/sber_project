@@ -44,7 +44,7 @@
                     {% for partner in top_discount_partners %}
                         <div class="column shadow rounded bg-color-base" style="height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 1vh">
                             <div style="height: 60%; width: 100%">
-                                <img class="expand-img rounded" src="{{ partner.image_url }}"></img>
+                                <img id="image{{ partner.id }}_1" class="expand-img rounded"></img>
                             </div>
                             <div style="height: 20%; width: 100%">
                                 <p class="text-main">{{ partner.name }}</p>
@@ -53,6 +53,11 @@
                                 <p class="text-mini">{{ partner.type }}</p>
                             </div>
                         </div>
+                        <script>
+                            image = document.getElementById('image' + {{ partner.id | tojson }} + '_1')
+                            src = JSON.parse({{ partner.image_urls | tojson }})[0]
+                            image.src = src
+                        </script>
                     {% endfor %}
                 </div>
             </div>
@@ -64,7 +69,7 @@
                     {% for partner in top_discount_partners %}
                         <div class="column shadow rounded bg-color-base" style="height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 1vh">
                             <div style="height: 60%; width: 100%">
-                                <img class="expand-img rounded" src="{{ partner.image_url }}"></img>
+                                <img id="image{{ partner.id }}_2" class="expand-img rounded"></img>
                             </div>
                             <div style="height: 20%; width: 100%">
                                 <p class="text-main">{{ partner.name }}</p>
@@ -73,6 +78,11 @@
                                 <p class="text-mini">{{ partner.type }}</p>
                             </div>
                         </div>
+                        <script>
+                            image = document.getElementById('image' + {{ partner.id | tojson }} + '_2')
+                            src = JSON.parse({{ partner.image_urls | tojson }})[0]
+                            image.src = src
+                        </script>
                     {% endfor %}
                 </div>
             </div>
@@ -84,7 +94,7 @@
                     {% for partner in top_discount_partners %}
                         <div class="column shadow rounded bg-color-base" style="height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 1vh">
                             <div style="height: 60%; width: 100%">
-                                <img class="expand-img rounded" src="{{ partner.image_url }}"></img>
+                                <img id="image{{ partner.id }}_3" class="expand-img rounded"></img>
                             </div>
                             <div style="height: 20%; width: 100%">
                                 <p class="text-main">{{ partner.name }}</p>
@@ -93,6 +103,11 @@
                                 <p class="text-mini">{{ partner.type }}</p>
                             </div>
                         </div>
+                        <script>
+                            image = document.getElementById('image' + {{ partner.id | tojson }} + '_3')
+                            src = JSON.parse({{ partner.image_urls | tojson }})[0]
+                            image.src = src
+                        </script>
                     {% endfor %}
                 </div>
             </div>
