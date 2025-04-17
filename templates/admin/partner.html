@@ -15,29 +15,29 @@
         </div>
     </header>
     <body>
-        <form method="post" class="row" tyle="height: 100%; width: 100%;" novalidate action="edit_partner">
-            <div class="scroll-column" style="width: auto">
-                <div class="block" style="height: 12%; width: auto"><p class="text-main">Название</div>
-                <div class="block" style="height: 12%; width: auto"><p class="text-main">Категория</div>
-                <div class="block" style="height: 12%; width: auto"><p class="text-main">2ГИС-ID</div>
-                <div class="block" style="height: 12%; width: auto"><p class="text-main">Логотип</div>
-                <div class="block" style="height: 12%; width: auto"><p class="text-main">Обложка</div>
+        <form method="post" class="row" style="height: 100%; width: 100%;" novalidate action="edit_partner">
+            <div class="scroll-column" style="width: auto; margin-left: 1vw;">
+                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">Название</div>
+                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">Категория</div>
+                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">2ГИС-ID</div>
+                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">Логотип</div>
+                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">Обложка</div>
             </div>
             <div class="scroll-column">
                 <div class="block" style="height: 12%;">
-                    <input class="bg-color-frame1 text-mini" type="text" name="name" placeholder="{{ partner.name }}" required>
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="name" placeholder="{{ partner.name }}" required>
                 </div>
                 <div class="block" style="height: 12%;">
-                    <input class="bg-color-frame1 text-mini" type="text" name="type" placeholder="{{ partner.type }}" required>
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="type" placeholder="{{ partner.type }}" required>
                 </div>
                 <div class="block" style="height: 12%;">
-                    <input class="bg-color-frame1 text-mini" type="text" name="org_id" placeholder="{{ partner.org_id }}" required>
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="org_id" placeholder="{{ partner.org_id }}" required>
                 </div>
                 <div class="block" style="height: 12%;">
-                    <input class="bg-color-frame1 text-mini" type="text" name="logo_url" placeholder="{{ partner.logo_url }}" required>
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="logo_url" placeholder="{{ partner.logo_url }}" required>
                 </div>
                 <div class="block" style="height: 12%;">
-                    <input class="bg-color-frame1 text-mini" type="text" name="image_url" placeholder="{{ partner.image_url }}" required>
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="image_url" placeholder="{{ partner.image_url }}" required>
                 </div>
             </div>
         </form>
