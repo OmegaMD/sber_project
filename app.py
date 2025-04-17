@@ -8,8 +8,7 @@ import datetime
 import settings
 
 # database
-from database import DataBase, User, Partner, SupportChat, Support
-# from database.py import *
+from database import *
 
 # map and parser
 from parser import Parser
@@ -82,10 +81,10 @@ class App:
         def login():
             # user info setup
             session["last_location_search"] = ""
-            session["user"] = pickle.dumps(self.database.get('User', 'telegram', '@support')[0]) #telegram id should be obtained via TelegramAPI
+            session["user"] = pickle.dumps(self.database.get_one('User', 'telegram', '@manager')) # telegram id should be obtained via TelegramAPI
 
             return render_template('login.html')
-            # partner = self.database.get('Partner', 'name', 'буше')[0]
+            # partner = self.database.get_one('Partner', 'name', 'буше')
             # print(partner.image_url)
             # return render_template('user/partner.html', partner=partner)
 
@@ -146,6 +145,10 @@ class App:
                 self.database.add(user_manager)
                 self.database.add(user_user)
 
+                director1 = Director(user_id=user_director.id, partner_id=partner1.id)
+                self.database.add(director1)
+                manager1 = Manager(user_id=user_director.id, partner_id=partner2)
+                self.database.add(manager1)
                 support1 = Support(user_id=user_support.id)
                 self.database.add(support1)
 
@@ -224,7 +227,7 @@ class App:
         def handle_message(msg):
             print('Message received: ' + json.loads(msg)['text'])
             print('Sender:           ' + str(json.loads(msg)['sender']))
-            chat = self.database.get('SupportChat', 'user', json.loads(msg)['sender'])[0]
+            chat = self.database.get_one('SupportChat', 'user', json.loads(msg)['sender'])
             new_messages = json.loads(chat.messages)
             new_messages.append({'sender': 'user', 'message': json.loads(msg)['text']})
             chat.messages = json.dumps(new_messages)
@@ -250,9 +253,13 @@ class App:
         # parter editing page flask callback function
         @self.flask.route('/admin/partner', methods=['GET'])
         def admin_partner():
-            if pickle.loads(self.get_var("user")).type in ['Director', 'Manager']:       
+            user = pickle.loads(self.get_var("user"))
+            if user.type in ['Director', 'Manager']:
+                partner_admin = self.database.get_one(user.type, "user_id", user.id)
+                print()
                 return render_template('admin/partner.html',
-                                        user=pickle.loads(self.get_var("user")))
+                                        user=user,
+                                        partner=self.database.get_one("Partner", "id", partner_admin.partner_id))
             else:
                 return render_template('error.html')
         

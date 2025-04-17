@@ -21,25 +21,33 @@ class DataBase:
     def start(self):
         DataBase.db.create_all()
 
-    # User adding function
+    # Data adding function
     def add(self, entity):
         DataBase.db.session.add(entity)
         DataBase.db.session.commit()
 
-    # User deleting function
+    # Data deleting function
     def delete(self, type, id):
         DataBase.db.session.delete(globals()[type].query.filter_by(id=id).one())
         DataBase.db.session.commit()
 
-    # User getting function
+    # Data getting function
     def get(self, type, filter_field, filter_data):
         return globals()[type].query.filter_by(**{filter_field: filter_data}).all()
     
+    # Getting one item function
+    def get_one(self, type, filter_field, filter_data):
+        response = self.get(type, filter_field, filter_data)
+        if len(response) > 0:
+            return response[0]
+        else:
+            return None
+
     # Get top sorted rows
     def get_sort(self, type, sort_field, num):
         return globals()[type].query.order_by(desc(DataBase.db.text(type + "." + sort_field))).limit(num).all()
 
-    # User updating function
+    # Data updating function
     def update(self, entity):
         old_entity = entity.query.filter_by(id=entity.id).one()
         for var in vars(old_entity).keys():
@@ -89,6 +97,20 @@ class Review(DataBase.db.Model):
 class Support(DataBase.db.Model):
     id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
     user_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+
+
+# Directors list table model
+class Director(DataBase.db.Model):
+    id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
+    user_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+    partner_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+
+
+# Managers list table model
+class Manager(DataBase.db.Model):
+    id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
+    user_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+    partner_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
 
 
 # Support chats table model
