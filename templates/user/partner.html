@@ -38,13 +38,34 @@
 
                 <p class="text-main" style="margin-left: 10px;">4.4</p>
             </div>
-            <div class="scroll-row" style="height: 60%; align-items:start; justify-content: left;">
-                {% for i in range(0, 4) %}
+            <div id="images" class="scroll-row" style="height: 60%; align-items:start; justify-content: left;">
+                <!-- {% for i in range(0, 4) %}
                 <div class="block" style="width: auto; margin-right: 10px">
-                    <img class="img rounded" style="height: 100%" src="{{ partner.image_url }}"></img>    
+                    <img id="image{{ i }}" class="img rounded" style="height: 100%"></img>    
                 </div>
-                {% endfor %}
+                {% endfor %} -->
             </div>
+
+            <script>
+                urls = JSON.parse({{ partner.image_urls | tojson }})
+
+                images = document.getElementById("images")
+
+                urls.forEach(url => {
+                    image_block = document.createElement("div")
+                    image_block.className = "block"
+                    image_block.style = "width: auto; margin-right: 10px"
+
+                    image = document.createElement("img")
+                    image.className = "rounded"
+                    image.style = "height: 100%"
+                    image.src = url
+
+                    image_block.appendChild(image)
+
+                    images.appendChild(image_block)
+                });
+            </script>
         </div>
     </body>
 </html>

@@ -70,7 +70,7 @@ class Partner(DataBase.db.Model):
     id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
     type = DataBase.db.Column(DataBase.db.String, nullable=False)
     name = DataBase.db.Column(DataBase.db.String, nullable=False)
-    image_url = DataBase.db.Column(DataBase.db.String, nullable=False)
+    image_urls = DataBase.db.Column(DataBase.db.String, nullable=False)
     logo_url = DataBase.db.Column(DataBase.db.String)
     org_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
 
