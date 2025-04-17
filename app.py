@@ -230,6 +230,12 @@ class App:
                 
             return render_template('user/partners_list.html', partners=partners)
 
+        # single partner info flask callback function
+        @self.flask.route('/partner', methods=['POST'])
+        def partner():
+            partner = self.database.get('Partner', 'id', request.form['partner_button'])[0]
+            return render_template('user/partner.html', partner=partner)
+
         ### flask inner callback functions ###
 
         # user location saving function
