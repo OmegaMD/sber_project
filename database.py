@@ -3,6 +3,9 @@ from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 
+import json
+from json import JSONEncoder
+
 
 # Main Database controling class
 class DataBase:
@@ -54,6 +57,17 @@ class DataBase:
             setattr(old_entity, var, getattr(entity, var))
         DataBase.db.session.commit()
 
+# Sale base storing class
+class Sale:
+    def __init__(self, amount, desc):
+        self.amount = amount
+        self.desc = desc
+
+# Sales json encoder
+class SaleEncoder(JSONEncoder):
+        def default(self, o):
+            return o.__dict__
+
 
 # Users table model
 class User(DataBase.db.Model):
@@ -71,16 +85,11 @@ class Partner(DataBase.db.Model):
     type = DataBase.db.Column(DataBase.db.String, nullable=False)
     name = DataBase.db.Column(DataBase.db.String, nullable=False)
     image_urls = DataBase.db.Column(DataBase.db.String, nullable=False)
-    logo_url = DataBase.db.Column(DataBase.db.String)
+    logo_url = DataBase.db.Column(DataBase.db.String, nullable=False)
     org_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
-
-
-# Sale table models
-class Sale(DataBase.db.Model):
-    id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
-    partner_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
-    amount = DataBase.db.Column(DataBase.db.String, nullable=False)
-    desc = DataBase.db.Column(DataBase.db.String, nullable=False)
+    sales = DataBase.db.Column(DataBase.db.String, nullable=False)
+    rating = DataBase.db.Column(DataBase.db.Float, nullable=False)
+    info = DataBase.db.Column(DataBase.db.String, nullable=False)
 
 
 # Review table models

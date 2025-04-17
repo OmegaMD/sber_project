@@ -104,29 +104,76 @@ class App:
                                     "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height",
                                     "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/42/bb/5f/caption.jpg?w=900&h=500&s=1"
                                     ]),
-                                   logo_url="https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg")
-                
+                                   logo_url="https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg",
+                                   sales=json.dumps([
+                                    Sale(90, 'Free cum for anybody!'),
+                                    Sale(40, 'Not that free cum'),
+                                   ], cls=SaleEncoder),
+                                   rating=4.4,
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
                 partner2 = Partner(type='кафе', name='бургер-кинг', org_id=5348561428715954, 
                                    image_urls=json.dumps(["https://avatars.mds.yandex.net/get-altay/12813249/2a00000190efe540d510a58448956515d257/L_height"]),
-                                   logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/1879px-Burger_King_2020.svg.png")
+                                   logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/1879px-Burger_King_2020.svg.png",
+                                   sales=json.dumps([
+                                    Sale(90, 'Free cum for anybody!'),
+                                    Sale(40, 'Not that free cum'),
+                                   ], cls=SaleEncoder),
+                                   rating=4.4,
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
                 partner3 = Partner(type='магазин', name='буквоед', org_id=5348561428522889, 
                                    image_urls=json.dumps(['https://tk-pik.ru/upload/iblock/443/jwv04az84jls77l83kntpr2t4ro6zivi.jpg']),
-                                   logo_url='https://habrastorage.org/getpro/moikrug/uploads/company/100/006/555/7/logo/medium_d5e9f242395f4a3c48abd90527fa74ce.png')
+                                   logo_url='https://habrastorage.org/getpro/moikrug/uploads/company/100/006/555/7/logo/medium_d5e9f242395f4a3c48abd90527fa74ce.png',
+                                   sales=json.dumps([
+                                    Sale(90, 'Free cum for anybody!'),
+                                    Sale(40, 'Not that free cum'),
+                                   ], cls=SaleEncoder),
+                                   rating=4.4,
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
                 partner4 = Partner(type='аптека', name='невис', org_id=5348561428415840, 
                                    image_urls=json.dumps(['https://s.zagranitsa.com/images/guides/20578/original/248baffaea928f45c0bb102e02dc1336.jpg?1441900197']),
-                                   logo_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFV7M59LEzxJmcjxxImrEbJPrNCrs-zSqvlg&s')
+                                   logo_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFV7M59LEzxJmcjxxImrEbJPrNCrs-zSqvlg&s',
+                                   sales=json.dumps([
+                                    Sale(90, 'Free cum for anybody!'),
+                                    Sale(40, 'Not that free cum'),
+                                   ], cls=SaleEncoder),
+                                   rating=4.4,
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
                 partner5 = Partner(type='заправка', name='лукойл', org_id=5348561428486914, 
                                    image_urls=json.dumps(['https://iy.kommersant.ru/Issues.photo/Partners_Docs/2024/11/22/KMO_111307_61034_1_t222_145337.jpg']),
-                                   logo_url='https://cdn.forbes.ru/forbes-static/new/2021/11/Company-619d3288c340a-619d3288e8cde.png')
+                                   logo_url='https://cdn.forbes.ru/forbes-static/new/2021/11/Company-619d3288c340a-619d3288e8cde.png',
+                                   sales=json.dumps([
+                                    Sale(90, 'Free cum for anybody!'),
+                                    Sale(40, 'Not that free cum'),
+                                   ], cls=SaleEncoder),
+                                   rating=4.4,
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
                 partner6 = Partner(type='заправка', name='роснефть', org_id=5348561428520571, 
                                    image_urls=json.dumps(['https://hdlt.ru/assets/template/upload/indoor/azs_rosneft/IMG_4538.jpg']),
-                                   logo_url='https://foni.papik.pro/uploads/posts/2024-10/foni-papik-pro-8xho-p-kartinki-rosneft-na-prozrachnom-fone-17.png')
+                                   logo_url='https://foni.papik.pro/uploads/posts/2024-10/foni-papik-pro-8xho-p-kartinki-rosneft-na-prozrachnom-fone-17.png',
+                                   sales=json.dumps([
+                                    Sale(90, 'Free cum for anybody!'),
+                                    Sale(40, 'Not that free cum'),
+                                   ], cls=SaleEncoder),
+                                   rating=4.4,
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
                 partner7 = Partner(type='аптека', name='лека-фарм', org_id=5348561428417650, 
                                    image_urls=json.dumps(['https://avatars.mds.yandex.net/get-altay/5751673/2a0000017cc56582485d205b1bcc888295b3/L_height']),
-                                   logo_url='https://lekafarm.ru/template/images/logo.png')
+                                   logo_url='https://lekafarm.ru/template/images/logo.png',
+                                   sales=json.dumps([
+                                    Sale(90, 'Free cum for anybody!'),
+                                    Sale(40, 'Not that free cum'),
+                                   ], cls=SaleEncoder),
+                                   rating=4.4,
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
                 partner8 = Partner(type='магазин', name='перекрёсток', org_id=5348561428466924, 
                                    image_urls=json.dumps(['https://static.tildacdn.com/tild6131-6632-4564-a262-633433623838/1a8a32_ca8931ce69e94.jpg']),
-                                   logo_url='https://www.perekrestok.ru/logo.png')
+                                   logo_url='https://www.perekrestok.ru/logo.png',
+                                   sales=json.dumps([
+                                    Sale(90, 'Free cum for anybody!'),
+                                    Sale(40, 'Not that free cum'),
+                                   ], cls=SaleEncoder),
+                                   rating=4.4,
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
                 self.database.add(partner1)
                 self.database.add(partner2)
                 self.database.add(partner3)
@@ -160,7 +207,7 @@ class App:
                 self.database.add(chat1)
 
             partners = Partner.query.all()
-            return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_urls, 'logo_url': partner.logo_url, 'org_id': partner.org_id} for partner in partners])
+            return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_urls, 'logo_url': partner.logo_url, 'org_id': partner.org_id, 'sales': partner.sales} for partner in partners])
 
         # main page callback function
         @self.flask.route('/home', methods=['GET'])
