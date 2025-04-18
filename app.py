@@ -58,7 +58,7 @@ class App:
 
         self.TWOGIS_API_KEY = 'ab7b70c9-9132-468f-8b4c-87177a2418cf'
 
-        ### flask pages callback functions ###
+        ### flask pages callback functions not role based ###
 
         # home flask function
         @self.flask.route('/')
@@ -75,6 +75,9 @@ class App:
         def selector():
             return render_template('selector.html',
                                    user=pickle.loads(session['user']))
+
+
+        ### database recreation flask callback function ###
 
         # Route to get all users
         @self.flask.route('/users', methods=['GET'])
@@ -199,6 +202,41 @@ class App:
             partners = Partner.query.all()
             return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_urls, 'logo_url': partner.logo_url, 'org_id': partner.org_id, 'sales': partner.sales} for partner in partners])
 
+
+        ### user flask callback functions ###
+
+        # flask location search bar callback function
+        @self.flask.route('/map', methods=['POST', 'GET'])
+        def map():
+            session['prev_page'] = 'map'
+            user_input = session['last_location_search']
+            if request.method == 'POST':
+                if 'search_bar' in request.form:
+                    user_input = request.form['search_bar']
+                else:
+                    user_input = request.form.get('filter_button')
+                session['last_location_search'] = user_input
+
+            if user_input != '':
+                locations = search_closest_locations(session['lat'], session['lon'], user_input)
+                return render_template('user/map.html', locations=locations)
+            return render_template('user/map.html', locations=[])
+
+
+        # flask support callback function
+        @self.flask.route('/support', methods=['GET'])
+        def support():
+            user_info = pickle.loads(session['user'])
+            
+            chat = self.database.get('SupportChat', 'user', user_info.id)
+            if len(chat) == 0:
+                chat = SupportChat(messages='[]', user=user_info.id, support=0)
+                self.database.add(chat)
+                return render_template('user/support.html', user=user_info, user_id=user_info.id, messages='[]')
+    
+            chat = chat[0]
+            return render_template('user/support.html', user=user_info, user_id=user_info.id, messages=json.loads(chat.messages))
+
         # main page callback function
         @self.flask.route('/home', methods=['GET'])
         def main():
@@ -254,6 +292,12 @@ class App:
         def partner_back():
             return redirect(url_for(session['prev_page']), 301)
 
+        # flask user profile callback function
+        @self.flask.route('/profile', methods=['GET'])
+        def profile():
+            return render_template('user/profile.html', user=pickle.loads(session['user']))
+
+
         ### flask inner callback functions ###
 
         # user location saving function
@@ -262,38 +306,6 @@ class App:
             session['lat'] = lat
             session['lon'] = lon
             return '', 204
-
-        # flask location search bar callback function
-        @self.flask.route('/map', methods=['POST', 'GET'])
-        def map():
-            session['prev_page'] = 'map'
-            user_input = session['last_location_search']
-            if request.method == 'POST':
-                if 'search_bar' in request.form:
-                    user_input = request.form['search_bar']
-                else:
-                    user_input = request.form.get('filter_button')
-                session['last_location_search'] = user_input
-
-            if user_input != '':
-                locations = search_closest_locations(session['lat'], session['lon'], user_input)
-                return render_template('user/map.html', locations=locations)
-            return render_template('user/map.html', locations=[])
-
-
-        # flask support callback function
-        @self.flask.route('/support', methods=['GET'])
-        def support():
-            user_info = pickle.loads(session['user'])
-            
-            chat = self.database.get('SupportChat', 'user', user_info.id)
-            if len(chat) == 0:
-                chat = SupportChat(messages='[]', user=user_info.id, support=0)
-                self.database.add(chat)
-                return render_template('user/support.html', user=user_info, user_id=user_info.id, messages='[]')
-    
-            chat = chat[0]
-            return render_template('user/support.html', user=user_info, user_id=user_info.id, messages=json.loads(chat.messages))
         
         # flask socket io handling function
         @self.socketio.on('message')
@@ -307,10 +319,8 @@ class App:
             self.database.update(chat)
             emit('message', msg, broadcast=True)
 
-        # flask user profile callback function
-        @self.flask.route('/profile', methods=['GET'])
-        def profile():
-            return render_template('user/profile.html', user=pickle.loads(session['user']))
+        
+        ### admin role flask callback functions ### 
 
         # roles management flask callback function
         @self.flask.route('/admin/roles', methods=['GET'])
