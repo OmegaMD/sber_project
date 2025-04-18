@@ -398,6 +398,14 @@ class App:
             else:
                 return render_template('error.html')
 
+
+        ### manager flask callback functions ###
+
+        @self.flask.route('/manager/reviews', methods=['GET'])
+        def manager_reviews():
+            
+            return render_template('manager/reviews.html')
+
         ### help functions ###
 
         # closest locations based on query searching function

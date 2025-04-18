@@ -10,8 +10,8 @@
                     if (confirm("Зайти в систему поддержки?")) {
                         if (user_type == "Support") {
                             window.location.href = "/admin/support";
-                        } else {
-                            window.location.href = "/admin/roles";
+                        } else if (user_type == "Manager") {
+                            window.location.href = "/manager/reviews";
                         }
                     } else {
                         window.location.href = "/user/home";
