@@ -41,26 +41,28 @@
                 <div style="height: 15%; width: 100%">
                     <p class="text-main">Вы недавно искали</p>
                 </div>
-                <div class="scroll-row" style="height: 85%">
-                    {% for partner in last_partners %}
-                        <div class="column shadow rounded bg-color-base" style="height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 1vh">
-                            <div style="height: 60%; width: 100%">
-                                <img id="image{{ partner.id }}_1" class="expand-img rounded"></img>
-                            </div>
-                            <div style="height: 20%; width: 100%">
-                                <p class="text-main">{{ partner.name }}</p>
-                            </div>
-                            <div style="height: 20%; width: 100%">
-                                <p class="text-mini">{{ partner.type }}</p>
-                            </div>
-                        </div>
-                        <script>
-                            image = document.getElementById('image' + {{ partner.id | tojson }} + '_1')
-                            src = JSON.parse({{ partner.image_urls | tojson }})[0]
-                            image.src = src
-                        </script>
-                    {% endfor %}
-                </div>
+                <form action="/user/partner" method="post">
+                    <div class="scroll-row" style="height: 85%">
+                        {% for partner in last_partners %}
+                            <button name="partner_button" value="{{ partner.id }}" class="column shadow rounded bg-color-base" style="height: 85%; width: auto; aspect-ratio: 1.15; justify-content: space-between; margin: 1vh">
+                                <div style="height: 60%; width: 100%">
+                                    <img id="image{{ partner.id }}_1" class="expand-img rounded"></img>
+                                </div>
+                                <div class="block" style="height: 20%; width: 100%; justify-content: left;">
+                                    <p class="text-main">{{ partner.name }}</p>
+                                </div>
+                                <div class="block" style="height: 20%; width: 100%;  justify-content: left;">
+                                    <p class="text-mini">{{ partner.type }}</p>
+                                </div>
+                            </button>
+                            <script>
+                                image = document.getElementById('image' + {{ partner.id | tojson }} + '_1')
+                                src = JSON.parse({{ partner.image_urls | tojson }})[0]
+                                image.src = src
+                            </script>
+                        {% endfor %}
+                    </div>
+                </form>
             </div>
             {% endif %}
             <div class="column" style="justify-content: space-between; height: 33%; width: 100%">

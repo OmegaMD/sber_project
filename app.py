@@ -248,8 +248,8 @@ class App:
             return render_template('user/support.html', user=user_info, user_id=user_info.id, messages=json.loads(chat.messages))
 
         # main page callback function
-        @self.flask.route('/user/home', methods=['GET'])
-        def main():
+        @self.flask.route('/user/home', methods=['GET', 'POST'])
+        def home():
             session['prev_page'] = 'home'
 
             user = self.database.get_one('User', 'id', session['user_id'])
