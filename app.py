@@ -307,8 +307,10 @@ class App:
             else:
                 partner_id = request.form['partner_id']
                 desc = request.form['desc']
+                rating = request.form['rating']
+                print(rating)
                 support_id = self.database.get_one('User', 'telegram', '@support').id
-                comment = Review(user_id=session['user_id'], partner_id=partner_id, support_id=support_id, rating=2, desc=desc, state='approval')
+                comment = Review(user_id=session['user_id'], partner_id=partner_id, support_id=support_id, rating=rating, desc=desc, state='approval')
                 self.database.add(comment)
             
             comments = self.database.get('Review', 'partner_id', partner_id)

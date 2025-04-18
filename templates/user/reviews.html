@@ -38,9 +38,17 @@
                 </form>
             </div>
 
-            <div class="row rounded" style="border: 1px solid black; width: 95%; height: auto">
+            <div class="column rounded" style="border: 1px solid black; width: 95%; height: auto">
+                <div class="row" style="justify-content: left; width: 80%; margin-top: 1%;">
+                    {% for i in range(0, 5) %}
+                    <button style="width: auto; height: auto" onclick="starClick({{ i }})">
+                        <p id="star{{ i }}" class="material-icons" style="font-size: 2rem; margin: 0; margin-right: 2px;">star_outline</p>
+                    </button>
+                    {% endfor %}
+                </div>
                 <form action="/user/reviews" method="post" class="column">
                     <input type="hidden" name="partner_id" value="{{ partner_id }}">
+                    <input id="rating" type="hidden" name="rating" value="0">
                     <div class="block" style="width: 80%; margin-top: 1%; margin-bottom: 1%; height: auto">
                         <textarea name="desc" class="rounded" name="search_bar" placeholder="Поиск" required oninput="autoResize(this)"></textarea>
                     </div>
@@ -49,6 +57,22 @@
                     </button>
                 </form>
             </div>
+
+            <script>
+                function starClick(i) {
+                    ratingInput = document.getElementById("rating")
+                    ratingInput.value = (i + 1).toString()
+
+                    for (let j = 0; j <= i; j++) {
+                        star = document.getElementById("star" + j.toString())
+                        star.innerText = "star"
+                    }
+                    for (let j = i + 1; j < 5; j++) {
+                        star = document.getElementById("star" + j.toString())
+                        star.innerText = "star_outline"
+                    }
+                }
+            </script>
 
             <script>
                 function autoResize(textarea) {
