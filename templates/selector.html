@@ -5,7 +5,7 @@
             window.onload = function() {
                 var user_type = {{ user.type | tojson }};
                 if (user_type == "User") {
-                    window.location.href = "/home";
+                    window.location.href = "/user/home";
                 } else {
                     if (confirm("Зайти в систему поддержки?")) {
                         if (user_type == "Support") {
@@ -14,7 +14,7 @@
                             window.location.href = "/admin/roles";
                         }
                     } else {
-                        window.location.href = "/home";
+                        window.location.href = "/user/home";
                     }
                 }
             }

@@ -30,7 +30,7 @@ function show_filters() {
                 rows.at(-1).style.aspectRatio = '5';
 
                 rows.at(-1).method = 'post';
-                rows.at(-1).action = 'map';
+                rows.at(-1).action = 'user/map';
             }
 
             const block = document.createElement('div');

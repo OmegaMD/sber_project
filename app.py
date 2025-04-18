@@ -206,9 +206,10 @@ class App:
         ### user flask callback functions ###
 
         # flask location search bar callback function
-        @self.flask.route('/map', methods=['POST', 'GET'])
+        @self.flask.route('/user/map', methods=['POST', 'GET'])
         def map():
             session['prev_page'] = 'map'
+
             user_input = session['last_location_search']
             if request.method == 'POST':
                 if 'search_bar' in request.form:
@@ -224,7 +225,7 @@ class App:
 
 
         # flask support callback function
-        @self.flask.route('/support', methods=['GET'])
+        @self.flask.route('/user/support', methods=['GET'])
         def support():
             user_info = pickle.loads(session['user'])
             
@@ -238,7 +239,7 @@ class App:
             return render_template('user/support.html', user=user_info, user_id=user_info.id, messages=json.loads(chat.messages))
 
         # main page callback function
-        @self.flask.route('/home', methods=['GET'])
+        @self.flask.route('/user/home', methods=['GET'])
         def main():
             session['prev_page'] = 'home'
 
@@ -254,7 +255,7 @@ class App:
                                    top_rating_partners=self.database.get_sort('Partner', 'rating', 10))
 
         # partners searching flask callback function
-        @self.flask.route('/partners_list', methods=['POST', 'GET'])
+        @self.flask.route('/user/partners_list', methods=['POST', 'GET'])
         def partners_list():
             session['prev_page'] = 'partners_list'
 
@@ -274,7 +275,7 @@ class App:
             return render_template('user/partners_list.html', partners=partners)
 
         # single partner info flask callback function
-        @self.flask.route('/partner', methods=['POST'])
+        @self.flask.route('/user/partner', methods=['POST'])
         def partner():
             partner = self.database.get('Partner', 'id', request.form['partner_button'])[0]
             user = pickle.loads(session['user'])
@@ -288,12 +289,12 @@ class App:
             return render_template('user/partner.html', partner=partner)
 
         # getting back from partner page flask callback function
-        @self.flask.route('/back', methods=['GET'])
+        @self.flask.route('/user/back', methods=['GET'])
         def partner_back():
             return redirect(url_for(session['prev_page']), 301)
 
         # flask user profile callback function
-        @self.flask.route('/profile', methods=['GET'])
+        @self.flask.route('/user/profile', methods=['GET'])
         def profile():
             return render_template('user/profile.html', user=pickle.loads(session['user']))
 
