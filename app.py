@@ -379,8 +379,8 @@ class App:
                             'name': partner.name,
                             # 'address': item['address_name'],
                             'point': item['point'],
-                            'img': partner.image_url,
-                            'logo': partner.logo_url
+                            'logo': partner.logo_url,
+                            'partner_id': partner.id
                         })
 
             return locations
