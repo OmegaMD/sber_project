@@ -30,16 +30,6 @@ class App:
         # self.flask.run(debug=True)
         self.socketio.run(self.flask, debug=True)
 
-    # session variable updating function
-    def set_var(self, name, value):
-        session[name] = value
-    
-    # getting session variable value function
-    def get_var(self, name):
-        if name in session:
-            return session[name]
-        return None
-
     # class initialization function
     def __init__(self):
         ### local class variables ###
@@ -80,20 +70,17 @@ class App:
         @self.flask.route('/')
         def login():
             # user info setup
-            session["last_location_search"] = "кафе"
-            session["user"] = pickle.dumps(self.database.get_one('User', 'telegram', '@manager')) # telegram id should be obtained via TelegramAPI
-            session["prev_page"] = ""
+            session['last_location_search'] = ''
+            session['user'] = pickle.dumps(self.database.get_one('User', 'telegram', '@manager')) # telegram id should be obtained via TelegramAPI
+            session['prev_page'] = 'home'
 
             return render_template('login.html')
-            # partner = self.database.get('Partner', 'name', 'буше')[0]
-            # print(partner.image_urls)
-            # return render_template('user/partner.html', partner=partner)
 
         # User page selector flask callback function
         @self.flask.route('/selector', methods=['GET'])
         def selector():
             return render_template('selector.html',
-                                   user=pickle.loads(self.get_var("user")))
+                                   user=pickle.loads(session['user']))
 
         # Route to get all users
         @self.flask.route('/users', methods=['GET'])
@@ -102,10 +89,10 @@ class App:
             if User.query.count() == 0:
                 partner1 = Partner(type='кафе', name='буше', org_id=5348561428447988,
                                    image_urls=json.dumps([
-                                    "https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height",
-                                    "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/42/bb/5f/caption.jpg?w=900&h=500&s=1"
+                                    'https://avatars.mds.yandex.net/get-altay/4377463/2a00000182500a731822c9b8459bae41d2ab/L_height',
+                                    'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/42/bb/5f/caption.jpg?w=900&h=500&s=1'
                                     ]),
-                                   logo_url="https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg",
+                                   logo_url='https://s.rbk.ru/v1_companies_s3/media/trademarks/1a677d0a-a614-4a7f-b77b-66d9d32a9d01.jpg',
                                    sales=json.dumps([
                                     Sale(90, 'Free cum for anybody!'),
                                     Sale(40, 'Not that free cum'),
@@ -113,8 +100,8 @@ class App:
                                    rating=4.4,
                                    info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
                 partner2 = Partner(type='кафе', name='бургер-кинг', org_id=5348561428715954, 
-                                   image_urls=json.dumps(["https://avatars.mds.yandex.net/get-altay/12813249/2a00000190efe540d510a58448956515d257/L_height"]),
-                                   logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/1879px-Burger_King_2020.svg.png",
+                                   image_urls=json.dumps(['https://avatars.mds.yandex.net/get-altay/12813249/2a00000190efe540d510a58448956515d257/L_height']),
+                                   logo_url='https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/1879px-Burger_King_2020.svg.png',
                                    sales=json.dumps([
                                     Sale(90, 'Free cum for anybody!'),
                                     Sale(40, 'Not that free cum'),
@@ -213,19 +200,20 @@ class App:
         # main page callback function
         @self.flask.route('/home', methods=['GET'])
         def main():
+            session['prev_page'] = 'home'
             return render_template('user/home.html',
-                                   user=pickle.loads(self.get_var("user")),
+                                   user=pickle.loads(session['user']),
                                    top_discount_partners=self.database.get_sort('Partner', 'name', 10))
 
         # partners searching flask callback function
         @self.flask.route('/partners_list', methods=['POST', 'GET'])
         def partners_list():
-            session["prev_page"] = 'partners_list'
+            session['prev_page'] = 'partners_list'
 
-            user_input = session["last_location_search"]
+            user_input = session['last_location_search']
             if request.method == 'POST':
                 user_input = request.form['search_bar']
-                session["last_location_search"] = user_input
+                session['last_location_search'] = user_input
 
             text = self.parser.parse(user_input)
             partners = []
@@ -244,9 +232,8 @@ class App:
             return render_template('user/partner.html', partner=partner)
 
         # getting back from partner page flask callback function
-        @self.flask.route('/partner_back', methods=['GET'])
+        @self.flask.route('/back', methods=['GET'])
         def partner_back():
-            print(session['prev_page'])
             return redirect(url_for(session['prev_page']), 301)
 
         ### flask inner callback functions ###
@@ -254,21 +241,21 @@ class App:
         # user location saving function
         @self.flask.route('/save_user_location/<float:lat>/<float:lon>', methods=['POST'])
         def save_user_location(lat, lon):
-            session["lat"] = lat
-            session["lon"] = lon
+            session['lat'] = lat
+            session['lon'] = lon
             return '', 204
 
         # flask location search bar callback function
         @self.flask.route('/map', methods=['POST', 'GET'])
         def map():
-            session["prev_page"] = 'map'
-            user_input = session["last_location_search"]
+            session['prev_page'] = 'map'
+            user_input = session['last_location_search']
             if request.method == 'POST':
                 if 'search_bar' in request.form:
                     user_input = request.form['search_bar']
                 else:
                     user_input = request.form.get('filter_button')
-                session["last_location_search"] = user_input
+                session['last_location_search'] = user_input
 
             if user_input != '':
                 locations = search_closest_locations(session['lat'], session['lon'], user_input)
@@ -279,7 +266,7 @@ class App:
         # flask support callback function
         @self.flask.route('/support', methods=['GET'])
         def support():
-            user_info = pickle.loads(self.get_var("user"))
+            user_info = pickle.loads(session['user'])
             
             chat = self.database.get('SupportChat', 'user', user_info.id)
             if len(chat) == 0:
@@ -305,15 +292,15 @@ class App:
         # flask user profile callback function
         @self.flask.route('/profile', methods=['GET'])
         def profile():
-            return render_template('user/profile.html', user=pickle.loads(self.get_var("user")))
+            return render_template('user/profile.html', user=pickle.loads(session['user']))
 
         # roles management flask callback function
         @self.flask.route('/admin/roles', methods=['GET'])
         def admin_roles():
-            if pickle.loads(self.get_var("user")).type in ['Superadmin', 'Admin', 'Director', 'Manager']:       
+            if pickle.loads(session['user']).type in ['Superadmin', 'Admin', 'Director', 'Manager']:       
                 return render_template('admin/roles.html',
-                                        user=pickle.loads(self.get_var("user")),
-                                        users=self.database.get_sort('User', "name", 100))
+                                        user=pickle.loads(session['user']),
+                                        users=self.database.get_sort('User', 'name', 100))
             else:
                 return render_template('error.html')
                 
@@ -321,31 +308,31 @@ class App:
         # parter editing page flask callback function
         @self.flask.route('/admin/partner', methods=['GET'])
         def admin_partner():
-            user = pickle.loads(self.get_var("user"))
+            user = pickle.loads(session['user'])
             if user.type in ['Director', 'Manager']:
-                partner_admin = self.database.get_one(user.type, "user_id", user.id)
+                partner_admin = self.database.get_one(user.type, 'user_id', user.id)
                 print(partner_admin)
                 return render_template('admin/partner.html',
                                         user=user,
-                                        partner=self.database.get_one("Partner", "id", partner_admin.partner_id))
+                                        partner=self.database.get_one('Partner', 'id', partner_admin.partner_id))
             else:
                 return render_template('error.html')
         
         # reviews flask callback function
         @self.flask.route('/admin/reviews', methods=['GET'])
         def admin_reviews():
-            if pickle.loads(self.get_var("user")).type in ['Director', 'Manager']:       
+            if pickle.loads(session['user']).type in ['Director', 'Manager']:       
                 return render_template('admin/reviews.html',
-                                        user=pickle.loads(self.get_var("user")))
+                                        user=pickle.loads(session['user']))
             else:
                 return render_template('error.html')
         
         # support flask callback function
         @self.flask.route('/admin/support', methods=['GET'])
         def admin_support():
-            if pickle.loads(self.get_var("user")).type in ['Support']:       
+            if pickle.loads(session['user']).type in ['Support']:       
                 return render_template('admin/support.html',
-                                        user=pickle.loads(self.get_var("user")))
+                                        user=pickle.loads(session['user']))
             else:
                 return render_template('error.html')
 
@@ -353,7 +340,7 @@ class App:
 
         # closest locations based on query searching function
         def search_closest_locations(lat, lon, query):
-            url = f"https://catalog.api.2gis.com/3.0/items"
+            url = f'https://catalog.api.2gis.com/3.0/items'
             locations = []
 
             text = self.parser.parse(query)
@@ -367,7 +354,7 @@ class App:
             for partner in partners:
                 params = {
                     'key': self.TWOGIS_API_KEY,
-                    'point': f"{lon},{lat}",
+                    'point': f'{lon},{lat}',
                     # 'page_size': 30,
                     'radius': 2000,  # радиус поиска в метрах
                     # 'type': 'adm_div.city',
@@ -380,7 +367,7 @@ class App:
 
                 if response.status_code != 200:
                     print('2gis error')
-                    return jsonify({"error": "Failed to fetch data from 2GIS"}), 500
+                    return jsonify({'error': 'Failed to fetch data from 2GIS'}), 500
 
                 data = response.json()
 
