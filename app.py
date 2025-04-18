@@ -359,11 +359,19 @@ class App:
                 return render_template('error.html')
                 
         
-        # parter editing page flask callback function
-        @self.flask.route('/admin/partner', methods=['GET'])
+        # parter page flask callback function
+        @self.flask.route('/admin/partner', methods=['POST', 'GET'])
         def admin_partner():
             user = self.database.get_one('User', 'id', session['user_id'])
             if user.type in ['Director', 'Manager']:
+                if request.method == "POST":
+                    partner_admin = self.database.get_one(user.type, "user_id", user.id)
+                    partner = self.database.get_one("Partner", "id", partner_admin.partner_id)
+                    for attr in ['name', 'type', 'org_id', 'logo_url', 'image_urls']:
+                        if (request.form[attr] != None):
+                            setattr(partner, attr, request.form[attr])
+                    self.database.update(partner)
+                    partner = self.database.get_one(user.type, "user_id", user.id)
                 partner_admin = self.database.get_one(user.type, 'user_id', user.id)
                 print(partner_admin)
                 return render_template('admin/partner.html',
