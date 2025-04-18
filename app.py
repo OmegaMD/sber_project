@@ -258,7 +258,7 @@ class App:
             return render_template('user/map.html', locations=[])
 
         # flask location search bar callback function
-        @self.flask.route('/filtered_location_search', methods=['GET'])
+        @self.flask.route('/filtered_location_search', methods=['POST'])
         def filtered_location_search():
             type = request.form.get('filter_button')
             session["last_location_search"] = type
