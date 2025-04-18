@@ -15,32 +15,36 @@
         </div>
     </header>
     <body>
-        <form method="post" class="row" style="height: 100%; width: 100%;" novalidate action="/admin/partner">
-            <div class="scroll-column" style="width: auto; margin-left: 1vw;">
-                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">Название</p></div>
-                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">Категория</p></div>
-                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">2ГИС-ID</p></div>
-                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">Логотип</p></div>
-                <div class="block bg-color-frame1 rounded" style="height: 12%; width: auto"><p class="text-main">Обложка</p></div>
-                <button class="block bg-color-clickable rounded" type="submit" style="height: 12%; width: auto; justify-content: center;">
-                    <p class="text-main" style="font-size: 60px;">Сохранить</p>
+        <form method="post" class="row" style="height: 100%; width: 100%;" novalidate action="partner">
+            <div class="scroll-column" style="width: 9rem; margin-left: 1rem;">
+                <div class="block bg-color-frame1 rounded" style="height: 10%; width: 100%"><p class="text-main">Название</p></div>
+                <div class="block bg-color-frame1 rounded" style="height: 10%; width: 100%"><p class="text-main">Категория</p></div>
+                <div class="block bg-color-frame1 rounded" style="height: 10%; width: 100%"><p class="text-main">2ГИС-ID</p></div>
+                <div class="block bg-color-frame1 rounded" style="height: 10%; width: 100%"><p class="text-main">Логотип</p></div>
+                <div class="block bg-color-frame1 rounded" style="height: 10%; width: 100%"><p class="text-main">Фото</p></div>
+                <div class="block bg-color-frame1 rounded" style="height: 10%; width: 100%"><p class="text-main">Описание</p></div>
+                <button class="block bg-color-clickable rounded" type="submit" style="height: 10%; width: 100%; justify-content: center;">
+                    <p class="text-main color-base">Сохранить</p>
                 </button>
             </div>
             <div class="scroll-column">
-                <div class="block" style="height: 12%;">
-                    <input class="text-mini bg-color-frame2 rounded" type="text" name="name" placeholder="{{ partner.name }}" required>
+                <div class="block" style="height: 10%;">
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="name" placeholder="{{ partner.name }}" value = "{{ partner.name }}" required>
                 </div>
-                <div class="block" style="height: 12%;">
-                    <input class="text-mini bg-color-frame2 rounded" type="text" name="type" placeholder="{{ partner.type }}" required>
+                <div class="block" style="height: 10%;">
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="type" placeholder="{{ partner.type }}" value = "{{ partner.type }}" required>
                 </div>
-                <div class="block" style="height: 12%;">
-                    <input class="text-mini bg-color-frame2 rounded" type="text" name="org_id" placeholder="{{ partner.org_id }}" required>
+                <div class="block" style="height: 10%;">
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="org_id" placeholder="{{ partner.org_id }}" value = "{{ partner.org_id }}" required>
                 </div>
-                <div class="block" style="height: 12%;">
-                    <input class="text-mini bg-color-frame2 rounded" type="text" name="logo_url" placeholder="{{ partner.logo_url }}" required>
+                <div class="block" style="height: 10%;">
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="logo_url" placeholder="{{ partner.logo_url }}" value = "{{ partner.logo_url }}" required>
                 </div>
-                <div class="block" style="height: 12%;">
-                    <input class="text-mini bg-color-frame2 rounded" type="text" name="image_url" placeholder="{{ partner.image_url }}" required>
+                <div class="block" style="height: 10%;">
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="image_urls" placeholder="{{ partner.image_url }}" value = "{{ partner.image_url }}" required>
+                </div>
+                <div class="block" style="height: 10%;">
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="info" placeholder="{{ partner.info }}" value = "{{ partner.info }}" required>
                 </div>
             </div>
         </form>
