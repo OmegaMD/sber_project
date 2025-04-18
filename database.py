@@ -99,9 +99,11 @@ class Review(DataBase.db.Model):
     id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
     user_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
     partner_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
-    reply_review_id = DataBase.db.Column(DataBase.db.Integer)
-    rate = DataBase.db.Column(DataBase.db.String, nullable=False)
+    support_id = DataBase.db.Column(DataBase.db.Integer, nullable=False)
+    # reply_review_id = DataBase.db.Column(DataBase.db.Integer)
+    rating = DataBase.db.Column(DataBase.db.Integer, nullable=False)
     desc = DataBase.db.Column(DataBase.db.String)
+    state = DataBase.db.Column(DataBase.db.String, nullable=False)
 
 
 # Supports list table model

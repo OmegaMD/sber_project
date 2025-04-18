@@ -9,18 +9,6 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="../../static/style.css"> 
-        <style>
-            .image-container {
-                display: flex;
-                overflow-x: auto; /* Enables horizontal scrolling */
-                padding: 10px;
-            }
-            .image-container img {
-                margin-right: 10px; /* Space between images */
-                border-radius: 8px; /* Optional: rounded corners */
-            }
-        </style>
-
     </head>
     <body>
         <div class="column" style="justify-content: start; align-items: start;">
@@ -34,16 +22,23 @@
                     </button>
                 </form>
             </div>
-            <div class="row" style="width: auto; height: auto; justify-content: left;">
-                {% for i in range(0, (partner.rating | int)) %}
-                <p class="material-icons" style="font-size: 3rem; margin-left: 2px; margin-right: 2px;">star</p>
-                {% endfor %}
+            <div class="row" style="width: auto; height: auto;">
+                <div class="row" style="width: auto;">
+                    {% for i in range(0, (partner.rating | int)) %}
+                    <p class="material-icons" style="font-size: 3rem; margin-left: 2px; margin-right: 2px;">star</p>
+                    {% endfor %}
 
-                {% for i in range(0, 5 - (partner.rating | int)) %}
-                <p class="material-icons" style="font-size: 3rem; margin-left: 2px; margin-right: 2px;">star_outline</p>
-                {% endfor %}
+                    {% for i in range(0, 5 - (partner.rating | int)) %}
+                    <p class="material-icons" style="font-size: 3rem; margin-left: 2px; margin-right: 2px;">star_outline</p>
+                    {% endfor %}
 
-                <p class="text-large" style="margin-left: 10px;">{{ partner.rating }}</p>
+                    <p class="text-large" style="margin-left: 10px;">{{ partner.rating }}</p>
+                </div>
+                <form action="/user/reviews" method="post" class="block" style="width: auto">
+                    <button type="submit" name="review_button" value="{{ partner.id }}">
+                        <p class="header-mini color-clickable" style="margin-left: 10px;">отзывы</p>
+                    </button>
+                </form>
             </div>
 
             <div id="images" class="scroll-row" style="height: 40%; align-items:start; justify-content: left;">
@@ -103,6 +98,30 @@
                     sales.appendChild(saleBlock)
                 });
             </script>
+
+            <div class="column" style="height: auto;">
+                {% for comment in comments %}
+                {% if (comment.desc|length) > 0 %}
+                <div class="column" style="border-top: 1px solid #8A8A8A; height: auto; width: 100%; margin: 5px;">
+                    <div class="block" style="justify-content: left; height: auto">
+                        <p class="text-large">LOL</p>
+                    </div>
+                    <div class="row" style="justify-content: left;">
+                        {% for i in range(0, comment.rating) %}
+                        <p class="material-icons color-contour1" style="font-size: 1rem; margin-left: 1px; margin-right: 1px;">star</p>
+                        {% endfor %}
+
+                        {% for i in range(0, 5 - comment.rating) %}
+                        <p class="material-icons" style="font-size: 1rem; margin-left: 1px; margin-right: 1px;">star_outline</p>
+                        {% endfor %}
+                    </div>
+                    <div class="block" style="justify-content: left; height: auto">
+                        <p class="text-mini color-contour2">LOL</p>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </body>
 </html>

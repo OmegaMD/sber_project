@@ -65,8 +65,9 @@ class App:
         def login():
             # user info setup
             session['last_location_search'] = ''
-            session['user'] = pickle.dumps(self.database.get_one('User', 'telegram', '@manager')) # telegram id should be obtained via TelegramAPI
+            session['user_id'] = self.database.get_one('User', 'telegram', '@manager').id # telegram id should be obtained via TelegramAPI
             session['prev_page'] = 'home'
+            session['saved_loc'] = 'false'
 
             return render_template('login.html')
 
@@ -74,7 +75,7 @@ class App:
         @self.flask.route('/selector', methods=['GET'])
         def selector():
             return render_template('selector.html',
-                                   user=pickle.loads(session['user']))
+                                   user=self.database.get_one('User', 'id', session['user_id']))
 
 
         ### database recreation flask callback function ###
@@ -199,6 +200,11 @@ class App:
                 chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]), user=user_support.id, support=0)
                 self.database.add(chat1)
 
+                review1 = Review(user_id=user_user.id, partner_id=partner1.id, support_id=user_support.id, rating=2, desc='кто же ожидал, что в буше такие вкусные яийчницы', state='approval')
+                self.database.add(review1)
+                review2 = Review(user_id=user_user.id, partner_id=partner1.id, support_id=user_support.id, rating=5, desc='кто же ожидал, что в буше такие вкусные яийчницы, точно не я', state='published')
+                self.database.add(review2)
+
             partners = Partner.query.all()
             return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_urls, 'logo_url': partner.logo_url, 'org_id': partner.org_id, 'sales': partner.sales} for partner in partners])
 
@@ -218,6 +224,9 @@ class App:
                     user_input = request.form.get('filter_button')
                 session['last_location_search'] = user_input
 
+            if session['saved_loc'] == 'false':
+                user_input = ''
+                session['saved_loc'] = 'true'
             if user_input != '':
                 locations = search_closest_locations(session['lat'], session['lon'], user_input)
                 return render_template('user/map.html', locations=locations)
@@ -227,7 +236,7 @@ class App:
         # flask support callback function
         @self.flask.route('/user/support', methods=['GET'])
         def support():
-            user_info = pickle.loads(session['user'])
+            user_info = self.database.get_one('User', 'id', session['user_id'])
             
             chat = self.database.get('SupportChat', 'user', user_info.id)
             if len(chat) == 0:
@@ -243,7 +252,7 @@ class App:
         def main():
             session['prev_page'] = 'home'
 
-            user = pickle.loads(session['user'])
+            user = self.database.get_one('User', 'id', session['user_id'])
             last_partners = json.loads(user.last_partners)
             size = len(last_partners)
             for i in range(0, size):
@@ -278,15 +287,31 @@ class App:
         @self.flask.route('/user/partner', methods=['POST'])
         def partner():
             partner = self.database.get('Partner', 'id', request.form['partner_button'])[0]
-            user = pickle.loads(session['user'])
+            user = self.database.get_one('User', 'id', session['user_id'])
 
             last_partners = json.loads(user.last_partners)
             last_partners = [partner.id] + [i for i in last_partners if i != partner.id]
             user.last_partners = json.dumps(last_partners)
             self.database.update(user)
 
-            session['user'] = pickle.dumps(user)
             return render_template('user/partner.html', partner=partner)
+
+        # partner reviews page flask callback function
+        @self.flask.route('/user/reviews', methods=['POST'])
+        def reviews():
+            partner_id = request.form['review_button']
+            comments = self.database.get('Review', 'partner_id', partner_id)
+            comments = [i for i in comments if i.state == 'published']
+            size = len(comments)
+            for i in range(0, size):
+                local_user = self.database.get_one('User', 'id', comments[i].user_id)
+                comments[i] = {
+                    'rating': comments[i].rating, 
+                    'desc': comments[i].desc,
+                    'user_name': local_user.name,
+                    'user_age': (datetime.datetime.now().date() - local_user.birthday).days // 365
+                    }
+            return render_template('user/reviews.html', comments=comments, partner_id=partner_id)
 
         # getting back from partner page flask callback function
         @self.flask.route('/user/back', methods=['GET'])
@@ -296,7 +321,7 @@ class App:
         # flask user profile callback function
         @self.flask.route('/user/profile', methods=['GET'])
         def profile():
-            return render_template('user/profile.html', user=pickle.loads(session['user']))
+            return render_template('user/profile.html', user=self.database.get_one('User', 'id', session['user_id']))
 
 
         ### flask inner callback functions ###
@@ -326,9 +351,9 @@ class App:
         # roles management flask callback function
         @self.flask.route('/admin/roles', methods=['GET'])
         def admin_roles():
-            if pickle.loads(session['user']).type in ['Superadmin', 'Admin', 'Director', 'Manager']:       
+            if self.database.get_one('User', 'id', session['user_id']).type in ['Superadmin', 'Admin', 'Director', 'Manager']:       
                 return render_template('admin/roles.html',
-                                        user=pickle.loads(session['user']),
+                                        user=self.database.get_one('User', 'id', session['user_id']),
                                         users=self.database.get_sort('User', 'name', 100))
             else:
                 return render_template('error.html')
@@ -337,7 +362,7 @@ class App:
         # parter editing page flask callback function
         @self.flask.route('/admin/partner', methods=['GET'])
         def admin_partner():
-            user = pickle.loads(session['user'])
+            user = self.database.get_one('User', 'id', session['user_id'])
             if user.type in ['Director', 'Manager']:
                 partner_admin = self.database.get_one(user.type, 'user_id', user.id)
                 print(partner_admin)
@@ -350,18 +375,18 @@ class App:
         # reviews flask callback function
         @self.flask.route('/admin/reviews', methods=['GET'])
         def admin_reviews():
-            if pickle.loads(session['user']).type in ['Director', 'Manager']:       
+            if self.database.get_one('User', 'id', session['user_id']).type in ['Director', 'Manager']:       
                 return render_template('admin/reviews.html',
-                                        user=pickle.loads(session['user']))
+                                        user=self.database.get_one('User', 'id', session['user_id']))
             else:
                 return render_template('error.html')
         
         # support flask callback function
         @self.flask.route('/admin/support', methods=['GET'])
         def admin_support():
-            if pickle.loads(session['user']).type in ['Support']:       
+            if self.database.get_one('User', 'id', session['user_id']).type in ['Support']:       
                 return render_template('admin/support.html',
-                                        user=pickle.loads(session['user']))
+                                        user=self.database.get_one('User', 'id', session['user_id']))
             else:
                 return render_template('error.html')
 
