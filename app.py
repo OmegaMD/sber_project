@@ -80,8 +80,9 @@ class App:
         @self.flask.route('/')
         def login():
             # user info setup
-            session["last_location_search"] = ""
+            session["last_location_search"] = "кафе"
             session["user"] = pickle.dumps(self.database.get_one('User', 'telegram', '@manager')) # telegram id should be obtained via TelegramAPI
+            session["prev_page"] = ""
 
             return render_template('login.html')
             # partner = self.database.get('Partner', 'name', 'буше')[0]
@@ -217,9 +218,15 @@ class App:
                                    top_discount_partners=self.database.get_sort('Partner', 'name', 10))
 
         # partners searching flask callback function
-        @self.flask.route('/partners_list', methods=['POST'])
+        @self.flask.route('/partners_list', methods=['POST', 'GET'])
         def partners_list():
-            user_input = request.form['search_bar']
+            session["prev_page"] = 'partners_list'
+
+            user_input = session["last_location_search"]
+            if request.method == 'POST':
+                user_input = request.form['search_bar']
+                session["last_location_search"] = user_input
+
             text = self.parser.parse(user_input)
             partners = []
 
@@ -236,6 +243,12 @@ class App:
             partner = self.database.get('Partner', 'id', request.form['partner_button'])[0]
             return render_template('user/partner.html', partner=partner)
 
+        # getting back from partner page flask callback function
+        @self.flask.route('/partner_back', methods=['GET'])
+        def partner_back():
+            print(session['prev_page'])
+            return redirect(url_for(session['prev_page']), 301)
+
         ### flask inner callback functions ###
 
         # user location saving function
@@ -248,22 +261,20 @@ class App:
         # flask location search bar callback function
         @self.flask.route('/map', methods=['POST', 'GET'])
         def map():
+            session["prev_page"] = 'map'
+            user_input = session["last_location_search"]
             if request.method == 'POST':
-                user_input = request.form['location_search_bar']
+                if 'search_bar' in request.form:
+                    user_input = request.form['search_bar']
+                else:
+                    user_input = request.form.get('filter_button')
                 session["last_location_search"] = user_input
 
-                if user_input != '':
-                    locations = search_closest_locations(session['lat'], session['lon'], user_input)
-                    return render_template('user/map.html', locations=locations)
+            if user_input != '':
+                locations = search_closest_locations(session['lat'], session['lon'], user_input)
+                return render_template('user/map.html', locations=locations)
             return render_template('user/map.html', locations=[])
 
-        # flask location search bar callback function
-        @self.flask.route('/filtered_location_search', methods=['POST'])
-        def filtered_location_search():
-            type = request.form.get('filter_button')
-            session["last_location_search"] = type
-            locations = search_closest_locations(session['lat'], session['lon'], type)
-            return render_template('user/map.html', locations=locations)
 
         # flask support callback function
         @self.flask.route('/support', methods=['GET'])

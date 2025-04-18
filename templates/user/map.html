@@ -36,7 +36,7 @@
                     </div>
                     <form method="post" class="row" style="width: 90%" novalidate action="map">
                         <div class="block" style="width: 89%">
-                            <input type="text" name="location_search_bar" placeholder="Поиск" required>
+                            <input type="text" name="search_bar" placeholder="Поиск" required>
                         </div>
                         <div class="block" style="width: 11%;">
                             <button type="submit" style="width: 100%; height: 100%; justify-content: left;"><p class="material-symbols-outlined color-contour2" style="font-size: 30px; margin: 0">search</p></button>
@@ -74,11 +74,11 @@
                     const marker = new mapgl.HtmlMarker(map, {
                         coordinates: [location.point.lon, location.point.lat],
                         html: '\
-                        <div class="row bg-color-base" style="width: 40px; height: 40px; border-radius: 50%;">\
-                            <div style="height: 85%; width: 85%">\
+                        <form action="partner" method="post" class="row bg-color-base" style="width: 40px; height: 40px; border-radius: 50%;">\
+                            <button type="submit" name="partner_button" value=' + location.partner_id.toString() + ' style="height: 85%; width: 85%">\
                                 <img class="expand-img" style="border-radius: 50%;" src="' + location.logo + '"></img>\
-                            </div>\
-                        </div>'
+                            </button>\
+                        </form>'
                     });
                 }); /* <img class="expand-img" style="border-radius: 50%;" src="' + location.logo + '" onmouseover="push_location_info(\'' + location.img + '\')" onmouseout="pop_location_info()" ></img>\ */
             });

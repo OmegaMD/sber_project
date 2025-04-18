@@ -28,9 +28,11 @@
                 <div class="block" style="width: auto">
                     <p class="header-large" style="margin-left: 10px;">{{ partner.name }}</p>
                 </div>
-                <div class="block" style="width: auto">
-                    <p class="material-symbols-outlined color-contour2" style="font-size: 2rem; margin: 0 10px 0 0">arrow_back</p>
-                </div>
+                <form action="partner_back" method="get" style="width: auto">
+                    <button type="submit" class="block" style="width: auto">
+                        <p class="material-symbols-outlined color-contour2" style="font-size: 2rem; margin: 0 10px 0 0">arrow_back</p>
+                    </button>
+                </form>
             </div>
             <div class="row" style="width: auto; height: auto; justify-content: left;">
                 {% for i in range(0, (partner.rating | int)) %}
