@@ -39,12 +39,6 @@ class App:
         self.flask.secret_key = 'GiantAlienDildo'
         self.socketio = SocketIO(self.flask)
 
-        # device type
-        # self.device_type = DeviceType.UNKNOWN
-
-        # base directory for templates (htmls)
-        # self.base_dir = 'computer/'
-
         # API token and secret for Telegram login
         self.API_TOKEN = settings.API_TOKEN       
 
@@ -98,7 +92,8 @@ class App:
                                     Sale(40, 'Not that free cum'),
                                    ], cls=SaleEncoder),
                                    rating=4.4,
-                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.',
+                                   best_sale_amount=90)
                 partner2 = Partner(type='кафе', name='бургер-кинг', org_id=5348561428715954, 
                                    image_urls=json.dumps(['https://avatars.mds.yandex.net/get-altay/12813249/2a00000190efe540d510a58448956515d257/L_height']),
                                    logo_url='https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/1879px-Burger_King_2020.svg.png',
@@ -107,7 +102,8 @@ class App:
                                     Sale(40, 'Not that free cum'),
                                    ], cls=SaleEncoder),
                                    rating=4.4,
-                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.',
+                                   best_sale_amount=90)
                 partner3 = Partner(type='магазин', name='буквоед', org_id=5348561428522889, 
                                    image_urls=json.dumps(['https://tk-pik.ru/upload/iblock/443/jwv04az84jls77l83kntpr2t4ro6zivi.jpg']),
                                    logo_url='https://habrastorage.org/getpro/moikrug/uploads/company/100/006/555/7/logo/medium_d5e9f242395f4a3c48abd90527fa74ce.png',
@@ -116,7 +112,8 @@ class App:
                                     Sale(40, 'Not that free cum'),
                                    ], cls=SaleEncoder),
                                    rating=4.4,
-                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.',
+                                   best_sale_amount=90)
                 partner4 = Partner(type='аптека', name='невис', org_id=5348561428415840, 
                                    image_urls=json.dumps(['https://s.zagranitsa.com/images/guides/20578/original/248baffaea928f45c0bb102e02dc1336.jpg?1441900197']),
                                    logo_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFV7M59LEzxJmcjxxImrEbJPrNCrs-zSqvlg&s',
@@ -125,7 +122,8 @@ class App:
                                     Sale(40, 'Not that free cum'),
                                    ], cls=SaleEncoder),
                                    rating=4.4,
-                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.',
+                                   best_sale_amount=90)
                 partner5 = Partner(type='заправка', name='лукойл', org_id=5348561428486914, 
                                    image_urls=json.dumps(['https://iy.kommersant.ru/Issues.photo/Partners_Docs/2024/11/22/KMO_111307_61034_1_t222_145337.jpg']),
                                    logo_url='https://cdn.forbes.ru/forbes-static/new/2021/11/Company-619d3288c340a-619d3288e8cde.png',
@@ -134,7 +132,8 @@ class App:
                                     Sale(40, 'Not that free cum'),
                                    ], cls=SaleEncoder),
                                    rating=4.4,
-                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.',
+                                   best_sale_amount=90)
                 partner6 = Partner(type='заправка', name='роснефть', org_id=5348561428520571, 
                                    image_urls=json.dumps(['https://hdlt.ru/assets/template/upload/indoor/azs_rosneft/IMG_4538.jpg']),
                                    logo_url='https://foni.papik.pro/uploads/posts/2024-10/foni-papik-pro-8xho-p-kartinki-rosneft-na-prozrachnom-fone-17.png',
@@ -143,7 +142,8 @@ class App:
                                     Sale(40, 'Not that free cum'),
                                    ], cls=SaleEncoder),
                                    rating=4.4,
-                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.',
+                                   best_sale_amount=90)
                 partner7 = Partner(type='аптека', name='лека-фарм', org_id=5348561428417650, 
                                    image_urls=json.dumps(['https://avatars.mds.yandex.net/get-altay/5751673/2a0000017cc56582485d205b1bcc888295b3/L_height']),
                                    logo_url='https://lekafarm.ru/template/images/logo.png',
@@ -152,7 +152,8 @@ class App:
                                     Sale(40, 'Not that free cum'),
                                    ], cls=SaleEncoder),
                                    rating=4.4,
-                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.',
+                                   best_sale_amount=90)
                 partner8 = Partner(type='магазин', name='перекрёсток', org_id=5348561428466924, 
                                    image_urls=json.dumps(['https://static.tildacdn.com/tild6131-6632-4564-a262-633433623838/1a8a32_ca8931ce69e94.jpg']),
                                    logo_url='https://www.perekrestok.ru/logo.png',
@@ -161,7 +162,8 @@ class App:
                                     Sale(40, 'Not that free cum'),
                                    ], cls=SaleEncoder),
                                    rating=4.4,
-                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.')
+                                   info='«Быть живым в каждый момент времени» — это парадигма буше, которая лежит в основе всего, что мы делаем, аж с 10 февраля 1999 года, когда открылось первое буше на улице Разъезжая дом 13.',
+                                   best_sale_amount=90)
                 self.database.add(partner1)
                 self.database.add(partner2)
                 self.database.add(partner3)
@@ -171,12 +173,12 @@ class App:
                 self.database.add(partner7)
                 self.database.add(partner8)
 
-                user_superadmin = User(type='Superadmin', name='Superadminovich', email='superadmin@gmail.com', telegram='@superadmin', birthday=datetime.date(2008, 1, 25))
-                user_admin = User(type='Admin', name='Adminovich', email='admin@gmail.com', telegram='@admin', birthday=datetime.date(2008, 4, 16))
-                user_support = User(type='Support', name='Supportovich', email='support@gmail.com', telegram='@support', birthday=datetime.date(2008, 3, 29))
-                user_director = User(type='Director', name='Directorovich', email='director@gmail.com', telegram='@director', birthday=datetime.date(2008, 2, 1))
-                user_manager = User(type='Manager', name='Managerorovich', email='manager@gmail.com', telegram='@manager', birthday=datetime.date(1945, 5, 9))
-                user_user = User(type='User', name='Userovich', email='user@gmail.com', telegram='@user', birthday=datetime.date(2001, 9, 11))
+                user_superadmin = User(type='Superadmin', name='Superadminovich', email='superadmin@gmail.com', telegram='@superadmin', birthday=datetime.date(2008, 1, 25), last_partners="[]")
+                user_admin = User(type='Admin', name='Adminovich', email='admin@gmail.com', telegram='@admin', birthday=datetime.date(2008, 4, 16), last_partners="[]")
+                user_support = User(type='Support', name='Supportovich', email='support@gmail.com', telegram='@support', birthday=datetime.date(2008, 3, 29), last_partners="[]")
+                user_director = User(type='Director', name='Directorovich', email='director@gmail.com', telegram='@director', birthday=datetime.date(2008, 2, 1), last_partners="[]")
+                user_manager = User(type='Manager', name='Managerorovich', email='manager@gmail.com', telegram='@manager', birthday=datetime.date(1945, 5, 9), last_partners="[]")
+                user_user = User(type='User', name='Userovich', email='user@gmail.com', telegram='@user', birthday=datetime.date(2001, 9, 11), last_partners="[]")
                 self.database.add(user_superadmin)
                 self.database.add(user_admin)
                 self.database.add(user_support)
@@ -201,9 +203,17 @@ class App:
         @self.flask.route('/home', methods=['GET'])
         def main():
             session['prev_page'] = 'home'
+
+            user = pickle.loads(session['user'])
+            last_partners = json.loads(user.last_partners)
+            size = len(last_partners)
+            for i in range(0, size):
+                last_partners[i] = self.database.get_one('Partner', 'id', last_partners[i])
             return render_template('user/home.html',
-                                   user=pickle.loads(session['user']),
-                                   top_discount_partners=self.database.get_sort('Partner', 'name', 10))
+                                   user=user,
+                                   last_partners=last_partners,
+                                   top_discount_partners=self.database.get_sort('Partner', 'best_sale_amount', 10),
+                                   top_rating_partners=self.database.get_sort('Partner', 'rating', 10))
 
         # partners searching flask callback function
         @self.flask.route('/partners_list', methods=['POST', 'GET'])
@@ -229,6 +239,14 @@ class App:
         @self.flask.route('/partner', methods=['POST'])
         def partner():
             partner = self.database.get('Partner', 'id', request.form['partner_button'])[0]
+            user = pickle.loads(session['user'])
+
+            last_partners = json.loads(user.last_partners)
+            last_partners = [partner.id] + [i for i in last_partners if i != partner.id]
+            user.last_partners = json.dumps(last_partners)
+            self.database.update(user)
+
+            session['user'] = pickle.dumps(user)
             return render_template('user/partner.html', partner=partner)
 
         # getting back from partner page flask callback function

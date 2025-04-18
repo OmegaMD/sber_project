@@ -77,6 +77,7 @@ class User(DataBase.db.Model):
     email = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     telegram = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     birthday = DataBase.db.Column(DataBase.db.Date, nullable=False) 
+    last_partners = DataBase.db.Column(DataBase.db.String, nullable=False)
     
 
 # Partner table model
@@ -90,6 +91,7 @@ class Partner(DataBase.db.Model):
     sales = DataBase.db.Column(DataBase.db.String, nullable=False)
     rating = DataBase.db.Column(DataBase.db.Float, nullable=False)
     info = DataBase.db.Column(DataBase.db.String, nullable=False)
+    best_sale_amount = DataBase.db.Column(DataBase.db.Integer, nullable=False)
 
 
 # Review table models
