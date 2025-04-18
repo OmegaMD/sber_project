@@ -58,6 +58,7 @@ class App:
 
         self.TWOGIS_API_KEY = 'ab7b70c9-9132-468f-8b4c-87177a2418cf'
 
+
         ### flask pages callback functions not role based ###
 
         # home flask function
@@ -65,7 +66,7 @@ class App:
         def login():
             # user info setup
             session['last_location_search'] = ''
-            session['user_id'] = self.database.get_one('User', 'telegram', '@manager').id # telegram id should be obtained via TelegramAPI
+            session['user_id'] = self.database.get_one('User', 'telegram', '@support').id # telegram id should be obtained via TelegramAPI
             session['prev_page'] = 'home'
             session['saved_loc'] = 'false'
 
@@ -403,8 +404,35 @@ class App:
 
         @self.flask.route('/manager/reviews', methods=['GET'])
         def manager_reviews():
-            
+
             return render_template('manager/reviews.html')
+
+
+        ### support flask callback functions ###
+
+        @self.flask.route('/support/reviews', methods=['GET', 'POST'])
+        def support_reviews():
+            if request.method == 'POST':
+                comment = self.database.get_one('Review', 'id', request.form['comment_id'])
+                if request.form['button'] == 'publish':
+                    comment.state = 'published'
+                else:
+                    comment.state = 'denied'
+                self.database.update(comment)
+
+            comments = self.database.get('Review', 'support_id', session['user_id'])
+            comments = [i for i in comments if i.state == 'approval']
+            size = len(comments)
+            for i in range(0, size):
+                local_user = self.database.get_one('User', 'id', comments[i].user_id)
+                comments[i] = {
+                    'rating': comments[i].rating, 
+                    'desc': comments[i].desc,
+                    'user_name': local_user.name,
+                    'user_age': (datetime.datetime.now().date() - local_user.birthday).days // 365,
+                    'id': comments[i].id
+                    }
+            return render_template('support/reviews.html', comments=comments)
 
         ### help functions ###
 

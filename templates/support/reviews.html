@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="../../static/style.css">
+    </head>
+    <header style="height: 50px;">
+        <div class="row" style="justify-content: start; height: 50px; width: 100%">
+            <div class="block" style="width: auto">
+                <img class="expand-img" src="https://toplogos.ru/images/logo-sber.png"></img>
+            </div>
+        </div>
+    </header>
+    <body>
+        <div class="column" style="justify-content: start; align-items: start;">
+            <div class="row" style="height: 10%; justify-content: space-between;">
+                <div class="block" style="width: auto">
+                    <p class="header-large" style="margin-left: 10px;">отзывы</p>
+                </div>
+            </div>
+
+            <div class="column" style="height: auto">
+                <div class="row" style="width: 95%; height: auto; margin-bottom: 50px">
+                    {% for comment in comments %}
+                    <div class="column" style="width: 90%; height: auto">
+                        <div class="block" style="height: auto; justify-content: left;">
+                            <p class="header-mini" style="margin: 0">{{ comment.user_name }}, {{ comment.user_age }}</p>
+                        </div>
+                        <div class="row" style="height: auto; justify-content: left;">
+                            {% for i in range(0, comment.rating) %}
+                            <p class="material-icons" style="font-size: 1rem; margin: 0; margin-right: 2px;">star</p>
+                            {% endfor %}
+
+                            {% for i in range(0, 5 - comment.rating) %}
+                            <p class="material-icons" style="font-size: 1rem; margin: 0; margin-right: 2px;">star_outline</p>
+                            {% endfor %}
+                        </div>
+                        <div class="block" style="height: auto; justify-content: left;">
+                            <p class="text-mini color-contour2" style="margin: 0">{{ comment.desc }}</p>
+                        </div>
+                    </div>
+                    <div class="block" style="width: 10%">
+                        <form action="/support/reviews" method="post" style="width: 100%; height: 100%">
+                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                            <button type="submit" name="button" value="deny" class="block" style="width: auto">
+                                <p class="material-symbols-outlined color-warning" style="font-size: 2rem; margin: 0 10px 0 0">close</p>
+                            </button>
+                            <button type="submit" name="button" value="publish" class="block" style="width: auto">
+                                <p class="material-symbols-outlined color-clickable" style="font-size: 2rem; margin: 0 10px 0 0">check</p>
+                            </button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
