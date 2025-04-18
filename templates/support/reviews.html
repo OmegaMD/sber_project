@@ -26,35 +26,37 @@
             </div>
 
             <div class="column" style="height: auto">
-                <div class="row" style="width: 95%; height: auto; margin-bottom: 50px">
+                <div class="column" style="width: 95%; height: auto; margin-bottom: 50px">
                     {% for comment in comments %}
-                    <div class="column" style="width: 90%; height: auto">
-                        <div class="block" style="height: auto; justify-content: left;">
-                            <p class="header-mini" style="margin: 0">{{ comment.user_name }}, {{ comment.user_age }}</p>
-                        </div>
-                        <div class="row" style="height: auto; justify-content: left;">
-                            {% for i in range(0, comment.rating) %}
-                            <p class="material-icons" style="font-size: 1rem; margin: 0; margin-right: 2px;">star</p>
-                            {% endfor %}
+                    <div class="row" style="height: auto">
+                        <div class="column" style="width: 90%; height: auto">
+                            <div class="block" style="height: auto; justify-content: left;">
+                                <p class="header-mini" style="margin: 0">{{ comment.user_name }}, {{ comment.user_age }}</p>
+                            </div>
+                            <div class="row" style="height: auto; justify-content: left;">
+                                {% for i in range(0, comment.rating) %}
+                                <p class="material-icons" style="font-size: 1rem; margin: 0; margin-right: 2px;">star</p>
+                                {% endfor %}
 
-                            {% for i in range(0, 5 - comment.rating) %}
-                            <p class="material-icons" style="font-size: 1rem; margin: 0; margin-right: 2px;">star_outline</p>
-                            {% endfor %}
+                                {% for i in range(0, 5 - comment.rating) %}
+                                <p class="material-icons" style="font-size: 1rem; margin: 0; margin-right: 2px;">star_outline</p>
+                                {% endfor %}
+                            </div>
+                            <div class="block" style="height: auto; justify-content: left;">
+                                <p class="text-mini color-contour2" style="margin: 0">{{ comment.desc }}</p>
+                            </div>
                         </div>
-                        <div class="block" style="height: auto; justify-content: left;">
-                            <p class="text-mini color-contour2" style="margin: 0">{{ comment.desc }}</p>
+                        <div class="block" style="width: 10%">
+                            <form action="/support/reviews" method="post" style="width: 100%; height: 100%">
+                                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                <button type="submit" name="button" value="deny" class="block" style="width: auto">
+                                    <p class="material-symbols-outlined color-warning" style="font-size: 2rem; margin: 0 10px 0 0">close</p>
+                                </button>
+                                <button type="submit" name="button" value="publish" class="block" style="width: auto">
+                                    <p class="material-symbols-outlined color-clickable" style="font-size: 2rem; margin: 0 10px 0 0">check</p>
+                                </button>
+                            </form>
                         </div>
-                    </div>
-                    <div class="block" style="width: 10%">
-                        <form action="/support/reviews" method="post" style="width: 100%; height: 100%">
-                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                            <button type="submit" name="button" value="deny" class="block" style="width: auto">
-                                <p class="material-symbols-outlined color-warning" style="font-size: 2rem; margin: 0 10px 0 0">close</p>
-                            </button>
-                            <button type="submit" name="button" value="publish" class="block" style="width: auto">
-                                <p class="material-symbols-outlined color-clickable" style="font-size: 2rem; margin: 0 10px 0 0">check</p>
-                            </button>
-                        </form>
                     </div>
                     {% endfor %}
                 </div>

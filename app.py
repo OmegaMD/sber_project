@@ -300,7 +300,17 @@ class App:
         # partner reviews page flask callback function
         @self.flask.route('/user/reviews', methods=['POST'])
         def reviews():
-            partner_id = request.form['review_button']
+            partner_id = 0
+
+            if 'review_button' in request.form:
+                partner_id = request.form['review_button']
+            else:
+                partner_id = request.form['partner_id']
+                desc = request.form['desc']
+                support_id = self.database.get_one('User', 'telegram', '@support').id
+                comment = Review(user_id=session['user_id'], partner_id=partner_id, support_id=support_id, rating=2, desc=desc, state='approval')
+                self.database.add(comment)
+            
             comments = self.database.get('Review', 'partner_id', partner_id)
             comments = [i for i in comments if i.state == 'published']
             size = len(comments)
