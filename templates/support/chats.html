@@ -26,7 +26,7 @@
                 <form action="/support/chats" method="post" style="width: 100%; height: auto">
                     <button name="chatButton" value="{{ header.chat_id }}" class="column bg-color-frame1" style="border-bottom: 1px solid #d8d8d8; height: auto; align-items: start; padding-bottom: 5%;">
                         <p class="text-large">{{ header.user_name }}</p>
-                        <div class="text-mini color-contour2 " style="overflow: hidden; inline-size: 100%;">{{ header.last_message.message }}</div>
+                        <div class="text-mini color-contour2" style="height: 1rem; overflow-x: hidden; white-space: normal">{{ header.last_message.message }}</div>
                     </button>
                 </form>
                 {% endfor %}
