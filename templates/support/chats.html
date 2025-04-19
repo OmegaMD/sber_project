@@ -24,9 +24,9 @@
             <div class="scroll-column bg-color-frame1" style="width: 30%; align-items: start;">
                 {% for header in headers %}
                 <form action="/support/chats" method="post" style="width: 100%; height: auto">
-                    <button name="chatButton" value="{{ header.chat_id }}" class="column bg-color-frame1" style="border-bottom: 1px solid #d8d8d8; height: auto; align-items: start; padding-bottom: 5%">
+                    <button name="chatButton" value="{{ header.chat_id }}" class="column bg-color-frame1" style="border-bottom: 1px solid #d8d8d8; height: auto; align-items: start; padding-bottom: 5%;">
                         <p class="text-large">{{ header.user_name }}</p>
-                        <p class="text-mini color-contour2">{{ header.last_message.message }}</p>
+                        <div class="text-mini color-contour2 " style="overflow: hidden; inline-size: 100%;">{{ header.last_message.message }}</div>
                     </button>
                 </form>
                 {% endfor %}

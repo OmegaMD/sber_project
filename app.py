@@ -198,7 +198,7 @@ class App:
                 support1 = Support(user_id=user_support.id)
                 self.database.add(support1)
 
-                chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]), user=user_user.id, support=user_support.id)
+                chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Здравствуйте! Помогите, как открыть карту?'}, {'sender': 'support', 'message': 'Здравствуйте! Для открытие карты просто выберите символ карты на панели внизу'}]), user=user_user.id, support=user_support.id)
                 self.database.add(chat1)
 
                 # review1 = Review(user_id=user_user.id, partner_id=partner1.id, support_id=user_support.id, rating=2, desc='кто же ожидал, что в буше такие вкусные яийчницы', state='approval')
