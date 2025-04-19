@@ -238,14 +238,19 @@ class App:
         @self.flask.route('/user/support', methods=['GET', 'POST'])
         def support():
             if request.method == 'POST':
-                support = self.database.get_one('User', 'telegram', '@support')
-                chat = SupportChat(messages='[]', user=session['user_id'], support=support.id)
-                self.database.add(chat)
+                if not self.database.get('SupportChat', 'user', session['user_id']):
+                    support = self.database.get_one('User', 'telegram', '@support')
+                    chat = SupportChat(messages='[]', user=session['user_id'], support=support.id)
+                    self.database.add(chat)
 
             user_info = self.database.get_one('User', 'id', session['user_id'])
             
             chat = self.database.get('SupportChat', 'user', user_info.id)
+<<<<<<< Updated upstream
             #print(chat)
+=======
+            # print(chat)
+>>>>>>> Stashed changes
             if len(chat) == 0:
                 # chat = SupportChat(messages='[]', user=user_info.id, support=0)
                 # self.database.add(chat)
@@ -366,8 +371,13 @@ class App:
         # flask socket io handling function
         @self.socketio.on('message')
         def handle_message(msg):
+<<<<<<< Updated upstream
             #print('Message received: ' + json.loads(msg)['text'])
             #print('Sender:           ' + json.loads(msg)['sender_type'])
+=======
+            # print('Message received: ' + json.loads(msg)['text'])
+            # print('Sender:           ' + json.loads(msg)['sender_type'])
+>>>>>>> Stashed changes
 
             user_id = 0
             if json.loads(msg)['sender_type'] == 'user':
@@ -410,7 +420,11 @@ class App:
                     self.database.update(partner)
                     partner = self.database.get_one(user.type, "user_id", user.id)
                 partner_admin = self.database.get_one(user.type, 'user_id', user.id)
+<<<<<<< Updated upstream
                 #print(partner_admin)
+=======
+                # print(partner_admin)
+>>>>>>> Stashed changes
                 return render_template('admin/partner.html',
                                         user=user,
                                         partner=self.database.get_one('Partner', 'id', partner_admin.partner_id))
@@ -485,9 +499,12 @@ class App:
             headers = []
             
             i = 0
+            # print(chats)
             for chat in chats:
                 messages = json.loads(chat.messages)
-                last_message = messages[len(messages) - 1]
+                last_message = 'Пока сообщений нет'
+                if len(messages) > 0:
+                    last_message = messages[len(messages) - 1]
                 user = self.database.get_one('User', 'id', chat.user)
                 headers.append({
                     "chat_id": i,
@@ -502,6 +519,9 @@ class App:
                 ind = 0
                 if request.method == 'POST':
                     ind = int(request.form['chatButton'])
+                if ind >= len(chats):
+                    return render_template('support/chats.html', headers=headers, messages=messages, nochats=nochats, user_id=user_id, support_id=session['user_id'])
+
                 messages = json.loads(chats[ind].messages)
                 user_id = chats[ind].user
                 nochats = False
@@ -538,7 +558,11 @@ class App:
                 response = requests.get(url, params=params)
 
                 if response.status_code != 200:
+<<<<<<< Updated upstream
                     #print('2gis error')
+=======
+                    # print('2gis error')
+>>>>>>> Stashed changes
                     return jsonify({'error': 'Failed to fetch data from 2GIS'}), 500
 
                 data = response.json()

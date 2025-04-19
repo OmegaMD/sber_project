@@ -80,11 +80,11 @@
                 if (JSON.parse(msg)['sender'] == user_id) {
                     const messageHolder = document.createElement('div');
                     messageHolder.className = 'block';
-                    messageHolder.style = 'height: auto; justify-content: start;';
+                    messageHolder.style = 'height: auto; justify-content: end;';
 
                     const messageBubble = document.createElement('div');
                     messageBubble.className = 'block bg-color-clickable';
-                    messageBubble.style = 'width: auto; max-width: 300px; height: auto; margin: 5px; padding: 5px; border-radius: 10px 10px 10px 0;';
+                    messageBubble.style = 'width: auto; max-width: 300px; height: auto; margin: 5px; padding: 5px; border-radius: 10px 10px 0 10px;';
 
                     const messageText = document.createElement('p');
                     messageText.className = 'text-mini';
@@ -95,14 +95,14 @@
                     messagesDiv.appendChild(messageHolder);
                     messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to the bottom
                 }
-                else if (JSON.parse(msg)['reciever'] == user_id) {
+                else if (JSON.parse(msg)['receiver'] == user_id) {
                     const messageHolder = document.createElement('div');
                     messageHolder.className = 'block';
-                    messageHolder.style = 'height: auto; justify-content: end;';
+                    messageHolder.style = 'height: auto; justify-content: start;';
 
                     const messageBubble = document.createElement('div');
                     messageBubble.className = 'block bg-color-frame1';
-                    messageBubble.style = 'width: auto; max-width: 300px; height: auto; margin: 5px; padding: 5px; border-radius: 10px 10px 0 10px;';
+                    messageBubble.style = 'width: auto; max-width: 300px; height: auto; margin: 5px; padding: 5px; border-radius: 10px 10px 10px 0;';
 
                     const messageText = document.createElement('p');
                     messageText.className = 'text-mini';
