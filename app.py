@@ -246,11 +246,7 @@ class App:
             user_info = self.database.get_one('User', 'id', session['user_id'])
             
             chat = self.database.get('SupportChat', 'user', user_info.id)
-<<<<<<< Updated upstream
-            #print(chat)
-=======
-            # print(chat)
->>>>>>> Stashed changes
+
             if len(chat) == 0:
                 # chat = SupportChat(messages='[]', user=user_info.id, support=0)
                 # self.database.add(chat)
@@ -371,13 +367,6 @@ class App:
         # flask socket io handling function
         @self.socketio.on('message')
         def handle_message(msg):
-<<<<<<< Updated upstream
-            #print('Message received: ' + json.loads(msg)['text'])
-            #print('Sender:           ' + json.loads(msg)['sender_type'])
-=======
-            # print('Message received: ' + json.loads(msg)['text'])
-            # print('Sender:           ' + json.loads(msg)['sender_type'])
->>>>>>> Stashed changes
 
             user_id = 0
             if json.loads(msg)['sender_type'] == 'user':
@@ -420,11 +409,6 @@ class App:
                     self.database.update(partner)
                     partner = self.database.get_one(user.type, "user_id", user.id)
                 partner_admin = self.database.get_one(user.type, 'user_id', user.id)
-<<<<<<< Updated upstream
-                #print(partner_admin)
-=======
-                # print(partner_admin)
->>>>>>> Stashed changes
                 return render_template('admin/partner.html',
                                         user=user,
                                         partner=self.database.get_one('Partner', 'id', partner_admin.partner_id))
@@ -558,11 +542,6 @@ class App:
                 response = requests.get(url, params=params)
 
                 if response.status_code != 200:
-<<<<<<< Updated upstream
-                    #print('2gis error')
-=======
-                    # print('2gis error')
->>>>>>> Stashed changes
                     return jsonify({'error': 'Failed to fetch data from 2GIS'}), 500
 
                 data = response.json()
