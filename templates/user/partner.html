@@ -32,7 +32,7 @@
                     <p class="material-icons" style="font-size: 3rem; margin-left: 2px; margin-right: 2px;">star_outline</p>
                     {% endfor %}
 
-                    <p class="text-large" style="margin-left: 10px;">{{ ((partner.rating * 10)|round) * 0.1 }}</p>
+                    <p class="text-large" style="margin-left: 10px;">{{ ((partner.rating * 10)|round) / 10 }}</p>
                 </div>
                 <form action="/user/reviews" method="post" class="block" style="width: auto">
                     <button type="submit" name="review_button" value="{{ partner.id }}">
