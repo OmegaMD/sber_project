@@ -201,10 +201,10 @@ class App:
                 chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]), user=user_support.id, support=0)
                 self.database.add(chat1)
 
-                review1 = Review(user_id=user_user.id, partner_id=partner1.id, support_id=user_support.id, rating=2, desc='кто же ожидал, что в буше такие вкусные яийчницы', state='approval')
-                self.database.add(review1)
-                review2 = Review(user_id=user_user.id, partner_id=partner1.id, support_id=user_support.id, rating=5, desc='кто же ожидал, что в буше такие вкусные яийчницы, точно не я', state='published')
-                self.database.add(review2)
+                # review1 = Review(user_id=user_user.id, partner_id=partner1.id, support_id=user_support.id, rating=2, desc='кто же ожидал, что в буше такие вкусные яийчницы', state='approval')
+                # self.database.add(review1)
+                # review2 = Review(user_id=user_user.id, partner_id=partner1.id, support_id=user_support.id, rating=5, desc='кто же ожидал, что в буше такие вкусные яийчницы, точно не я', state='published')
+                # self.database.add(review2)
 
             partners = Partner.query.all()
             return jsonify([{'type': partner.type, 'name': partner.name, 'image_url': partner.image_urls, 'logo_url': partner.logo_url, 'org_id': partner.org_id, 'sales': partner.sales} for partner in partners])
@@ -307,10 +307,20 @@ class App:
             else:
                 partner_id = request.form['partner_id']
                 desc = request.form['desc']
-                rating = request.form['rating']
-                print(rating)
+                rating = float(request.form['rating'])
                 support_id = self.database.get_one('User', 'telegram', '@support').id
-                comment = Review(user_id=session['user_id'], partner_id=partner_id, support_id=support_id, rating=rating, desc=desc, state='approval')
+                state = 'approval'
+                if desc == '':
+                    partner = self.database.get_one('Partner', 'id', partner_id)
+                    comments = self.database.get('Review', 'partner_id', partner_id)
+                    comments = [i for i in comments if i.state == 'published']
+                    n = len(comments)
+
+                    partner.rating = (partner.rating * (n) + rating) / (n + 1)
+                    self.database.update(partner)
+                    state = 'published'
+
+                comment = Review(user_id=session['user_id'], partner_id=partner_id, support_id=support_id, rating=rating, desc=desc, state=state)
                 self.database.add(comment)
             
             comments = self.database.get('Review', 'partner_id', partner_id)
@@ -428,6 +438,13 @@ class App:
                 comment = self.database.get_one('Review', 'id', request.form['comment_id'])
                 if request.form['button'] == 'publish':
                     comment.state = 'published'
+                    partner = self.database.get_one('Partner', 'id', comment.partner_id)
+                    comments = self.database.get('Review', 'partner_id', partner.id)
+                    comments = [i for i in comments if i.state == 'published']
+                    n = len(comments)
+
+                    partner.rating = (partner.rating * (n) + comment.rating) / (n + 1)
+                    self.database.update(partner)
                 else:
                     comment.state = 'denied'
                 self.database.update(comment)

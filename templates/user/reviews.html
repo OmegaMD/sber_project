@@ -46,11 +46,11 @@
                     </button>
                     {% endfor %}
                 </div>
-                <form action="/user/reviews" method="post" class="column">
+                <form action="/user/reviews" method="post" class="column" novalidate>
                     <input type="hidden" name="partner_id" value="{{ partner_id }}">
                     <input id="rating" type="hidden" name="rating" value="0">
                     <div class="block" style="width: 80%; margin-top: 1%; margin-bottom: 1%; height: auto">
-                        <textarea name="desc" class="rounded" name="search_bar" placeholder="Поиск" required oninput="autoResize(this)"></textarea>
+                        <textarea name="desc" class="rounded" name="search_bar" placeholder="Поиск" required oninput="autoResize(this)" required></textarea>
                     </div>
                     <button class="block rounded" style="background-color: black; width: 80%; margin-top: 1%; margin-bottom: 1%; height: auto">
                         <p class="text-main color-frame1">отправить</p>
