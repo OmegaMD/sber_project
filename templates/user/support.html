@@ -42,6 +42,7 @@
                 {% endfor %}
             </div>
             <div class="row" style="height: 70px; max-width: 500px;">
+                {% if chat_exist %}
                 <div class="row bg-color-frame1" style="width: 100%; height: 70%; border-radius: 20px;">
                     <div class="row">
                         <div class="block" style="width: 89%">
@@ -52,13 +53,22 @@
                         </div>
                     </div>
                 </div>
+                {% else %}
+                <form action="/user/support" method="post" class="block" style="width: 50%;">
+                    <button class="bg-color-clickable" id="send-button" type="submit" class="block" style="border-radius: 20px; width: 100%; height: 80%">
+                        <p class="color-base" style="font-size: 30px;">новый чат</p>
+                    </button>
+                </form>
+                {% endif %}
             </div>
         </div>
 
+        {% if chat_exist %}
         <script>
             const socket = io();
 
             const user_id = {{ user_id | tojson }}
+            const support_id = {{ support_id | tojson }}
     
             const messagesDiv = document.getElementById('messages');
             const messageInput = document.getElementById('message-input');
@@ -70,10 +80,28 @@
                 if (JSON.parse(msg)['sender'] == user_id) {
                     const messageHolder = document.createElement('div');
                     messageHolder.className = 'block';
-                    messageHolder.style = 'height: auto; justify-content: end;';
+                    messageHolder.style = 'height: auto; justify-content: start;';
 
                     const messageBubble = document.createElement('div');
                     messageBubble.className = 'block bg-color-clickable';
+                    messageBubble.style = 'width: auto; max-width: 300px; height: auto; margin: 5px; padding: 5px; border-radius: 10px 10px 10px 0;';
+
+                    const messageText = document.createElement('p');
+                    messageText.className = 'text-mini';
+                    messageText.innerText = JSON.parse(msg)['text'];
+
+                    messageBubble.appendChild(messageText);
+                    messageHolder.appendChild(messageBubble);
+                    messagesDiv.appendChild(messageHolder);
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to the bottom
+                }
+                else if (JSON.parse(msg)['reciever'] == user_id) {
+                    const messageHolder = document.createElement('div');
+                    messageHolder.className = 'block';
+                    messageHolder.style = 'height: auto; justify-content: end;';
+
+                    const messageBubble = document.createElement('div');
+                    messageBubble.className = 'block bg-color-frame1';
                     messageBubble.style = 'width: auto; max-width: 300px; height: auto; margin: 5px; padding: 5px; border-radius: 10px 10px 0 10px;';
 
                     const messageText = document.createElement('p');
@@ -88,7 +116,7 @@
             });
     
             sendButton.onclick = function() {
-                const msg = JSON.stringify({'text': messageInput.value, 'sender': user_id});
+                const msg = JSON.stringify({'text': messageInput.value, 'sender': user_id, 'receiver': support_id, 'sender_type': 'user'});
                 if (msg) {
                     socket.emit('message', msg);
                     messageInput.value = '';
@@ -100,7 +128,8 @@
                     sendButton.click();
                 }
             });
-        </script>        
+        </script>      
+        {% endif %}  
     </body>
     <footer class="bg-color-blur" style="height: 60px;">
         <div class="row">

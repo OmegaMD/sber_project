@@ -198,7 +198,7 @@ class App:
                 support1 = Support(user_id=user_support.id)
                 self.database.add(support1)
 
-                chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]), user=user_support.id, support=0)
+                chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Hello, I need help!'}, {'sender': 'support', 'message': 'SHUT YA BITCH ASS UP!!!!!!'}]), user=user_user.id, support=user_support.id)
                 self.database.add(chat1)
 
                 # review1 = Review(user_id=user_user.id, partner_id=partner1.id, support_id=user_support.id, rating=2, desc='кто же ожидал, что в буше такие вкусные яийчницы', state='approval')
@@ -235,18 +235,25 @@ class App:
 
 
         # flask support callback function
-        @self.flask.route('/user/support', methods=['GET'])
+        @self.flask.route('/user/support', methods=['GET', 'POST'])
         def support():
+            if request.method == 'POST':
+                support = self.database.get_one('User', 'telegram', '@support')
+                chat = SupportChat(messages='[]', user=session['user_id'], support=support.id)
+                self.database.add(chat)
+
             user_info = self.database.get_one('User', 'id', session['user_id'])
             
             chat = self.database.get('SupportChat', 'user', user_info.id)
+            print(chat)
             if len(chat) == 0:
-                chat = SupportChat(messages='[]', user=user_info.id, support=0)
-                self.database.add(chat)
-                return render_template('user/support.html', user=user_info, user_id=user_info.id, messages='[]')
+                # chat = SupportChat(messages='[]', user=user_info.id, support=0)
+                # self.database.add(chat)
+                return render_template('user/support.html', user=user_info, user_id=user_info.id, messages='[]', chat_exist=False)
     
             chat = chat[0]
-            return render_template('user/support.html', user=user_info, user_id=user_info.id, messages=json.loads(chat.messages))
+            support_id = chat.support
+            return render_template('user/support.html', user=user_info, user_id=user_info.id, support_id=support_id, messages=json.loads(chat.messages), chat_exist=True)
 
         # main page callback function
         @self.flask.route('/user/home', methods=['GET', 'POST'])
@@ -360,10 +367,17 @@ class App:
         @self.socketio.on('message')
         def handle_message(msg):
             print('Message received: ' + json.loads(msg)['text'])
-            print('Sender:           ' + str(json.loads(msg)['sender']))
-            chat = self.database.get_one('SupportChat', 'user', json.loads(msg)['sender'])
+            print('Sender:           ' + json.loads(msg)['sender_type'])
+
+            user_id = 0
+            if json.loads(msg)['sender_type'] == 'user':
+                user_id = json.loads(msg)['sender']
+            else:
+                user_id = json.loads(msg)['receiver']
+            chat = self.database.get_one('SupportChat', 'user', user_id)
+
             new_messages = json.loads(chat.messages)
-            new_messages.append({'sender': 'user', 'message': json.loads(msg)['text']})
+            new_messages.append({'sender': json.loads(msg)['sender_type'], 'message': json.loads(msg)['text']})
             chat.messages = json.dumps(new_messages)
             self.database.update(chat)
             emit('message', msg, broadcast=True)
@@ -432,6 +446,7 @@ class App:
 
         ### support flask callback functions ###
 
+        # supports reviews checking page flask callback function
         @self.flask.route('/support/reviews', methods=['GET', 'POST'])
         def support_reviews():
             if request.method == 'POST':
@@ -462,6 +477,36 @@ class App:
                     'id': comments[i].id
                     }
             return render_template('support/reviews.html', comments=comments)
+
+        # chats for supports page flask callback function
+        @self.flask.route('/support/chats', methods=['GET', 'POST'])
+        def support_chats():
+            chats = self.database.get('SupportChat', 'support', session['user_id'])
+            headers = []
+            
+            i = 0
+            for chat in chats:
+                messages = json.loads(chat.messages)
+                last_message = messages[len(messages) - 1]
+                user = self.database.get_one('User', 'id', chat.user)
+                headers.append({
+                    "chat_id": i,
+                    "user_name": user.name,
+                    "last_message": last_message
+                })
+                i += 1
+            nochats = True
+            messages = []
+            user_id = 0
+            if len(chats) > 0:
+                ind = 0
+                if request.method == 'POST':
+                    ind = int(request.form['chatButton'])
+                messages = json.loads(chats[ind].messages)
+                user_id = chats[ind].user
+                nochats = False
+            return render_template('support/chats.html', headers=headers, messages=messages, nochats=nochats, user_id=user_id, support_id=session['user_id'])
+
 
         ### help functions ###
 
