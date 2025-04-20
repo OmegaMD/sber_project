@@ -20,7 +20,7 @@
     </header>
     <body>
         <div class="column" style="height: calc(100% - 50px - 60px)">
-            <div id="messages" class="scroll-column" style="max-width: 500px; height: calc(100% - 70px);">
+            <div id="messages" class="scroll-column" style="max-width: 500px; height: calc(100% - 35px - 70px);">
                 {% for message in messages %}
                 <div class="block"
                     {% if message.sender == 'user' %}
@@ -41,6 +41,13 @@
                 </div>
                 {% endfor %}
             </div>
+            <div class="block" style="height: 35px; max-width: 500px; width: 100%">
+                {% if chat_exist %}
+                <button id="end-button" class="block bg-color-clickable" style="height: 90%; width: 40%; border-radius: 20px;">
+                    <p class="text-mini" style="font-size: 20px;">завершить чат</p>
+                </button>
+                {% endif %}
+            </div>
             <div class="row" style="height: 70px; max-width: 500px;">
                 {% if chat_exist %}
                 <div class="row bg-color-frame1" style="width: 100%; height: 70%; border-radius: 20px;">
@@ -55,8 +62,8 @@
                 </div>
                 {% else %}
                 <form action="/user/support" method="post" class="block" style="width: 50%;">
-                    <button class="bg-color-clickable" id="send-button" type="submit" class="block" style="border-radius: 20px; width: 100%; height: 80%">
-                        <p class="color-base" style="font-size: 30px;">новый чат</p>
+                    <button class="bg-color-clickable" id="send-button" type="submit" name="send-button" class="block" style="border-radius: 20px; width: 100%; height: 80%">
+                        <p class="text-mini color-base" style="font-size: 30px;">новый чат</p>
                     </button>
                 </form>
                 {% endif %}
@@ -73,6 +80,7 @@
             const messagesDiv = document.getElementById('messages');
             const messageInput = document.getElementById('message-input');
             const sendButton = document.getElementById('send-button');
+            const endButton = document.getElementById('end-button');
 
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
     
@@ -88,7 +96,11 @@
 
                     const messageText = document.createElement('p');
                     messageText.className = 'text-mini';
-                    messageText.innerText = JSON.parse(msg)['text'];
+                    if (JSON.parse(msg)['text'] == '~EndConvo~') {
+                        messageText.innerText = 'Спасибо за помощь!';
+                    } else {
+                        messageText.innerText = JSON.parse(msg)['text'];
+                    }
 
                     messageBubble.appendChild(messageText);
                     messageHolder.appendChild(messageBubble);
@@ -126,6 +138,18 @@
             messageInput.addEventListener("keypress", function(event) {
                 if (event.key === "Enter") {
                     sendButton.click();
+                }
+            });
+
+            endButton.onclick = function() {
+                const msg = JSON.stringify({'text': '~EndConvo~', 'sender': user_id, 'receiver': support_id, 'sender_type': 'user'});
+                socket.emit('message', msg);
+            }
+
+            // Listen for the redirect event
+            socket.on('redirect', function(data) {
+                if (user_id == data.user_id) {
+                    window.location.href = data.url; // Redirect to the new URL
                 }
             });
         </script>      

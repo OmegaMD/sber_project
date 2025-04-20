@@ -46,6 +46,9 @@ class App:
         self.TELEGRAM_API_URL = 'https://api.telegram.org/bot' + self.API_TOKEN + '/getMe'
         self.SECRET_KEY = settings.SECRET_KEY
 
+        # support system
+        self.next_support = 0
+
         ### database ###
 
         self.database = DataBase(self.flask, 'database.db')
@@ -239,7 +242,10 @@ class App:
         def support():
             if request.method == 'POST':
                 if not self.database.get('SupportChat', 'user', session['user_id']):
-                    support = self.database.get_one('User', 'telegram', '@support')
+                    support = self.database.get('User', 'type', 'Support')
+                    self.next_support = self.next_support % len(support)
+                    support = support[self.next_support]
+                    self.next_support += 1
                     chat = SupportChat(messages='[]', user=session['user_id'], support=support.id)
                     self.database.add(chat)
 
@@ -316,7 +322,10 @@ class App:
                 partner_id = request.form['partner_id']
                 desc = request.form['desc']
                 rating = float(request.form['rating'])
-                support_id = self.database.get_one('User', 'telegram', '@support').id
+                support = self.database.get_one('User', 'type', 'Support')
+                self.next_support = self.next_support % len(support)
+                support = support[self.next_support]
+                self.next_support += 1
                 state = 'approval'
                 if desc == '':
                     partner = self.database.get_one('Partner', 'id', partner_id)
@@ -328,7 +337,7 @@ class App:
                     self.database.update(partner)
                     state = 'published'
 
-                comment = Review(user_id=session['user_id'], partner_id=partner_id, support_id=support_id, rating=rating, desc=desc, state=state)
+                comment = Review(user_id=session['user_id'], partner_id=partner_id, support_id=support.id, rating=rating, desc=desc, state=state)
                 self.database.add(comment)
             
             comments = self.database.get('Review', 'partner_id', partner_id)
@@ -367,18 +376,22 @@ class App:
         # flask socket io handling function
         @self.socketio.on('message')
         def handle_message(msg):
-
             user_id = 0
             if json.loads(msg)['sender_type'] == 'user':
                 user_id = json.loads(msg)['sender']
             else:
                 user_id = json.loads(msg)['receiver']
             chat = self.database.get_one('SupportChat', 'user', user_id)
+            
+            if chat:
+                new_messages = json.loads(chat.messages)
+                new_messages.append({'sender': json.loads(msg)['sender_type'], 'message': json.loads(msg)['text']})
+                chat.messages = json.dumps(new_messages)
+                self.database.update(chat)
 
-            new_messages = json.loads(chat.messages)
-            new_messages.append({'sender': json.loads(msg)['sender_type'], 'message': json.loads(msg)['text']})
-            chat.messages = json.dumps(new_messages)
-            self.database.update(chat)
+            if json.loads(msg)['text'] == '~EndConvo~':
+                self.database.delete('SupportChat', chat.id)
+                emit('redirect', {'url': url_for('support'), 'user_id': user_id})
             emit('message', msg, broadcast=True)
 
         

@@ -103,7 +103,12 @@
 
                     const messageText = document.createElement('p');
                     messageText.className = 'text-mini';
-                    messageText.innerText = JSON.parse(msg)['text'];
+                    if (JSON.parse(msg)['text'] == '~EndConvo~') {
+                        messageText.innerText = 'Спасибо за помощь!';
+                    } else {
+                        messageText.innerText = JSON.parse(msg)['text'];
+                    }
+                    // messageText.innerText = JSON.parse(msg)['text'];
 
                     messageBubble.appendChild(messageText);
                     messageHolder.appendChild(messageBubble);
@@ -121,7 +126,11 @@
 
                     const messageText = document.createElement('p');
                     messageText.className = 'text-mini';
-                    messageText.innerText = JSON.parse(msg)['text'];
+                    if (JSON.parse(msg)['text'] == '~EndConvo~') {
+                        messageText.innerText = 'Спасибо за помощь!';
+                    } else {
+                        messageText.innerText = JSON.parse(msg)['text'];
+                    }
 
                     messageBubble.appendChild(messageText);
                     messageHolder.appendChild(messageBubble);
