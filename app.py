@@ -69,7 +69,7 @@ class App:
         def login():
             # user info setup
             session['last_location_search'] = ''
-            session['user_id'] = self.database.get_one('User', 'telegram', '@support').id # telegram id should be obtained via TelegramAPI
+            session['user_id'] = self.database.get_one('User', 'telegram', '@director').id # telegram id should be obtained via TelegramAPI
             session['prev_page'] = 'home'
             session['saved_loc'] = 'false'
 
@@ -78,8 +78,8 @@ class App:
         # User page selector flask callback function
         @self.flask.route('/selector', methods=['GET'])
         def selector():
-            return render_template('selector.html',
-                                   user=self.database.get_one('User', 'id', session['user_id']))
+            user = self.database.get_one('User', 'id', session['user_id'])
+            return render_template('selector.html', user=user)
 
 
         ### database recreation flask callback function ###
@@ -181,12 +181,12 @@ class App:
                 self.database.add(partner7)
                 self.database.add(partner8)
 
-                user_superadmin = User(type='Superadmin', name='Superadminovich', email='superadmin@gmail.com', telegram='@superadmin', birthday=datetime.date(2008, 1, 25), last_partners="[]")
-                user_admin = User(type='Admin', name='Adminovich', email='admin@gmail.com', telegram='@admin', birthday=datetime.date(2008, 4, 16), last_partners="[]")
-                user_support = User(type='Support', name='Supportovich', email='support@gmail.com', telegram='@support', birthday=datetime.date(2008, 3, 29), last_partners="[]")
-                user_director = User(type='Director', name='Directorovich', email='director@gmail.com', telegram='@director', birthday=datetime.date(2008, 2, 1), last_partners="[]")
-                user_manager = User(type='Manager', name='Managerorovich', email='manager@gmail.com', telegram='@manager', birthday=datetime.date(1945, 5, 9), last_partners="[]")
-                user_user = User(type='User', name='Userovich', email='user@gmail.com', telegram='@user', birthday=datetime.date(2001, 9, 11), last_partners="[]")
+                user_superadmin = User(type='Superadmin', name='Superadminovich', email='superadmin@gmail.com', telegram='@superadmin', birthday=datetime.date(2008, 1, 25), last_partners='[]')
+                user_admin = User(type='Admin', name='Adminovich', email='admin@gmail.com', telegram='@admin', birthday=datetime.date(2008, 4, 16), last_partners='[]')
+                user_support = User(type='Support', name='Supportovich', email='support@gmail.com', telegram='@support', birthday=datetime.date(2008, 3, 29), last_partners='[]')
+                user_director = User(type='Director', name='Directorovich', email='director@gmail.com', telegram='@director', birthday=datetime.date(2008, 2, 1), last_partners='[]')
+                user_manager = User(type='Manager', name='Managerorovich', email='manager@gmail.com', telegram='@manager', birthday=datetime.date(1945, 5, 9), last_partners='[]')
+                user_user = User(type='User', name='Userovich', email='user@gmail.com', telegram='@user', birthday=datetime.date(2001, 9, 11), last_partners='[]')
                 self.database.add(user_superadmin)
                 self.database.add(user_admin)
                 self.database.add(user_support)
@@ -194,8 +194,8 @@ class App:
                 self.database.add(user_manager)
                 self.database.add(user_user)
 
-                director1 = Director(user_id=user_director.id, partner_id=partner1.id)
-                self.database.add(director1)
+                #director1 = Director(user_id=user_director.id, partner_id=partner1.id)
+                #self.database.add(director1)
                 manager1 = Manager(user_id=user_manager.id, partner_id=partner2.id)
                 self.database.add(manager1)
                 support1 = Support(user_id=user_support.id)
@@ -400,51 +400,43 @@ class App:
         # roles management flask callback function
         @self.flask.route('/admin/roles', methods=['GET'])
         def admin_roles():
-            if self.database.get_one('User', 'id', session['user_id']).type in ['Superadmin', 'Admin', 'Director', 'Manager']:       
-                return render_template('admin/roles.html',
-                                        user=self.database.get_one('User', 'id', session['user_id']),
-                                        users=self.database.get_sort('User', 'name', 100))
-            else:
-                return render_template('error.html')
+            user = self.database.get_one('User', 'id', session['user_id'])
+            if not(user.type in ['Superadmin', 'Admin', 'Director', 'Support']):
+                return render_template('error.html')     
+            return render_template('admin/roles.html', user=user, users=self.database.get_sort('User', 'name', 100))
                 
         
         # parter page flask callback function
         @self.flask.route('/admin/partner', methods=['POST', 'GET'])
         def admin_partner():
             user = self.database.get_one('User', 'id', session['user_id'])
-            if user.type in ['Director', 'Manager']:
-                if request.method == "POST":
-                    partner_admin = self.database.get_one(user.type, "user_id", user.id)
-                    partner = self.database.get_one("Partner", "id", partner_admin.partner_id)
-                    for attr in ['name', 'type', 'org_id', 'logo_url', 'image_urls']:
-                        if (request.form[attr] != None):
-                            setattr(partner, attr, request.form[attr])
+            if not(user.type in ['Director', 'Manager']):
+                return render_template('error.html')
+            partner = self.database.get_one('Partner', 'director_id', user.id)
+            if partner == None:
+                partner = Partner(director_id=user.id, rating=0)
+            if request.method == 'POST':
+                for attr in ['name', 'type', 'org_id', 'logo_url', 'image_urls', 'info']:
+                    setattr(partner, attr, request.form[attr])
+                sales_amounts = [int(i.split('%')[0]) for i in request.form['sales'].split('\n')]
+                sales_descs = [i.split('%')[1] for i in request.form['sales'].split('\n')]
+                partner.best_sale_amount = max(sales_amounts)
+                sales = '\n'.join(['%'.join([str(sales_amounts[i]), sales_descs[i]]) for i in range(len(sales_amounts))])
+                partner.sales = sales
+                if partner.id == None:
+                    self.database.add(partner)
+                else:
                     self.database.update(partner)
-                    partner = self.database.get_one(user.type, "user_id", user.id)
-                partner_admin = self.database.get_one(user.type, 'user_id', user.id)
-                return render_template('admin/partner.html',
-                                        user=user,
-                                        partner=self.database.get_one('Partner', 'id', partner_admin.partner_id))
-            else:
-                return render_template('error.html')
+            return render_template('admin/partner.html', user=user, partner=partner)
         
-        # reviews flask callback function
-        @self.flask.route('/admin/reviews', methods=['GET'])
-        def admin_reviews():
-            if self.database.get_one('User', 'id', session['user_id']).type in ['Director', 'Manager']:       
-                return render_template('admin/reviews.html',
-                                        user=self.database.get_one('User', 'id', session['user_id']))
-            else:
-                return render_template('error.html')
-        
+
         # support flask callback function
         @self.flask.route('/admin/support', methods=['GET'])
         def admin_support():
-            if self.database.get_one('User', 'id', session['user_id']).type in ['Support']:       
-                return render_template('admin/support.html',
-                                        user=self.database.get_one('User', 'id', session['user_id']))
-            else:
-                return render_template('error.html')
+            user = self.database.get_one('User', 'id', session['user_id'])
+            if not(user.type in ['Support']):      
+                return render_template('error.html') 
+            return render_template('admin/support.html', user=user)
 
 
         ### manager flask callback functions ###
@@ -504,9 +496,9 @@ class App:
                     last_message = messages[len(messages) - 1]
                 user = self.database.get_one('User', 'id', chat.user)
                 headers.append({
-                    "chat_id": i,
-                    "user_name": user.name,
-                    "last_message": last_message
+                    'chat_id': i,
+                    'user_name': user.name,
+                    'last_message': last_message
                 })
                 i += 1
             nochats = True
