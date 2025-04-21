@@ -32,7 +32,7 @@ class App:
         #self.socketio.run(self.flask, allow_unsafe_werkzeug=True, debug = True)
         
         #eventlet.monkey_patch()  # Add eventlet monkey patching
-        socketio.run(app, debug=False)
+        self.socketio.run(self.flask, debug=False)
 
     # class initialization function
     def __init__(self):
