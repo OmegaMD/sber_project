@@ -25,8 +25,13 @@
                 <div class="block bg-color-frame1 rounded" style="height: 10%; width: 100%"><p class="text-main">Логотип</p></div>
                 <div class="block bg-color-frame1 rounded" style="height: 10%; width: 100%"><p class="text-main">Фото</p></div>
                 <div class="block bg-color-frame1 rounded" style="height: 10%; width: 100%"><p class="text-main">Описание</p></div>
+                <div class="block bg-color-frame1 rounded" style="height: 15%; width: 100%"><p class="text-main">Акции</p></div>
                 <button class="block bg-color-clickable rounded" type="submit" style="height: 10%; width: 100%; justify-content: center;">
-                    <p class="text-main color-base">Сохранить</p>
+                    {% if partner.id == None %}
+                        <p class="text-main color-base">Создать</p>
+                    {% else %}
+                        <p class="text-main color-base">Сохранить</p>
+                    {% endif %}
                 </button>
             </div>
             <div class="scroll-column">
@@ -43,10 +48,13 @@
                     <input class="text-mini bg-color-frame2 rounded" type="text" name="logo_url" placeholder="{{ partner.logo_url }}" value = "{{ partner.logo_url }}" required>
                 </div>
                 <div class="block" style="height: 10%;">
-                    <input class="text-mini bg-color-frame2 rounded" type="text" name="image_urls" placeholder="{{ partner.image_url }}" value = "{{ partner.image_url }}" required>
+                    <input class="text-mini bg-color-frame2 rounded" type="text" name="image_urls" placeholder="{{ partner.image_urls }}" value = "{{ partner.image_urls }}" required>
                 </div>
                 <div class="block" style="height: 10%;">
                     <input class="text-mini bg-color-frame2 rounded" type="text" name="info" placeholder="{{ partner.info }}" value = "{{ partner.info }}" required>
+                </div>
+                <div class="block" style="height: 15%;">
+                    <textarea class="text-mini bg-color-frame2 rounded" name="sales" style="width: 90%; height: 90%; resize: none; border: 0px" placeholder="{{ partner.sales }}">{{ partner.sales }}</textarea>
                 </div>
             </div>
         </form>
