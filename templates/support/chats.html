@@ -10,7 +10,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="../../static/style.css">
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
     </head>
     <header style="height: 50px;">
         <div class="row" style="justify-content: space-between; height: 50px; width: 100%">
@@ -80,7 +80,21 @@
             </div>
         </div>
         <script>
-            const socket = io();
+            //const socket = io();
+			//const socket = io.connect('http://' + document.domain + ':' + location.port)
+			const socket = io.connect(location.origin, {
+				reconnection: true,
+				reconnectionDelay: 1000,
+				reconnectionAttempts: 3
+			});
+
+			socket.on('connect_error', (error) => {
+				console.log('Connection Error:', error);
+			});
+
+			socket.on('disconnect', (reason) => {
+				console.log('Disconnected:', reason);
+			});
 
             const user_id = {{ user_id | tojson }}
             const support_id = {{ support_id | tojson }}

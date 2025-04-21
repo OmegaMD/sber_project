@@ -28,7 +28,11 @@ class App:
     # application starting function
     def run(self):
         # self.flask.run(debug=True)
-        self.socketio.run(self.flask, debug=True)
+        #self.socketio.run(self.flask, debug=False, host = '185.139.69.44', port = 8000)
+        #self.socketio.run(self.flask, allow_unsafe_werkzeug=True, debug = True)
+        
+        #eventlet.monkey_patch()  # Add eventlet monkey patching
+        socketio.run(app, debug=False)
 
     # class initialization function
     def __init__(self):
