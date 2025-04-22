@@ -47,7 +47,6 @@ class App:
         self.API_TOKEN = settings.API_TOKEN       
 
         # URL для проверки авторизации
-        self.TELEGRAM_API_URL = 'https://api.telegram.org/bot' + self.API_TOKEN + '/getMe'
         self.SECRET_KEY = settings.SECRET_KEY
 
         # support system
@@ -82,8 +81,17 @@ class App:
         # User page selector flask callback function
         @self.flask.route('/selector', methods=['GET'])
         def selector():
-            user = self.database.get_one('User', 'id', session['user_id'])
-            return render_template('selector.html', user=user)
+            username = request.args.get('username', default = '*', type = str)
+            users = self.database.get('User', 'telegram', username)
+            uesr = None
+            if len(users) == 0:
+                first_name = request.args.get('first_name', default = '*', type = str)
+
+                user = User(type='User', name=first_name, email='пока пусто', telegram=username, birthday=datetime.date(1841, 11, 12), last_partners='[]')
+                self.database.add(user)
+            else:
+                user = users[0]
+            return render_template('selector.html', user=user, username=username)
 
 
         ### database recreation flask callback function ###
