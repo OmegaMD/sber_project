@@ -14,7 +14,7 @@
         <div class="column" style="justify-content: start; align-items: start;">
             <div class="row" style="height: 10%; justify-content: space-between;">
                 <div class="block" style="width: auto">
-                    <p class="header-large" style="margin-left: 10px;">{{ partner.name }}</p>
+                    <p class="header-mid" style="margin-left: 10px;">{{ partner.name }}</p>
                 </div>
                 <form action="/user/back" method="get" style="width: auto">
                     <button type="submit" class="block" style="width: auto">
@@ -22,14 +22,14 @@
                     </button>
                 </form>
             </div>
-            <div class="row" style="width: auto; height: auto;">
+            <div class="column" style="width: auto; height: auto; align-items: start;">
                 <div class="row" style="width: auto;">
                     {% for i in range(0, (partner.rating | int)) %}
-                    <p class="material-icons" style="font-size: 3rem; margin-left: 2px; margin-right: 2px;">star</p>
+                    <p class="material-icons" style="font-size: 2.5rem; margin-left: 2px; margin-right: 2px;">star</p>
                     {% endfor %}
 
                     {% for i in range(0, 5 - (partner.rating | int)) %}
-                    <p class="material-icons" style="font-size: 3rem; margin-left: 2px; margin-right: 2px;">star_outline</p>
+                    <p class="material-icons" style="font-size: 2.5rem; margin-left: 2px; margin-right: 2px;">star_outline</p>
                     {% endfor %}
 
                     <p class="text-large" style="margin-left: 10px;">{{ ((partner.rating * 10)|round) / 10 }}</p>
@@ -52,7 +52,7 @@
                 urls.forEach(url => {
                     image_block = document.createElement("div")
                     image_block.className = "block"
-                    image_block.style = "width: auto; margin-right: 10px"
+                    image_block.style = "width: auto; margin-right: 5px; margin-left: 5px"
 
                     image = document.createElement("img")
                     image.className = "rounded"
@@ -84,13 +84,13 @@
 
                     symbol = document.createElement("p")
                     symbol.className = "material-symbols-outlined color-clickable"
-                    symbol.style = "font-size: 4rem; margin: 0"
+                    symbol.style = "font-size: 3rem; margin: 0"
                     symbol.innerText = "sell"
 
                     saleBlock.appendChild(symbol)
 
                     desc = document.createElement("p")
-                    desc.className = "text-large color-special"
+                    desc.className = "text-main color-special"
                     desc.innerText = sale.amount.toString() + "% - " + sale.desc
 
                     saleBlock.appendChild(desc)
@@ -98,30 +98,6 @@
                     sales.appendChild(saleBlock)
                 });
             </script>
-
-            <div class="column" style="height: auto;">
-                {% for comment in comments %}
-                {% if (comment.desc|length) > 0 %}
-                <div class="column" style="border-top: 1px solid #8A8A8A; height: auto; width: 100%; margin: 5px;">
-                    <div class="block" style="justify-content: left; height: auto">
-                        <p class="text-large">LOL</p>
-                    </div>
-                    <div class="row" style="justify-content: left;">
-                        {% for i in range(0, comment.rating) %}
-                        <p class="material-icons color-contour1" style="font-size: 1rem; margin-left: 1px; margin-right: 1px;">star</p>
-                        {% endfor %}
-
-                        {% for i in range(0, 5 - comment.rating) %}
-                        <p class="material-icons" style="font-size: 1rem; margin-left: 1px; margin-right: 1px;">star_outline</p>
-                        {% endfor %}
-                    </div>
-                    <div class="block" style="justify-content: left; height: auto">
-                        <p class="text-mini color-contour2">LOL</p>
-                    </div>
-                </div>
-                {% endif %}
-                {% endfor %}
-            </div>
         </div>
     </body>
 </html>

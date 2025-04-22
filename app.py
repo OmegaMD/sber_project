@@ -337,7 +337,7 @@ class App:
                 partner_id = request.form['partner_id']
                 desc = request.form['desc']
                 rating = float(request.form['rating'])
-                support = self.database.get_one('User', 'type', 'Support')
+                support = self.database.get('User', 'type', 'Support')
                 self.next_support = self.next_support % len(support)
                 support = support[self.next_support]
                 self.next_support += 1
