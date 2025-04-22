@@ -56,7 +56,8 @@
                 center: [30.312, 59.949],
                 zoom: 15,
                 key: key,
-            });
+                zoomControl: false,
+              });
     
             navigator.geolocation.getCurrentPosition(function(position) {
                 const lat = position.coords.latitude;
