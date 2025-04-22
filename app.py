@@ -555,14 +555,93 @@ class App:
         @self.flask.route('/admin/roles', methods=['GET'])
         def admin_roles():
             user = self.database.get_one('User', 'id', session['user_id'])
-            if not(user.type in ['Superadmin', 'Admin', 'Director', 'Support']):
-                return render_template('error.html')     
-            return render_template('admin/roles.html', user=user, users=self.database.get_sort('User', 'name', 100))
-                
+            if not(user.type in ['Superadmin', 'Admin', 'Director']):
+                return render_template('error.html')
+            users = self.database.get('User', 'type', 'User')
+            if user.type in ['Superadmin']:
+                users += self.database.get('User', 'type', 'Admin')
+            if user.type in ['Superadmin', 'Admin']:
+                users += self.database.get('User', 'type', 'Director')
+                users += self.database.get('User', 'type', 'Manager')
+                users += self.database.get('User', 'type', 'Support')
+            if user.type in ['Director']:
+                partner_id = self.database.get_one('Partner', 'director_id', user.id).id
+                users += [self.database.get_one('User', 'id', i.user_id) for i in self.database.get_sort('Manager', 'partner_id', 100) if i.partner_id == partner_id]
+            return render_template('admin/roles.html', user=user, users=users)
+        
+
+        @self.flask.route('/admin/promote_admin', methods=['POST'])
+        def promote_admin():
+            user = self.database.get_one("User", "id", request.form['user_row_id'])
+            if (user.type == "Admin"):
+                user.type = "User"
+            else:
+                user.type = "Admin"
+            self.database.update(user)
+            return redirect(url_for(session['prev_page']), 301)
+
+
+        @self.flask.route('/admin/promote_support', methods=['POST'])
+        def promote_support():
+            user = self.database.get_one("User", "id", request.form['user_row_id'])
+            if (user.type == "Support"):
+                user.type = "User"
+            else:
+                user.type = "Support"
+            self.database.update(user)
+            return redirect(url_for(session['prev_page']), 301)
+        
+
+        @self.flask.route('/admin/promote_director', methods=['POST'])
+        def promote_director():
+            user = self.database.get_one("User", "id", request.form['user_row_id'])
+            if (user.type == "Director"):
+                user.type = "User"
+            else:
+                user.type = "Director"
+            self.database.update(user)
+            return redirect(url_for(session['prev_page']), 301)
+
+
+        '''
+        @self.flask.route('/admin/promote_director', methods=['POST'])
+        def promote_director():
+            user = self.database.get_one("User", "id", request.form['user_row_id'])
+            if (user.type == "Director"):
+                user.type = "User"
+                partner_id = self.database.get_one('Partner', 'director_id', user.id).id
+                for manager in self.database.get_sort('Manager', 'partner_id', 100):
+                    if manager.partner_id == partner_id:
+                        self.database.delete('Manager', self.database.get_one('Manager', 'user_id', manager.id))
+                        manager.type = "User"
+                        self.database.update(manager)
+            else:
+                user.type = "Director"
+            self.database.update(user)
+            return redirect(url_for(session['prev_page']), 301)
+        '''
+
+
+        @self.flask.route('/admin/promote_manager', methods=['POST'])
+        def promote_manager():
+            user = self.database.get_one("User", "id", request.form['user_row_id'])
+            if (user.type == "Manager"):
+                user.type = "User"
+            else:
+                user.type = "Manager"
+            self.database.update(user)
+            return redirect(url_for(session['prev_page']), 301)
+        
+
+        @self.flask.route('/admin/ban', methods=['POST'])
+        def ban():
+            self.database.delete("User", self.database.get_one("User", "id", request.form['user_row_id']).id)
+            return redirect(url_for(session['prev_page']), 301)
+
         
         # parter page flask callback function
-        @self.flask.route('/admin/partner', methods=['POST', 'GET'])
-        def admin_partner():
+        @self.flask.route('/manager/partner', methods=['POST', 'GET'])
+        def manager_partner():
             user = self.database.get_one('User', 'id', session['user_id'])
             if not(user.type in ['Director', 'Manager']):
                 return render_template('error.html')
@@ -581,16 +660,16 @@ class App:
                     self.database.add(partner)
                 else:
                     self.database.update(partner)
-            return render_template('admin/partner.html', user=user, partner=partner)
+            return render_template('manager/partner.html', user=user, partner=partner)
         
 
         # support flask callback function
-        @self.flask.route('/admin/support', methods=['GET'])
-        def admin_support():
+        @self.flask.route('/manager/support', methods=['GET'])
+        def manager_support():
             user = self.database.get_one('User', 'id', session['user_id'])
             if not(user.type in ['Support']):      
                 return render_template('error.html') 
-            return render_template('admin/support.html', user=user)
+            return render_template('manager/support.html', user=user)
 
 
         ### manager flask callback functions ###
