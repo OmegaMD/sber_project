@@ -50,10 +50,12 @@
 
         <div id="map" class="block" style="background-color: aqua;"></div>
         <script>
+            const key = {{ key | tojson }};
+            
             const map = new mapgl.Map('map', {
                 center: [37.6173, 55.7558],
                 zoom: 15,
-                key: 'ab7b70c9-9132-468f-8b4c-87177a2418cf',
+                key: key,
             });
     
             navigator.geolocation.getCurrentPosition(function(position) {

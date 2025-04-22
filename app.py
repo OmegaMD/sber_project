@@ -40,7 +40,7 @@ class App:
 
         # flask
         self.flask = Flask(__name__)
-        self.flask.secret_key = 'GiantAlienDildo'
+        self.flask.secret_key = settings.FLASK_KEY
         self.socketio = SocketIO(self.flask)
 
         # API token and secret for Telegram login
@@ -59,10 +59,6 @@ class App:
         ### parser for searching ###
 
         self.parser = Parser(dictionary.types | dictionary.names)
-
-        ### 2gis api key ###
-
-        self.TWOGIS_API_KEY = 'ab7b70c9-9132-468f-8b4c-87177a2418cf'
 
 
         ### flask pages callback functions not role based ###
@@ -248,8 +244,8 @@ class App:
                 session['saved_loc'] = 'true'
             if user_input != '':
                 locations = search_closest_locations(session['lat'], session['lon'], user_input)
-                return render_template('user/map.html', locations=locations)
-            return render_template('user/map.html', locations=[])
+                return render_template('user/map.html', locations=locations, key=settings.TWOGIS_API_KEY)
+            return render_template('user/map.html', locations=[], key=settings.TWOGIS_API_KEY)
 
 
         # flask support callback function
@@ -561,7 +557,7 @@ class App:
 
             for partner in partners:
                 params = {
-                    'key': self.TWOGIS_API_KEY,
+                    'key': settings.TWOGIS_API_KEY,
                     'point': f'{lon},{lat}',
                     # 'page_size': 30,
                     'radius': 2000,  # радиус поиска в метрах
