@@ -1,2 +1,0 @@
-API_TOKEN = '0'
-SECRET_KEY = '0'
