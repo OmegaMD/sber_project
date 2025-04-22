@@ -53,36 +53,36 @@
             const key = {{ key | tojson }};
             
             const map = new mapgl.Map('map', {
-                center: [37.6173, 55.7558],
+                center: [30.312, 59.949],
                 zoom: 15,
                 key: key,
             });
     
             navigator.geolocation.getCurrentPosition(function(position) {
-                const lat = 59.949; // position.coords.latitude;
-                const lon = 30.312; // position.coords.longitude;
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
 
                 fetch('/save_user_location/' + lat + '/' + lon, {method: 'POST'});
     
                 map.setCenter([lon, lat]);
 
-                console.log(lat + ', ' + lon)
+                console.log(lat + ', ' + lon) /* <img class="expand-img" style="border-radius: 50%;" src="' + location.logo + '" onmouseover="push_location_info(\'' + location.img + '\')" onmouseout="pop_location_info()" ></img>\ */
+            });
 
-                const locations = {{ locations | tojson }};
+            const locations = {{ locations | tojson }};
 
-                // JSON.stringify({ name: name, age: age })
+            // JSON.stringify({ name: name, age: age })
 
-                locations.forEach(location => {
-                    const marker = new mapgl.HtmlMarker(map, {
-                        coordinates: [location.point.lon, location.point.lat],
-                        html: '\
-                        <form action="partner" method="post" class="row bg-color-base" style="width: 40px; height: 40px; border-radius: 50%;">\
-                            <button type="submit" name="partner_button" value=' + location.partner_id.toString() + ' style="height: 85%; width: 85%">\
-                                <img class="expand-img" style="border-radius: 50%;" src="' + location.logo + '"></img>\
-                            </button>\
-                        </form>'
-                    });
-                }); /* <img class="expand-img" style="border-radius: 50%;" src="' + location.logo + '" onmouseover="push_location_info(\'' + location.img + '\')" onmouseout="pop_location_info()" ></img>\ */
+            locations.forEach(location => {
+                const marker = new mapgl.HtmlMarker(map, {
+                    coordinates: [location.point.lon, location.point.lat],
+                    html: '\
+                    <form action="partner" method="post" class="row bg-color-base" style="width: 40px; height: 40px; border-radius: 50%;">\
+                        <button type="submit" name="partner_button" value=' + location.partner_id.toString() + ' style="height: 85%; width: 85%">\
+                            <img class="expand-img" style="border-radius: 50%;" src="' + location.logo + '"></img>\
+                        </button>\
+                    </form>'
+                });
             });
         </script>
     </body>

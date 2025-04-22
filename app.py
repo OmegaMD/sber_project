@@ -241,7 +241,6 @@ class App:
 
             if session['saved_loc'] == 'false':
                 user_input = ''
-                session['saved_loc'] = 'true'
             if user_input != '':
                 locations = search_closest_locations(session['lat'], session['lon'], user_input)
                 return render_template('user/map.html', locations=locations, key=settings.TWOGIS_API_KEY)
@@ -394,6 +393,7 @@ class App:
         def save_user_location(lat, lon):
             session['lat'] = lat
             session['lon'] = lon
+            session['saved_loc'] = 'true'
             return '', 204
         
         # flask socket io handling function
