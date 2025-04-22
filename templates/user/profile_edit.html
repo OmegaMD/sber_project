@@ -24,31 +24,23 @@
                         <p class="text-main">Ваш профиль</p>
                     </div>
                 </div> 
-                <div class="column" style="height: 60%; justify-content: start; margin-top: 5%;">
+                <form action="profile" method="post" class="column" style="height: 100%; justify-content: start; margin-top: 5%;">
                     <div class="row" style="width: 100%; height: auto; justify-content: start;">
                         <div class="block rounded bg-color-frame1" style="width: 46%; margin: 2%; aspect-ratio: 1.15;">
                             <div class="column" style="justify-content: start;">
                                 <div class="row" style="height: 30%; margin: 5%;">
-                                    <div class="block">
+                                    <div class="block" style="width: auto">
                                         <p class="material-symbols-outlined color-clickable" style="font-size: 60px;">send</p>
-                                    </div>
-                                    <div class="block">
-                                        <form action="/user/profile_edit" method="get">
-                                            <button style="height: 100%">
-                                                <div class="block" style="width: 100%">
-                                                    <p class="text-mini color-clickable">Изменить</p>
-                                                </div>
-                                            </button>
-                                        </form>
                                     </div>
                                 </div>
                                 <div class="column" style="height: 60%; margin-top: 3%; margin-bottom: 5%; justify-self: start;">
                                     <div class="block" style="justify-content: start;">
                                         <p class="text-main">Telegram</p>
                                     </div>
-                                    <div class="block" style="justify-content: start;">
+                                    <!-- <div class="block" style="justify-content: start;">
                                         <p class="text-mini color-contour2" style="overflow: hidden;">{{ user.telegram }}</p>
-                                    </div>
+                                    </div> -->
+                                    <input type="text" name="telegram-field" class="bg-color-frame3 rounded" style="width: 85%; height: 70%; font-size: 0.75rem; font-weight: 500" value="{{ user.telegram }}">
                                 </div>
                             </div>
                         </div>
@@ -59,23 +51,15 @@
                                     <div class="block">
                                         <p class="material-symbols-outlined color-clickable" style="font-size: 60px;">phone_in_talk</p>
                                     </div>
-                                    <div class="block">
-                                        <form action="/user/profile_edit" method="get">
-                                            <button style="height: 100%">
-                                                <div class="block" style="width: 100%">
-                                                    <p class="text-mini color-clickable">Изменить</p>
-                                                </div>
-                                            </button>
-                                        </form>
-                                    </div>
                                 </div>
                                 <div class="column" style="height: 60%; margin-top: 3%; margin-bottom: 5%; justify-self: start;">
                                     <div class="block" style="justify-content: start;">
                                         <p class="text-main">Телефон</p>
                                     </div>
-                                    <div class="block" style="justify-content: start;">
+                                    <!-- <div class="block" style="justify-content: start;">
                                         <p class="text-mini color-contour2" style="overflow: hidden;">+7(111)111-11-11</p>
-                                    </div>
+                                    </div> -->
+                                    <input type="text" name="number-field" class="bg-color-frame3 rounded" style="width: 85%; height: 70%; font-size: 0.75rem; font-weight: 500" value="+7(111)111-11-11">
                                 </div>
                             </div>
                         </div>
@@ -88,23 +72,15 @@
                                     <div class="block">
                                         <p class="material-symbols-outlined color-clickable" style="font-size: 60px;">cake</p>
                                     </div>
-                                    <div class="block">
-                                        <form action="/user/profile_edit" method="get">
-                                            <button style="height: 100%">
-                                                <div class="block" style="width: 100%">
-                                                    <p class="text-mini color-clickable">Изменить</p>
-                                                </div>
-                                            </button>
-                                        </form>
-                                    </div>
                                 </div>
                                 <div class="column" style="height: 60%; margin-top: 2%; margin-bottom: 4%; justify-self: start;">
                                     <div class="block" style="justify-content: start;">
                                         <p class="text-main">Дата рождения</p>
                                     </div>
-                                    <div class="block" style="justify-content: start;">
+                                    <!-- <div class="block" style="justify-content: start;">
                                         <p class="text-mini color-contour2" style="overflow: hidden;">{{ user.birthday.strftime('%d.%m.%Y') }}</p>
-                                    </div>
+                                    </div> -->
+                                    <input type="date" name="birthday-field" class="bg-color-frame3 rounded" style="width: 85%; height: 70%; font-size: 0.75rem; font-weight: 500" value="{{ user.birthday.strftime('%Y-%m-%d') }}">
                                 </div>
                             </div>
                         </div>
@@ -115,28 +91,23 @@
                                     <div class="block">
                                         <p class="material-symbols-outlined color-clickable" style="font-size: 60px;">mail</p>
                                     </div>
-                                    <div class="block">
-                                        <form action="/user/profile_edit" method="get">
-                                            <button style="height: 100%">
-                                                <div class="block" style="width: 100%">
-                                                    <p class="text-mini color-clickable">Изменить</p>
-                                                </div>
-                                            </button>
-                                        </form>
-                                    </div>
                                 </div>
                                 <div class="column" style="height: 60%; margin-top: 3%; margin-bottom: 5%; justify-self: start;">
                                     <div class="block" style="justify-content: start;">
                                         <p class="text-main">Почта</p>
                                     </div>
-                                    <div class="block" style="justify-content: start;">
+                                    <!-- <div class="block" style="justify-content: start;">
                                         <p class="text-mini color-contour2" style="overflow: hidden;">{{ user.email }}</p>
-                                    </div>
+                                    </div> -->
+                                    <input type="text" name="email-field" class="bg-color-frame3 rounded" style="width: 85%; height: 70%; font-size: 0.75rem; font-weight: 500" value="{{ user.email }}">
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <button type="submit" class="block bg-color-frame1 rounded" style="height: 7%; width: 100%; margin-top: 5%;">
+                        <p class="text-main">сохранить изменения</p>
+                    </button>
+                </form>
             </div>
         </div>
     </body>

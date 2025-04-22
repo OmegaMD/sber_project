@@ -258,6 +258,16 @@ input[type=text] {
     font-weight: 500;
 }
 
+input[type=date] {
+    width: 90%;
+    height: 90%;
+    outline: none;
+    border: 0;
+    font-family: "Manrope", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+}
+
 input[type=text]:focus {
     outline: none;
 }

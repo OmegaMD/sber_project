@@ -91,8 +91,10 @@ class App:
                 self.database.add(user)
             else:
                 user = users[0]
+            
+            # user = self.database.get_one('User', 'telegram', 'STEmug')
             session['user_id'] = user.id
-            return render_template('selector.html', user=user, username=username)
+            return render_template('selector.html', user=user)
 
 
         ### database recreation flask callback function ###
@@ -372,9 +374,21 @@ class App:
             return redirect(url_for(session['prev_page']), 301)
 
         # flask user profile callback function
-        @self.flask.route('/user/profile', methods=['GET'])
+        @self.flask.route('/user/profile', methods=['GET', 'POST'])
         def profile():
-            return render_template('user/profile.html', user=self.database.get_one('User', 'id', session['user_id']))
+            user = self.database.get_one('User', 'id', session['user_id'])
+            if request.method == 'POST':
+                user.telegram = request.form['telegram-field']
+                user.birthday = datetime.datetime.strptime(request.form['birthday-field'], '%Y-%m-%d')
+                user.email = request.form['email-field']
+                self.database.update(user)
+
+            return render_template('user/profile.html', user=user)
+
+        # flask user profile callback function
+        @self.flask.route('/user/profile_edit', methods=['GET'])
+        def profile_edit():
+            return render_template('user/profile_edit.html', user=self.database.get_one('User', 'id', session['user_id']))
 
 
         ### flask inner callback functions ###
