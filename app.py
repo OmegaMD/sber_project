@@ -72,7 +72,7 @@ class App:
         def login():
             # user info setup
             session['last_location_search'] = ''
-            session['user_id'] = self.database.get_one('User', 'telegram', '@director').id # telegram id should be obtained via TelegramAPI
+            # session['user_id'] = self.database.get_one('User', 'telegram', '@director').id # telegram id should be obtained via TelegramAPI
             session['prev_page'] = 'home'
             session['saved_loc'] = 'false'
 
@@ -91,6 +91,7 @@ class App:
                 self.database.add(user)
             else:
                 user = users[0]
+            session['user_id'] = user.id
             return render_template('selector.html', user=user, username=username)
 
 
@@ -193,28 +194,28 @@ class App:
                 self.database.add(partner7)
                 self.database.add(partner8)
 
-                user_superadmin = User(type='Superadmin', name='Superadminovich', email='superadmin@gmail.com', telegram='@superadmin', birthday=datetime.date(2008, 1, 25), last_partners='[]')
-                user_admin = User(type='Admin', name='Adminovich', email='admin@gmail.com', telegram='@admin', birthday=datetime.date(2008, 4, 16), last_partners='[]')
-                user_support = User(type='Support', name='Supportovich', email='support@gmail.com', telegram='@support', birthday=datetime.date(2008, 3, 29), last_partners='[]')
-                user_director = User(type='Director', name='Directorovich', email='director@gmail.com', telegram='@director', birthday=datetime.date(2008, 2, 1), last_partners='[]')
-                user_manager = User(type='Manager', name='Managerorovich', email='manager@gmail.com', telegram='@manager', birthday=datetime.date(1945, 5, 9), last_partners='[]')
-                user_user = User(type='User', name='Userovich', email='user@gmail.com', telegram='@user', birthday=datetime.date(2001, 9, 11), last_partners='[]')
+                user_superadmin = User(type='Superadmin', name='Максим', email='пока нету', telegram='OmegaMD', birthday=datetime.date(2008, 4, 16), last_partners='[]')
+                # user_admin = User(type='Admin', name='Adminovich', email='admin@gmail.com', telegram='@admin', birthday=datetime.date(2008, 4, 16), last_partners='[]')
+                user_support = User(type='Support', name='Савва', email='savvapos2008@gmail.com', telegram='STEmug', birthday=datetime.date(2008, 1, 25), last_partners='[]')
+                # user_director = User(type='Director', name='Directorovich', email='director@gmail.com', telegram='@director', birthday=datetime.date(2008, 2, 1), last_partners='[]')
+                # user_manager = User(type='Manager', name='Managerorovich', email='manager@gmail.com', telegram='@manager', birthday=datetime.date(1945, 5, 9), last_partners='[]')
+                # user_user = User(type='User', name='Userovich', email='user@gmail.com', telegram='@user', birthday=datetime.date(2001, 9, 11), last_partners='[]')
                 self.database.add(user_superadmin)
-                self.database.add(user_admin)
+                # self.database.add(user_admin)
                 self.database.add(user_support)
-                self.database.add(user_director)
-                self.database.add(user_manager)
-                self.database.add(user_user)
+                # self.database.add(user_director)
+                # self.database.add(user_manager)
+                # self.database.add(user_user)
 
                 #director1 = Director(user_id=user_director.id, partner_id=partner1.id)
                 #self.database.add(director1)
-                manager1 = Manager(user_id=user_manager.id, partner_id=partner2.id)
-                self.database.add(manager1)
-                support1 = Support(user_id=user_support.id)
-                self.database.add(support1)
+                # manager1 = Manager(user_id=user_manager.id, partner_id=partner2.id)
+                # self.database.add(manager1)
+                # support1 = Support(user_id=user_support.id)
+                # self.database.add(support1)
 
-                chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Здравствуйте! Помогите, как открыть карту?'}, {'sender': 'support', 'message': 'Здравствуйте! Для открытие карты просто выберите символ карты на панели внизу'}]), user=user_user.id, support=user_support.id)
-                self.database.add(chat1)
+                # chat1 = SupportChat(messages=json.dumps([{'sender': 'user', 'message': 'Здравствуйте! Помогите, как открыть карту?'}, {'sender': 'support', 'message': 'Здравствуйте! Для открытие карты просто выберите символ карты на панели внизу'}]), user=user_user.id, support=user_support.id)
+                # self.database.add(chat1)
 
                 # review1 = Review(user_id=user_user.id, partner_id=partner1.id, support_id=user_support.id, rating=2, desc='кто же ожидал, что в буше такие вкусные яийчницы', state='approval')
                 # self.database.add(review1)

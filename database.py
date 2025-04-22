@@ -74,7 +74,7 @@ class User(DataBase.db.Model):
     id = DataBase.db.Column(DataBase.db.Integer, primary_key=True, unique=True, nullable=False)
     type = DataBase.db.Column(DataBase.db.String, nullable=False)
     name = DataBase.db.Column(DataBase.db.String, nullable=False)
-    email = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
+    email = DataBase.db.Column(DataBase.db.String, nullable=False)
     telegram = DataBase.db.Column(DataBase.db.String, unique=True, nullable=False)
     birthday = DataBase.db.Column(DataBase.db.Date, nullable=False) 
     last_partners = DataBase.db.Column(DataBase.db.String, nullable=False)
