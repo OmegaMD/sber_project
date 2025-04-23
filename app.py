@@ -560,7 +560,7 @@ class App:
             users = self.database.get('User', 'type', 'User')
             if user.type in ['Superadmin']:
                 users += self.database.get('User', 'type', 'Admin')
-            if user.type in ['Superadmin', 'Admin']:
+            if user.type in ['Admin']:
                 users += self.database.get('User', 'type', 'Director')
                 users += self.database.get('User', 'type', 'Manager')
                 users += self.database.get('User', 'type', 'Support')
@@ -578,7 +578,7 @@ class App:
             else:
                 user.type = "Admin"
             self.database.update(user)
-            return redirect(url_for(session['prev_page']), 301)
+            return redirect(url_for('admin_roles'), 301)
 
 
         @self.flask.route('/admin/promote_support', methods=['POST'])
@@ -589,7 +589,7 @@ class App:
             else:
                 user.type = "Support"
             self.database.update(user)
-            return redirect(url_for(session['prev_page']), 301)
+            return redirect(url_for('admin_roles'), 301)
         
 
         @self.flask.route('/admin/promote_director', methods=['POST'])
@@ -600,7 +600,7 @@ class App:
             else:
                 user.type = "Director"
             self.database.update(user)
-            return redirect(url_for(session['prev_page']), 301)
+            return redirect(url_for('admin_roles'), 301)
 
 
         '''
@@ -630,13 +630,13 @@ class App:
             else:
                 user.type = "Manager"
             self.database.update(user)
-            return redirect(url_for(session['prev_page']), 301)
+            return redirect(url_for('admin_roles'), 301)
         
 
         @self.flask.route('/admin/ban', methods=['POST'])
         def ban():
             self.database.delete("User", self.database.get_one("User", "id", request.form['user_row_id']).id)
-            return redirect(url_for(session['prev_page']), 301)
+            return redirect(url_for('admin_roles'), 301)
 
         
         # parter page flask callback function
